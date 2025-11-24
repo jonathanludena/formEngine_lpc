@@ -422,6 +422,32 @@ describe('InsuranceQuoteForm - Common Features', () => {
     });
   });
 
+  it('does not auto-check the terms checkbox when accepting the modal', async () => {
+    const user = userEvent.setup();
+    render(
+      <InsuranceQuoteForm
+        insuranceType="health"
+        onSubmit={mockOnSubmit}
+      />
+    );
+
+    // Open the terms modal via the link
+    const viewTermsButton = screen.getByRole('button', { name: /términos y condiciones/i });
+    await user.click(viewTermsButton);
+
+    await waitFor(() => {
+      expect(screen.getByText('Términos y Condiciones')).toBeInTheDocument();
+    });
+
+    // Click the modal accept button
+    const acceptButton = screen.getByRole('button', { name: /Aceptar/i });
+    await user.click(acceptButton);
+
+    // The checkbox should remain unchecked; user must check it manually
+    const termsCheckbox = screen.getByRole('checkbox', { name: /acepto los/i });
+    expect(termsCheckbox).not.toBeChecked();
+  });
+
   it('populates form with initial data', () => {
     const initialData = {
       personalInfo: {

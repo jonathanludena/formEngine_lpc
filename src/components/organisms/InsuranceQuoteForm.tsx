@@ -1,25 +1,25 @@
-import { useState, useEffect } from 'react';
-import { useForm, Controller, useFieldArray } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
-import { FormField, FormSelect, FormCheckbox, SelectOption } from '@/components/atoms';
+import { FormCheckbox, FormField, FormSelect, SelectOption } from '@/components/atoms';
 import { TermsModal } from '@/components/molecules/TermsModal';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { getBrandCopies } from '@/data';
 import {
   healthQuoteSchema,
   lifeQuoteSchema,
-  vehicleQuoteSchema,
   lifeSavingsQuoteSchema,
+  vehicleQuoteSchema,
 } from '@/lib/schemas';
-import {
-  QuoteFormData,
-  BaseFormProps,
-  BrandId,
-  InsuranceType,
-} from '@/lib/types';
-import { getBrandCopies } from '@/data';
+import { BaseFormProps, BrandId, InsuranceType, QuoteFormData } from '@/lib/types';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Plus, Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 
 interface InsuranceQuoteFormProps extends Omit<BaseFormProps<QuoteFormData>, 'onSubmit'> {
   brand?: BrandId;
@@ -92,7 +92,6 @@ export const InsuranceQuoteForm = ({
     register,
     handleSubmit,
     control,
-    setValue,
     watch,
     reset,
     formState: { errors, isSubmitting },
@@ -115,16 +114,23 @@ export const InsuranceQuoteForm = ({
   }, [insuranceType, initialData, reset]);
 
   const acceptTerms = watch('acceptTerms');
-  const coverageType = insuranceType === 'health' ? (watch('coverageType' as keyof QuoteFormData) as string | undefined) : null;
+  const coverageType =
+    insuranceType === 'health'
+      ? (watch('coverageType' as keyof QuoteFormData) as string | undefined)
+      : null;
 
   // Beneficiaries for life insurance
-  const { fields, append, remove } = useFieldArray<QuoteFormData, 'beneficiaries' extends keyof QuoteFormData ? 'beneficiaries' : never>({
+  const { fields, append, remove } = useFieldArray<
+    QuoteFormData,
+    'beneficiaries' extends keyof QuoteFormData ? 'beneficiaries' : never
+  >({
     control,
     name: 'beneficiaries' as 'beneficiaries' extends keyof QuoteFormData ? 'beneficiaries' : never,
   });
 
   const handleTermsAccept = () => {
-    setValue('acceptTerms', true);
+    // Close the modal only. Do not programmatically set the checkbox value.
+    // The user should be free to check the box themselves after reading.
     setShowTermsModal(false);
   };
 
@@ -244,7 +250,12 @@ export const InsuranceQuoteForm = ({
                             options={coverageOptions}
                             value={field.value as string}
                             onValueChange={field.onChange}
-                            error={'coverageType' in errors ? (errors as Record<string, { message?: string }>).coverageType?.message : undefined}
+                            error={
+                              'coverageType' in errors
+                                ? (errors as Record<string, { message?: string }>).coverageType
+                                    ?.message
+                                : undefined
+                            }
                           />
                         )}
                       />
@@ -254,8 +265,14 @@ export const InsuranceQuoteForm = ({
                           label="Número de Dependientes"
                           type="number"
                           placeholder="0"
-                          error={'dependents' in errors ? (errors as Record<string, { message?: string }>).dependents?.message : undefined}
-                          {...register('dependents' as keyof QuoteFormData, { valueAsNumber: true })}
+                          error={
+                            'dependents' in errors
+                              ? (errors as Record<string, { message?: string }>).dependents?.message
+                              : undefined
+                          }
+                          {...register('dependents' as keyof QuoteFormData, {
+                            valueAsNumber: true,
+                          })}
                         />
                       )}
 
@@ -264,6 +281,7 @@ export const InsuranceQuoteForm = ({
                         control={control}
                         render={({ field }) => (
                           <FormCheckbox
+                            ref={field.ref}
                             label="¿Tiene condiciones preexistentes?"
                             checked={field.value as boolean}
                             onCheckedChange={field.onChange}
@@ -288,7 +306,9 @@ export const InsuranceQuoteForm = ({
                         type="number"
                         placeholder="100000"
                         error={getFieldError('coverageAmount')}
-                        {...register('coverageAmount' as keyof QuoteFormData, { valueAsNumber: true })}
+                        {...register('coverageAmount' as keyof QuoteFormData, {
+                          valueAsNumber: true,
+                        })}
                       />
 
                       {insuranceType === 'life_savings' && (
@@ -298,7 +318,9 @@ export const InsuranceQuoteForm = ({
                             type="number"
                             placeholder="50000"
                             error={getFieldError('savingsGoal')}
-                            {...register('savingsGoal' as keyof QuoteFormData, { valueAsNumber: true })}
+                            {...register('savingsGoal' as keyof QuoteFormData, {
+                              valueAsNumber: true,
+                            })}
                           />
 
                           <FormField
@@ -306,7 +328,9 @@ export const InsuranceQuoteForm = ({
                             type="number"
                             placeholder="10"
                             error={getFieldError('termYears')}
-                            {...register('termYears' as keyof QuoteFormData, { valueAsNumber: true })}
+                            {...register('termYears' as keyof QuoteFormData, {
+                              valueAsNumber: true,
+                            })}
                           />
                         </>
                       )}
@@ -325,6 +349,7 @@ export const InsuranceQuoteForm = ({
                             control={control}
                             render={({ field }) => (
                               <FormCheckbox
+                                ref={field.ref}
                                 label="¿Fuma?"
                                 checked={field.value as boolean}
                                 onCheckedChange={field.onChange}
@@ -388,7 +413,9 @@ export const InsuranceQuoteForm = ({
                                 label="Parentesco"
                                 placeholder="Hijo, Cónyuge, etc."
                                 error={getFieldError(`beneficiaries.${index}.relationship`)}
-                                {...register(`beneficiaries.${index}.relationship` as keyof QuoteFormData)}
+                                {...register(
+                                  `beneficiaries.${index}.relationship` as keyof QuoteFormData
+                                )}
                               />
 
                               <FormField
@@ -396,9 +423,12 @@ export const InsuranceQuoteForm = ({
                                 type="number"
                                 placeholder="50"
                                 error={getFieldError(`beneficiaries.${index}.percentage`)}
-                                {...register(`beneficiaries.${index}.percentage` as keyof QuoteFormData, {
-                                  valueAsNumber: true,
-                                })}
+                                {...register(
+                                  `beneficiaries.${index}.percentage` as keyof QuoteFormData,
+                                  {
+                                    valueAsNumber: true,
+                                  }
+                                )}
                               />
                             </div>
                           </CardContent>
@@ -458,7 +488,9 @@ export const InsuranceQuoteForm = ({
                           type="number"
                           placeholder="2020"
                           error={getFieldError('vehicleYear')}
-                          {...register('vehicleYear' as keyof QuoteFormData, { valueAsNumber: true })}
+                          {...register('vehicleYear' as keyof QuoteFormData, {
+                            valueAsNumber: true,
+                          })}
                         />
 
                         <FormField
@@ -466,7 +498,9 @@ export const InsuranceQuoteForm = ({
                           type="number"
                           placeholder="15000"
                           error={getFieldError('vehicleValue')}
-                          {...register('vehicleValue' as keyof QuoteFormData, { valueAsNumber: true })}
+                          {...register('vehicleValue' as keyof QuoteFormData, {
+                            valueAsNumber: true,
+                          })}
                         />
                       </div>
 
@@ -490,6 +524,7 @@ export const InsuranceQuoteForm = ({
                         control={control}
                         render={({ field }) => (
                           <FormCheckbox
+                            ref={field.ref}
                             label="¿El vehículo tiene financiamiento?"
                             checked={field.value as boolean}
                             onCheckedChange={field.onChange}
@@ -509,6 +544,7 @@ export const InsuranceQuoteForm = ({
                 control={control}
                 render={({ field }) => (
                   <FormCheckbox
+                    ref={field.ref}
                     label={copies.fields.acceptTerms.label}
                     checked={field.value}
                     onCheckedChange={field.onChange}

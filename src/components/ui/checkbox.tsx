@@ -9,8 +9,25 @@ export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputE
 
 const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
   ({ className, onCheckedChange, checked, onChange, ...props }, ref) => {
+    const localRef = React.useRef<HTMLInputElement | null>(null);
+
+    React.useEffect(() => {
+      if (!ref) return;
+      if (typeof ref === 'function') {
+        ref(localRef.current);
+      } else {
+        try {
+          (ref as React.MutableRefObject<HTMLInputElement | null>).current = localRef.current;
+        } catch (error) {
+          if (process.env.NODE_ENV === 'development') {
+            console.error('Failed to assign ref in Checkbox:', error);
+          }
+        }
+      }
+    }, [ref]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      onChange?.(e);
+      onChange?.(e as unknown as React.ChangeEvent<HTMLInputElement>);
       onCheckedChange?.(e.target.checked);
     };
 
@@ -19,7 +36,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         <input
           type="checkbox"
           className="peer sr-only"
-          ref={ref}
+          ref={localRef}
           checked={checked ?? false}
           onChange={handleChange}
           {...props}
@@ -36,8 +53,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             className
           )}
           onClick={() => {
-            const input = ref && 'current' in ref ? ref.current : null;
-            input?.click();
+            localRef.current?.click();
           }}
         >
           <Check
