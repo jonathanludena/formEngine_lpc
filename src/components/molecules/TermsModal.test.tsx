@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/vitest';
 import { TermsModal } from './TermsModal';
@@ -39,93 +39,35 @@ describe('TermsModal', () => {
     ).toBeInTheDocument();
   });
 
-  it('displays accept button as disabled initially', () => {
+  it('displays accept button', () => {
     render(<TermsModal {...defaultProps} />);
-    const acceptButton = screen.getByRole('button', { name: /Desplázate hasta el final/i });
-    expect(acceptButton).toBeDisabled();
+    const acceptButton = screen.getByRole('button', { name: /Aceptar/i });
+    expect(acceptButton).toBeInTheDocument();
   });
 
-  it('calls onClose when cancel button is clicked', async () => {
-    const user = userEvent.setup();
-    render(<TermsModal {...defaultProps} />);
-    const cancelButton = screen.getByRole('button', { name: /Cancelar/i });
-    await user.click(cancelButton);
-    expect(mockOnClose).toHaveBeenCalledTimes(1);
-  });
-
-  it('enables accept button after scrolling to bottom', async () => {
-    render(<TermsModal {...defaultProps} />);
-    
-    const scrollArea = screen.getByText('Este es el contenido de los términos y condiciones.').closest('.prose');
-    if (!scrollArea || !scrollArea.parentElement) {
-      throw new Error('ScrollArea not found');
-    }
-
-    // Simulate scroll to bottom
-    const scrollContainer = scrollArea.parentElement;
-    Object.defineProperty(scrollContainer, 'scrollHeight', { value: 1000, configurable: true });
-    Object.defineProperty(scrollContainer, 'scrollTop', { value: 600, configurable: true });
-    Object.defineProperty(scrollContainer, 'clientHeight', { value: 400, configurable: true });
-
-    const scrollEvent = new Event('scroll', { bubbles: true });
-    await act(async () => {
-      scrollContainer.dispatchEvent(scrollEvent);
-    });
-
-    await waitFor(() => {
-      const acceptButton = screen.getByRole('button', { name: /Acepto los Términos/i });
-      expect(acceptButton).toBeEnabled();
-    });
-  });
-
-  it('calls onAccept when accept button is clicked after scrolling', async () => {
+  it('calls onAccept when accept button is clicked', async () => {
     const user = userEvent.setup();
     render(<TermsModal {...defaultProps} />);
 
-    const scrollArea = screen.getByText('Este es el contenido de los términos y condiciones.').closest('.prose');
-    if (!scrollArea || !scrollArea.parentElement) {
-      throw new Error('ScrollArea not found');
-    }
-
-    // Simulate scroll to bottom
-    const scrollContainer = scrollArea.parentElement;
-    Object.defineProperty(scrollContainer, 'scrollHeight', { value: 1000, configurable: true });
-    Object.defineProperty(scrollContainer, 'scrollTop', { value: 600, configurable: true });
-    Object.defineProperty(scrollContainer, 'clientHeight', { value: 400, configurable: true });
-
-    const scrollEvent = new Event('scroll', { bubbles: true });
-    await act(async () => {
-      scrollContainer.dispatchEvent(scrollEvent);
-    });
-
-    await waitFor(() => {
-      const acceptButton = screen.getByRole('button', { name: /Acepto los Términos/i });
-      expect(acceptButton).toBeEnabled();
-    });
-
-    const acceptButton = screen.getByRole('button', { name: /Acepto los Términos/i });
+    const acceptButton = screen.getByRole('button', { name: /Aceptar/i });
     await user.click(acceptButton);
     expect(mockOnAccept).toHaveBeenCalledTimes(1);
   });
 
-  it('does not enable accept button if not scrolled far enough', () => {
+  it('calls onClose when close button is clicked', async () => {
+    const user = userEvent.setup();
     render(<TermsModal {...defaultProps} />);
 
-    const scrollArea = screen.getByText('Este es el contenido de los términos y condiciones.').closest('.prose');
-    if (!scrollArea || !scrollArea.parentElement) {
-      throw new Error('ScrollArea not found');
-    }
+    const closeButton = screen.getByRole('button', { name: /Close/i });
+    await user.click(closeButton);
+    expect(mockOnClose).toHaveBeenCalledTimes(1);
+  });
 
-    // Simulate partial scroll (not at bottom)
-    const scrollContainer = scrollArea.parentElement;
-    Object.defineProperty(scrollContainer, 'scrollHeight', { value: 1000, configurable: true });
-    Object.defineProperty(scrollContainer, 'scrollTop', { value: 200, configurable: true });
-    Object.defineProperty(scrollContainer, 'clientHeight', { value: 400, configurable: true });
-
-    const scrollEvent = new Event('scroll', { bubbles: true });
-    scrollContainer.dispatchEvent(scrollEvent);
-
-    const acceptButton = screen.getByRole('button', { name: /Desplázate hasta el final/i });
-    expect(acceptButton).toBeDisabled();
+  it('renders with scrollable content area', () => {
+    const longContent = '<p>' + 'Este es un párrafo largo. '.repeat(100) + '</p>';
+    const { container } = render(<TermsModal {...defaultProps} content={longContent} />);
+    
+    const scrollableDiv = container.querySelector('.overflow-y-auto');
+    expect(scrollableDiv).toBeInTheDocument();
   });
 });
