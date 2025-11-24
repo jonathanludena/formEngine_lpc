@@ -20,7 +20,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           type="checkbox"
           className="peer sr-only"
           ref={ref}
-          checked={checked}
+          checked={checked ?? false}
           onChange={handleChange}
           {...props}
         />

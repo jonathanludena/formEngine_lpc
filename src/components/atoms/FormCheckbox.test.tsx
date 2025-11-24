@@ -40,11 +40,15 @@ describe('FormCheckbox', () => {
 
   it('can be checked and unchecked', async () => {
     const user = userEvent.setup();
-    const handleChange = vi.fn();
+    let isChecked = false;
+    const handleChange = vi.fn((checked: boolean) => {
+      isChecked = checked;
+    });
     
-    render(
+    const { rerender } = render(
       <FormCheckbox
         label="Agree"
+        checked={isChecked}
         onCheckedChange={handleChange}
       />
     );
@@ -53,6 +57,15 @@ describe('FormCheckbox', () => {
     
     await user.click(checkbox);
     expect(handleChange).toHaveBeenCalledWith(true);
+    
+    // Rerender with new state
+    rerender(
+      <FormCheckbox
+        label="Agree"
+        checked={true}
+        onCheckedChange={handleChange}
+      />
+    );
     
     await user.click(checkbox);
     expect(handleChange).toHaveBeenCalledWith(false);
