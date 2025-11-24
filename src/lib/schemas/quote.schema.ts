@@ -40,6 +40,7 @@ export const healthQuoteSchema = baseQuoteSchema.extend({
   dependents: z.number().min(0).max(10).optional(),
   preExistingConditions: z.boolean(),
   preferredHospitals: z.array(z.string()).optional(),
+  preExistingList: z.array(z.string()).optional(),
 });
 
 // Life Quote Schema

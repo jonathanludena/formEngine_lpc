@@ -28,6 +28,8 @@ export interface HealthQuoteData extends BaseQuoteData {
   dependents?: number;
   preExistingConditions: boolean;
   preferredHospitals?: string[];
+  // List of selected preexisting condition keys
+  preExistingList?: string[];
 }
 
 export interface LifeQuoteData extends BaseQuoteData {

@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
 import { getBrandCopies } from '@/data';
 import {
   healthQuoteSchema,
@@ -16,6 +17,7 @@ import {
   vehicleQuoteSchema,
 } from '@/lib/schemas';
 import { BaseFormProps, BrandId, InsuranceType, QuoteFormData } from '@/lib/types';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Plus, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -77,6 +79,15 @@ export const InsuranceQuoteForm = ({
         return healthQuoteSchema;
     }
   };
+
+  // Mock preexisting conditions options for health insurance
+  const PREEXISTING_OPTIONS: { value: string; label: string }[] = [
+    { value: 'diabetes', label: 'Diabetes' },
+    { value: 'hypertension', label: 'Hipertensión' },
+    { value: 'asthma', label: 'Asma' },
+    { value: 'cardiac', label: 'Condiciones Cardíacas' },
+    { value: 'none', label: 'Ninguna' },
+  ];
 
   const getTitle = () => {
     const titles = {
@@ -157,7 +168,12 @@ export const InsuranceQuoteForm = ({
         <CardContent>
           <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6" autoComplete="off">
             {/* Hidden dummy input to further discourage browser autocomplete */}
-            <input type="text" name="__autocomplete_disable" autoComplete="off" style={{ display: 'none' }} />
+            <input
+              type="text"
+              name="__autocomplete_disable"
+              autoComplete="off"
+              style={{ display: 'none' }}
+            />
             <Accordion type="single" value={activeSection} onValueChange={setActiveSection}>
               {/* Personal Information Section */}
               <AccordionItem value="personal-info">
@@ -286,9 +302,57 @@ export const InsuranceQuoteForm = ({
                             ref={field.ref}
                             label="¿Tiene condiciones preexistentes?"
                             checked={field.value as boolean}
-                            onCheckedChange={field.onChange}
+                            onCheckedChange={(val) => {
+                              // Update the boolean value
+                              field.onChange(val);
+                              // If user unchecks, clear any selected preexisting items
+                              if (!val) {
+                                // Clear selected preexisting items to avoid stale data
+                                const currentValues = watch() as Partial<QuoteFormData>;
+                                reset({ ...currentValues, preExistingList: [] } as Partial<QuoteFormData>);
+                              }
+                            }}
                           />
                         )}
+                      />
+
+                      {/* If user indicates pre-existing conditions, show checkbox list + selected chips */}
+                      <Controller
+                        name={'preExistingList' as keyof QuoteFormData}
+                        control={control}
+                        render={({ field }) => {
+                          const current: string[] = (field.value as unknown as string[]) || [];
+
+                          // Only render the list when the boolean checkbox is true
+                          const hasPre = (watch('preExistingConditions' as keyof QuoteFormData) as boolean) === true;
+
+                          return (
+                            <div className="pt-2">
+                              {hasPre && (
+                                <>
+                                  <p className="text-sm font-medium mb-2">Selecciona tus preexistencias</p>
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    {PREEXISTING_OPTIONS.map((opt) => (
+                                      <div key={opt.value} className="flex items-center">
+                                        <FormCheckbox
+                                          id={`pre-${opt.value}`}
+                                          label={opt.label}
+                                          checked={current.includes(opt.value)}
+                                          onCheckedChange={(checked) => {
+                                            const next = checked
+                                              ? Array.from(new Set([...current, opt.value]))
+                                              : current.filter((v) => v !== opt.value);
+                                            field.onChange(next);
+                                          }}
+                                        />
+                                      </div>
+                                    ))}
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          );
+                        }}
                       />
                     </div>
                   </AccordionContent>
