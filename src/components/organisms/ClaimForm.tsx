@@ -36,13 +36,14 @@ export const ClaimForm = ({
     handleSubmit,
     control,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<ClaimFormData>({
     resolver: zodResolver(getSchema()),
+    mode: 'onChange',
     defaultValues: {
       insuranceType,
       ...initialData,
-    } as any,
+    } as Partial<ClaimFormData>,
   });
 
   const policeReport = insuranceType === 'vehicle' ? watch('policeReport' as any) : false;
@@ -76,7 +77,9 @@ export const ClaimForm = ({
         <CardDescription>{copies.subtitle}</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6" autoComplete="off">
+          {/* Hidden dummy input to further discourage browser autocomplete */}
+          <input type="text" name="__autocomplete_disable" autoComplete="off" style={{ display: 'none' }} />
           <Accordion type="single" value={activeSection} onValueChange={setActiveSection}>
             {/* Policy Information */}
             <AccordionItem value="policy-info">
@@ -273,10 +276,7 @@ export const ClaimForm = ({
 
           {/* Submit Button */}
           <div className="flex justify-end gap-4 pt-4 border-t">
-            <Button type="button" variant="outline">
-              {copies.buttons.cancel}
-            </Button>
-            <Button type="submit" disabled={isSubmitting || isLoading} className="min-w-[200px]">
+            <Button type="submit" disabled={isSubmitting || isLoading || !isValid} className="min-w-[200px]">
               {(isSubmitting || isLoading) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {copies.buttons.submit}
             </Button>

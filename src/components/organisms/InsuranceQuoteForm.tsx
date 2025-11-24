@@ -155,7 +155,9 @@ export const InsuranceQuoteForm = ({
           <CardDescription>{copies.subtitle}</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6" autoComplete="off">
+            {/* Hidden dummy input to further discourage browser autocomplete */}
+            <input type="text" name="__autocomplete_disable" autoComplete="off" style={{ display: 'none' }} />
             <Accordion type="single" value={activeSection} onValueChange={setActiveSection}>
               {/* Personal Information Section */}
               <AccordionItem value="personal-info">

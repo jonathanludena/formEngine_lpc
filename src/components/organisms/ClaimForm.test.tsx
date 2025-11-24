@@ -134,26 +134,14 @@ describe('ClaimForm - Health Insurance', () => {
     );
 
     const submitButton = screen.getByRole('button', { name: /Enviar Reclamo/i });
+    // Submit should be disabled until required fields are completed
+    expect(submitButton).toBeDisabled();
+
     await user.click(submitButton);
-
-    await waitFor(() => {
-      expect(screen.getByText(/Número de póliza inválido/i)).toBeInTheDocument();
-    });
-
     expect(mockOnSubmit).not.toHaveBeenCalled();
   });
 
-  it('shows cancel button', () => {
-    render(
-      <ClaimForm
-        insuranceType="health"
-        onSubmit={mockOnSubmit}
-      />
-    );
-
-    const cancelButton = screen.getByRole('button', { name: /Cancelar/i });
-    expect(cancelButton).toBeInTheDocument();
-  });
+  // 'Cancelar' button removed from UI; test intentionally omitted
 });
 
 describe('ClaimForm - Vehicle Insurance', () => {
