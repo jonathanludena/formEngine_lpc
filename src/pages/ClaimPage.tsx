@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { ClaimForm } from '@/components/organisms';
 import { ClaimFormData } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,9 +7,19 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle2 } from 'lucide-react';
 
 export const ClaimPage = () => {
-  const [insuranceType, setInsuranceType] = useState<'health' | 'vehicle'>('health');
+  const { insuranceType: insuranceTypeParam } = useParams<{ insuranceType?: 'health' | 'vehicle' }>();
+  const [insuranceType, setInsuranceType] = useState<'health' | 'vehicle'>(
+    insuranceTypeParam || 'health'
+  );
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (insuranceTypeParam && insuranceTypeParam !== insuranceType) {
+      setInsuranceType(insuranceTypeParam);
+      setSubmitted(false);
+    }
+  }, [insuranceTypeParam]);
 
   const handleSubmit = async (data: ClaimFormData) => {
     setIsLoading(true);

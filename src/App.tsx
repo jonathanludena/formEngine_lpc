@@ -58,7 +58,7 @@ const App = () => {
       {/* Mobile Menu */}
       <div className="md:hidden fixed top-4 left-4 z-50">
         <Sheet>
-          <SheetTrigger>
+          <SheetTrigger asChild>
             <Button variant="outline" size="icon">
               <Menu className="h-5 w-5" />
             </Button>
@@ -74,7 +74,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/cotizar" element={<UnifiedQuotePage />} />
+          <Route path="/cotizar/:insuranceType" element={<UnifiedQuotePage />} />
           <Route path="/reclamos" element={<ClaimPage />} />
+          <Route path="/reclamos/:insuranceType" element={<ClaimPage />} />
         </Routes>
       </div>
     </div>

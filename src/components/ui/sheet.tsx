@@ -59,22 +59,39 @@ const useSheet = () => {
   return context;
 };
 
+interface SheetTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  asChild?: boolean;
+}
+
 const SheetTrigger = React.forwardRef<
   HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement>
->(({ className, onClick, ...props }, ref) => {
+  SheetTriggerProps
+>(({ asChild = false, className, onClick, children, ...props }, ref) => {
   const { setIsOpen } = useSheet();
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setIsOpen(true);
+    onClick?.(e);
+  };
+
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children as React.ReactElement<any>, {
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+        handleClick(e);
+        children.props.onClick?.(e);
+      },
+    });
+  }
 
   return (
     <button
       ref={ref}
-      onClick={(e) => {
-        setIsOpen(true);
-        onClick?.(e);
-      }}
+      onClick={handleClick}
       className={className}
       {...props}
-    />
+    >
+      {children}
+    </button>
   );
 });
 SheetTrigger.displayName = 'SheetTrigger';

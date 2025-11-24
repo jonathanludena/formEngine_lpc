@@ -9,23 +9,46 @@ export const HomePage = () => {
       title: 'Seguro de Salud',
       description: 'Protección médica completa para ti y tu familia',
       icon: '🏥',
-      path: '/cotizar/salud',
+      path: '/cotizar/health',
       color: 'bg-blue-50 dark:bg-blue-950',
     },
     {
       title: 'Seguro Vehicular',
       description: 'Cobertura integral para tu vehículo',
       icon: '🚗',
-      path: '/cotizar/vehiculo',
+      path: '/cotizar/vehicle',
       color: 'bg-green-50 dark:bg-green-950',
     },
     {
       title: 'Seguro de Vida',
       description: 'Tranquilidad para tu familia',
       icon: '💼',
-      path: '#',
+      path: '/cotizar/life',
       color: 'bg-purple-50 dark:bg-purple-950',
-      disabled: true,
+    },
+    {
+      title: 'Seguro de Vida y Ahorro',
+      description: 'Protección y ahorro para tu futuro',
+      icon: '💰',
+      path: '/cotizar/life_savings',
+      color: 'bg-green-50 dark:bg-green-950',
+    },
+  ];
+
+  const claimOptions = [
+    {
+      title: 'Reclamo de Salud',
+      description: 'Reporta un reclamo médico o de hospitalización',
+      icon: '📋',
+      path: '/reclamos/health',
+      color: 'bg-red-50 dark:bg-red-950',
+    },
+    {
+      title: 'Reclamo Vehicular',
+      description: 'Reporta un siniestro de tu vehículo',
+      icon: '🚨',
+      path: '/reclamos/vehicle',
+      color: 'bg-orange-50 dark:bg-orange-950',
     },
   ];
 
@@ -42,36 +65,58 @@ export const HomePage = () => {
         </p>
       </div>
 
-      {/* Features Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {features.map((feature) => (
-          <Card
-            key={feature.title}
-            className={`${feature.color} border-2 transition-all hover:shadow-lg ${
-              feature.disabled ? 'opacity-60' : 'hover:scale-105'
-            }`}
-          >
-            <CardHeader>
-              <div className="text-5xl mb-4">{feature.icon}</div>
-              <CardTitle>{feature.title}</CardTitle>
-              <CardDescription>{feature.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {feature.disabled ? (
-                <Button disabled className="w-full">
-                  Próximamente
-                </Button>
-              ) : (
+      {/* Features Grid - Cotizaciones */}
+      <div>
+        <h2 className="text-2xl font-bold mb-4">Cotiza tu Seguro</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {features.map((feature) => (
+            <Card
+              key={feature.title}
+              className={`${feature.color} border-2 transition-all hover:shadow-lg hover:scale-105 flex flex-col`}
+            >
+              <CardHeader className="flex-grow">
+                <div className="text-5xl mb-4">{feature.icon}</div>
+                <CardTitle>{feature.title}</CardTitle>
+                <CardDescription>{feature.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
                 <Link to={feature.path}>
                   <Button className="w-full group">
                     Cotizar Ahora
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
-              )}
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      {/* Claims Grid - Reclamos */}
+      <div>
+        <h2 className="text-2xl font-bold mb-4">Reportar Reclamos</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {claimOptions.map((claim) => (
+            <Card
+              key={claim.title}
+              className={`${claim.color} border-2 transition-all hover:shadow-lg hover:scale-105 flex flex-col`}
+            >
+              <CardHeader className="flex-grow">
+                <div className="text-5xl mb-4">{claim.icon}</div>
+                <CardTitle>{claim.title}</CardTitle>
+                <CardDescription>{claim.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Link to={claim.path}>
+                  <Button variant="destructive" className="w-full group">
+                    Reportar Ahora
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
 
       {/* Info Section */}

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { InsuranceQuoteForm } from '@/components/organisms';
 import { QuoteResult, InsuranceType } from '@/lib/types';
 import { generateMockHealthQuote } from '@/data';
@@ -7,9 +8,19 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle2 } from 'lucide-react';
 
 export const UnifiedQuotePage = () => {
-  const [insuranceType, setInsuranceType] = useState<InsuranceType>('health');
+  const { insuranceType: insuranceTypeParam } = useParams<{ insuranceType?: InsuranceType }>();
+  const [insuranceType, setInsuranceType] = useState<InsuranceType>(
+    insuranceTypeParam || 'health'
+  );
   const [quoteResults, setQuoteResults] = useState<QuoteResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (insuranceTypeParam && insuranceTypeParam !== insuranceType) {
+      setInsuranceType(insuranceTypeParam);
+      setQuoteResults(null);
+    }
+  }, [insuranceTypeParam]);
 
   const handleSubmit = async (_data: unknown) => {
     setIsLoading(true);
