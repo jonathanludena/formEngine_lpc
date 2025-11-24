@@ -499,28 +499,20 @@ export const InsuranceQuoteForm = ({
 
             {/* Terms and Conditions */}
             <div className="space-y-4 pt-4 border-t">
-              <div className="flex items-start gap-2">
-                <Controller
-                  name="acceptTerms"
-                  control={control}
-                  render={({ field }) => (
-                    <FormCheckbox
-                      label={copies.fields.acceptTerms.label}
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      error={errors.acceptTerms?.message}
-                    />
-                  )}
-                />
-                <Button
-                  type="button"
-                  variant="link"
-                  className="h-auto p-0 text-sm"
-                  onClick={() => setShowTermsModal(true)}
-                >
-                  Ver términos completos
-                </Button>
-              </div>
+              <Controller
+                name="acceptTerms"
+                control={control}
+                render={({ field }) => (
+                  <FormCheckbox
+                    label={copies.fields.acceptTerms.label}
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    error={errors.acceptTerms?.message}
+                    linkText="términos y condiciones"
+                    onLinkClick={() => setShowTermsModal(true)}
+                  />
+                )}
+              />
             </div>
 
             {/* Submit Button */}

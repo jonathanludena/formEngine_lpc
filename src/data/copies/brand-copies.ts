@@ -104,7 +104,7 @@ export const brandCopies: Record<BrandId, BrandCopies> = {
           placeholder: 'Selecciona un tipo',
         },
         acceptTerms: {
-          label: 'Acepto los términos y condiciones',
+          label: 'Acepto los',
           error: 'Debes aceptar los términos',
         },
       },
@@ -214,7 +214,7 @@ export const brandCopies: Record<BrandId, BrandCopies> = {
           placeholder: 'Elige uno',
         },
         acceptTerms: {
-          label: 'Acepto términos y condiciones',
+          label: 'Acepto los',
           error: 'Debes aceptar',
         },
       },
@@ -318,7 +318,7 @@ export const brandCopies: Record<BrandId, BrandCopies> = {
           placeholder: 'Select type',
         },
         acceptTerms: {
-          label: 'I accept the terms and conditions',
+          label: 'I accept the',
           error: 'You must accept the terms',
         },
       },

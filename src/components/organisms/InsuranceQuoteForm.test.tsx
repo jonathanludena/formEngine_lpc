@@ -21,7 +21,7 @@ vi.mock('@/data', () => ({
         birthDate: { label: 'Fecha de Nacimiento' },
         identificationType: { label: 'Tipo de Identificación', placeholder: 'Selecciona' },
         identificationNumber: { label: 'Número de Identificación', placeholder: '1234567890' },
-        acceptTerms: { label: 'Acepto los términos y condiciones' },
+        acceptTerms: { label: 'Acepto los' },
       },
       buttons: {
         submit: 'Obtener Cotización',
@@ -152,7 +152,7 @@ describe('InsuranceQuoteForm - Health Insurance', () => {
     const submitButton = screen.getByRole('button', { name: /Obtener Cotización/i });
     expect(submitButton).toBeDisabled();
 
-    const termsCheckbox = screen.getByRole('checkbox', { name: /acepto los términos/i });
+    const termsCheckbox = screen.getByRole('checkbox', { name: /acepto los/i });
     await user.click(termsCheckbox);
 
     await waitFor(() => {
@@ -372,7 +372,7 @@ describe('InsuranceQuoteForm - Vehicle Insurance', () => {
     await user.click(screen.getByText('Completa'));
 
     // Accept terms
-    const termsCheckbox = screen.getByRole('checkbox', { name: /acepto los términos/i });
+    const termsCheckbox = screen.getByRole('checkbox', { name: /acepto los/i });
     await user.click(termsCheckbox);
 
     // Submit button should be enabled
@@ -414,7 +414,7 @@ describe('InsuranceQuoteForm - Common Features', () => {
       />
     );
 
-    const viewTermsButton = screen.getByRole('button', { name: /Ver términos completos/i });
+    const viewTermsButton = screen.getByRole('button', { name: /términos y condiciones/i });
     await user.click(viewTermsButton);
 
     await waitFor(() => {
@@ -460,7 +460,7 @@ describe('InsuranceQuoteForm - Common Features', () => {
     );
 
     // Accept terms to enable submit
-    const termsCheckbox = screen.getByRole('checkbox', { name: /acepto los términos/i });
+    const termsCheckbox = screen.getByRole('checkbox', { name: /acepto los/i });
     await user.click(termsCheckbox);
 
     // Try to submit without filling required fields

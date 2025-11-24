@@ -1,20 +1,22 @@
-import { forwardRef } from 'react';
+import { forwardRef, ReactNode } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 
 export interface FormCheckboxProps {
-  label: string;
+  label: string | ReactNode;
   error?: string;
   helperText?: string;
   checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
   disabled?: boolean;
   id?: string;
+  linkText?: string;
+  onLinkClick?: () => void;
 }
 
 const FormCheckbox = forwardRef<HTMLInputElement, FormCheckboxProps>(
-  ({ label, error, helperText, checked, onCheckedChange, disabled, id }, ref) => {
-    const fieldId = id || `checkbox-${label.toLowerCase().replace(/\s+/g, '-')}`;
+  ({ label, error, helperText, checked, onCheckedChange, disabled, id, linkText, onLinkClick }, ref) => {
+    const fieldId = id || `checkbox-${typeof label === 'string' ? label.toLowerCase().replace(/\s+/g, '-') : 'checkbox'}`;
 
     return (
       <div className="space-y-2">
@@ -28,9 +30,24 @@ const FormCheckbox = forwardRef<HTMLInputElement, FormCheckboxProps>(
           />
           <Label
             htmlFor={fieldId}
-            className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            className="text-sm font-normal leading-relaxed cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             {label}
+            {linkText && onLinkClick && (
+              <>
+                {' '}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onLinkClick();
+                  }}
+                  className="text-primary hover:underline font-normal"
+                >
+                  {linkText}
+                </button>
+              </>
+            )}
           </Label>
         </div>
         {error && <p className="text-sm text-destructive">{error}</p>}
