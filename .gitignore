@@ -28,3 +28,7 @@ dist-ssr
 .env
 .env.local
 .env.production
+
+# test coverage
+coverage
+coverage-*
