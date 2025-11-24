@@ -16,7 +16,7 @@ const App = () => {
   ];
 
   const Sidebar = () => (
-    <div className="w-64 bg-card border-r min-h-screen p-6">
+    <div className="w-64 bg-card border-r min-h-screen p-6 relative">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-primary">Form Engine</h1>
         <p className="text-sm text-muted-foreground">Sistema de Cotizaciones</p>
@@ -39,7 +39,7 @@ const App = () => {
         ))}
       </nav>
 
-      <div className="mt-8 pt-8 border-t">
+      <div className="absolute bottom-6 left-6 right-6 pt-4 border-t">
         <div className="text-xs text-muted-foreground space-y-1">
           <p>Version: 2.1.0</p>
           <p>© 2024 LPC</p>
@@ -51,7 +51,7 @@ const App = () => {
   return (
     <div className="flex min-h-screen">
       {/* Desktop Sidebar */}
-      <div className="hidden md:block">
+      <div className="hidden md:block fixed left-0 top-0 bottom-0 w-64 z-20">
         <Sidebar />
       </div>
 
@@ -70,7 +70,7 @@ const App = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-8">
+      <div className="flex-1 p-8 md:ml-64 overflow-auto">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/cotizar" element={<UnifiedQuotePage />} />
