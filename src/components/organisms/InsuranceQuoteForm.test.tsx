@@ -440,7 +440,7 @@ describe('InsuranceQuoteForm - Common Features', () => {
       <InsuranceQuoteForm
         insuranceType="health"
         onSubmit={mockOnSubmit}
-        initialData={initialData as any}
+        initialData={initialData}
       />
     );
 

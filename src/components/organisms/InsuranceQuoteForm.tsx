@@ -102,7 +102,7 @@ export const InsuranceQuoteForm = ({
       insuranceType,
       acceptTerms: false,
       ...initialData,
-    } as any,
+    } as Partial<QuoteFormData>,
   });
 
   // Reset form when insurance type changes
@@ -111,16 +111,16 @@ export const InsuranceQuoteForm = ({
       insuranceType,
       acceptTerms: false,
       ...initialData,
-    } as any);
+    } as Partial<QuoteFormData>);
   }, [insuranceType, initialData, reset]);
 
   const acceptTerms = watch('acceptTerms');
-  const coverageType = insuranceType === 'health' ? watch('coverageType' as any) : null;
+  const coverageType = insuranceType === 'health' ? (watch('coverageType' as keyof QuoteFormData) as string | undefined) : null;
 
   // Beneficiaries for life insurance
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove } = useFieldArray<QuoteFormData, 'beneficiaries' extends keyof QuoteFormData ? 'beneficiaries' : never>({
     control,
-    name: 'beneficiaries' as any,
+    name: 'beneficiaries' as 'beneficiaries' extends keyof QuoteFormData ? 'beneficiaries' : never,
   });
 
   const handleTermsAccept = () => {
@@ -134,6 +134,11 @@ export const InsuranceQuoteForm = ({
     } catch (error) {
       console.error('Error submitting form:', error);
     }
+  };
+
+  // Type helper for accessing dynamic insurance-specific fields in errors
+  const getFieldError = (fieldName: string): string | undefined => {
+    return (errors as Record<string, { message?: string }>)[fieldName]?.message;
   };
 
   return (
@@ -230,16 +235,16 @@ export const InsuranceQuoteForm = ({
                   <AccordionContent>
                     <div className="space-y-4 pt-4">
                       <Controller
-                        name={'coverageType' as any}
+                        name={'coverageType' as keyof QuoteFormData}
                         control={control}
                         render={({ field }) => (
                           <FormSelect
                             label="Tipo de Cobertura"
                             placeholder="Selecciona el tipo de cobertura"
                             options={coverageOptions}
-                            value={field.value}
+                            value={field.value as string}
                             onValueChange={field.onChange}
-                            error={(errors as any).coverageType?.message}
+                            error={'coverageType' in errors ? (errors as Record<string, { message?: string }>).coverageType?.message : undefined}
                           />
                         )}
                       />
@@ -249,18 +254,18 @@ export const InsuranceQuoteForm = ({
                           label="Número de Dependientes"
                           type="number"
                           placeholder="0"
-                          error={(errors as any).dependents?.message}
-                          {...register('dependents' as any, { valueAsNumber: true })}
+                          error={'dependents' in errors ? (errors as Record<string, { message?: string }>).dependents?.message : undefined}
+                          {...register('dependents' as keyof QuoteFormData, { valueAsNumber: true })}
                         />
                       )}
 
                       <Controller
-                        name={'preExistingConditions' as any}
+                        name={'preExistingConditions' as keyof QuoteFormData}
                         control={control}
                         render={({ field }) => (
                           <FormCheckbox
                             label="¿Tiene condiciones preexistentes?"
-                            checked={field.value}
+                            checked={field.value as boolean}
                             onCheckedChange={field.onChange}
                           />
                         )}
@@ -282,8 +287,8 @@ export const InsuranceQuoteForm = ({
                         label="Monto de Cobertura"
                         type="number"
                         placeholder="100000"
-                        error={(errors as any).coverageAmount?.message}
-                        {...register('coverageAmount' as any, { valueAsNumber: true })}
+                        error={getFieldError('coverageAmount')}
+                        {...register('coverageAmount' as keyof QuoteFormData, { valueAsNumber: true })}
                       />
 
                       {insuranceType === 'life_savings' && (
@@ -292,16 +297,16 @@ export const InsuranceQuoteForm = ({
                             label="Meta de Ahorro"
                             type="number"
                             placeholder="50000"
-                            error={(errors as any).savingsGoal?.message}
-                            {...register('savingsGoal' as any, { valueAsNumber: true })}
+                            error={getFieldError('savingsGoal')}
+                            {...register('savingsGoal' as keyof QuoteFormData, { valueAsNumber: true })}
                           />
 
                           <FormField
                             label="Plazo (años)"
                             type="number"
                             placeholder="10"
-                            error={(errors as any).termYears?.message}
-                            {...register('termYears' as any, { valueAsNumber: true })}
+                            error={getFieldError('termYears')}
+                            {...register('termYears' as keyof QuoteFormData, { valueAsNumber: true })}
                           />
                         </>
                       )}
@@ -311,17 +316,17 @@ export const InsuranceQuoteForm = ({
                           <FormField
                             label="Ocupación"
                             placeholder="Ingeniero, Doctor, etc."
-                            error={(errors as any).occupation?.message}
-                            {...register('occupation' as any)}
+                            error={getFieldError('occupation')}
+                            {...register('occupation' as keyof QuoteFormData)}
                           />
 
                           <Controller
-                            name={'smoker' as any}
+                            name={'smoker' as keyof QuoteFormData}
                             control={control}
                             render={({ field }) => (
                               <FormCheckbox
                                 label="¿Fuma?"
-                                checked={field.value}
+                                checked={field.value as boolean}
                                 onCheckedChange={field.onChange}
                               />
                             )}
@@ -349,7 +354,7 @@ export const InsuranceQuoteForm = ({
                           type="button"
                           variant="outline"
                           size="sm"
-                          onClick={() => append({ name: '', relationship: '', percentage: 0 } as any)}
+                          onClick={() => append({ name: '', relationship: '', percentage: 0 })}
                         >
                           <Plus className="h-4 w-4 mr-2" />
                           Agregar
@@ -374,24 +379,24 @@ export const InsuranceQuoteForm = ({
                             <FormField
                               label="Nombre Completo"
                               placeholder="Nombre del beneficiario"
-                              error={(errors as any).beneficiaries?.[index]?.name?.message}
-                              {...register(`beneficiaries.${index}.name` as any)}
+                              error={getFieldError(`beneficiaries.${index}.name`)}
+                              {...register(`beneficiaries.${index}.name` as keyof QuoteFormData)}
                             />
 
                             <div className="grid grid-cols-2 gap-4">
                               <FormField
                                 label="Parentesco"
                                 placeholder="Hijo, Cónyuge, etc."
-                                error={(errors as any).beneficiaries?.[index]?.relationship?.message}
-                                {...register(`beneficiaries.${index}.relationship` as any)}
+                                error={getFieldError(`beneficiaries.${index}.relationship`)}
+                                {...register(`beneficiaries.${index}.relationship` as keyof QuoteFormData)}
                               />
 
                               <FormField
                                 label="Porcentaje (%)"
                                 type="number"
                                 placeholder="50"
-                                error={(errors as any).beneficiaries?.[index]?.percentage?.message}
-                                {...register(`beneficiaries.${index}.percentage` as any, {
+                                error={getFieldError(`beneficiaries.${index}.percentage`)}
+                                {...register(`beneficiaries.${index}.percentage` as keyof QuoteFormData, {
                                   valueAsNumber: true,
                                 })}
                               />
@@ -400,8 +405,8 @@ export const InsuranceQuoteForm = ({
                         </Card>
                       ))}
 
-                      {(errors as any).beneficiaries?.message && (
-                        <p className="text-sm text-destructive">{(errors as any).beneficiaries.message}</p>
+                      {getFieldError('beneficiaries') && (
+                        <p className="text-sm text-destructive">{getFieldError('beneficiaries')}</p>
                       )}
                     </div>
                   </AccordionContent>
@@ -417,16 +422,16 @@ export const InsuranceQuoteForm = ({
                   <AccordionContent>
                     <div className="space-y-4 pt-4">
                       <Controller
-                        name={'vehicleType' as any}
+                        name={'vehicleType' as keyof QuoteFormData}
                         control={control}
                         render={({ field }) => (
                           <FormSelect
                             label="Tipo de Vehículo"
                             placeholder="Selecciona el tipo"
                             options={vehicleTypes}
-                            value={field.value}
+                            value={field.value as string}
                             onValueChange={field.onChange}
-                            error={(errors as any).vehicleType?.message}
+                            error={getFieldError('vehicleType')}
                           />
                         )}
                       />
@@ -435,15 +440,15 @@ export const InsuranceQuoteForm = ({
                         <FormField
                           label="Marca"
                           placeholder="Toyota, Chevrolet, etc."
-                          error={(errors as any).vehicleBrand?.message}
-                          {...register('vehicleBrand' as any)}
+                          error={getFieldError('vehicleBrand')}
+                          {...register('vehicleBrand' as keyof QuoteFormData)}
                         />
 
                         <FormField
                           label="Modelo"
                           placeholder="Corolla, Cruze, etc."
-                          error={(errors as any).vehicleModel?.message}
-                          {...register('vehicleModel' as any)}
+                          error={getFieldError('vehicleModel')}
+                          {...register('vehicleModel' as keyof QuoteFormData)}
                         />
                       </div>
 
@@ -452,41 +457,41 @@ export const InsuranceQuoteForm = ({
                           label="Año"
                           type="number"
                           placeholder="2020"
-                          error={(errors as any).vehicleYear?.message}
-                          {...register('vehicleYear' as any, { valueAsNumber: true })}
+                          error={getFieldError('vehicleYear')}
+                          {...register('vehicleYear' as keyof QuoteFormData, { valueAsNumber: true })}
                         />
 
                         <FormField
                           label="Valor del Vehículo (USD)"
                           type="number"
                           placeholder="15000"
-                          error={(errors as any).vehicleValue?.message}
-                          {...register('vehicleValue' as any, { valueAsNumber: true })}
+                          error={getFieldError('vehicleValue')}
+                          {...register('vehicleValue' as keyof QuoteFormData, { valueAsNumber: true })}
                         />
                       </div>
 
                       <Controller
-                        name={'coverageType' as any}
+                        name={'coverageType' as keyof QuoteFormData}
                         control={control}
                         render={({ field }) => (
                           <FormSelect
                             label="Tipo de Cobertura"
                             placeholder="Selecciona la cobertura"
                             options={coverageTypes}
-                            value={field.value}
+                            value={field.value as string}
                             onValueChange={field.onChange}
-                            error={(errors as any).coverageType?.message}
+                            error={getFieldError('coverageType')}
                           />
                         )}
                       />
 
                       <Controller
-                        name={'hasFinancing' as any}
+                        name={'hasFinancing' as keyof QuoteFormData}
                         control={control}
                         render={({ field }) => (
                           <FormCheckbox
                             label="¿El vehículo tiene financiamiento?"
-                            checked={field.value}
+                            checked={field.value as boolean}
                             onCheckedChange={field.onChange}
                           />
                         )}
