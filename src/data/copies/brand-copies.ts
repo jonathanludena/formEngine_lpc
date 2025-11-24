@@ -118,16 +118,69 @@ export const brandCopies: Record<BrandId, BrandCopies> = {
         title: 'Términos y Condiciones',
         content: `
           <h2>1. Aceptación de los Términos</h2>
-          <p>Al utilizar nuestro servicio de cotización, usted acepta estos términos y condiciones.</p>
+          <p>Al utilizar nuestro servicio de cotización de seguros, usted acepta estos términos y condiciones en su totalidad. Si no está de acuerdo con alguna parte de estos términos, le recomendamos no utilizar nuestro servicio.</p>
           
-          <h2>2. Uso de la Información</h2>
-          <p>La información proporcionada será utilizada únicamente para generar cotizaciones de seguros.</p>
+          <h2>2. Uso de la Información Personal</h2>
+          <p>La información proporcionada será utilizada exclusivamente para:</p>
+          <ul>
+            <li>Generar cotizaciones personalizadas de seguros</li>
+            <li>Contactarlo con ofertas relevantes a su perfil</li>
+            <li>Mejorar nuestros servicios y productos</li>
+            <li>Cumplir con obligaciones legales y regulatorias</li>
+          </ul>
+          <p>Sus datos no serán compartidos con terceros sin su consentimiento explícito, excepto cuando sea requerido por ley.</p>
           
-          <h2>3. Privacidad</h2>
-          <p>Nos comprometemos a proteger su información personal según nuestra política de privacidad.</p>
+          <h2>3. Protección de Datos y Privacidad</h2>
+          <p>Nos comprometemos a proteger su información personal mediante:</p>
+          <ul>
+            <li>Cifrado de datos en tránsito y en reposo</li>
+            <li>Acceso restringido solo a personal autorizado</li>
+            <li>Auditorías de seguridad periódicas</li>
+            <li>Cumplimiento con normativas de protección de datos vigentes</li>
+          </ul>
+          <p>Puede consultar nuestra Política de Privacidad completa para más detalles sobre cómo manejamos su información.</p>
           
           <h2>4. Exactitud de la Información</h2>
-          <p>Usted se compromete a proporcionar información veraz y actualizada.</p>
+          <p>Usted se compromete a proporcionar información veraz, completa y actualizada. La exactitud de las cotizaciones depende directamente de la calidad de los datos proporcionados. Información incorrecta o incompleta puede resultar en cotizaciones inexactas o en la denegación de cobertura.</p>
+          
+          <h2>5. Naturaleza de las Cotizaciones</h2>
+          <p>Las cotizaciones generadas son estimaciones basadas en la información proporcionada y están sujetas a:</p>
+          <ul>
+            <li>Verificación y aprobación final por parte de la aseguradora</li>
+            <li>Evaluación médica o técnica cuando sea requerida</li>
+            <li>Cambios en las condiciones del mercado</li>
+            <li>Disponibilidad de productos en su región</li>
+          </ul>
+          <p>Una cotización no constituye una oferta vinculante ni garantiza la emisión de una póliza.</p>
+          
+          <h2>6. Responsabilidades del Usuario</h2>
+          <p>El usuario se compromete a:</p>
+          <ul>
+            <li>Utilizar el servicio de manera legal y apropiada</li>
+            <li>No proporcionar información falsa o engañosa</li>
+            <li>Mantener la confidencialidad de sus credenciales de acceso</li>
+            <li>Notificar cualquier uso no autorizado de su cuenta</li>
+          </ul>
+          
+          <h2>7. Limitación de Responsabilidad</h2>
+          <p>Nuestro servicio de cotización es proporcionado "tal cual" sin garantías de ningún tipo. No nos hacemos responsables por:</p>
+          <ul>
+            <li>Decisiones tomadas basadas únicamente en las cotizaciones</li>
+            <li>Errores u omisiones en la información presentada</li>
+            <li>Interrupciones temporales del servicio</li>
+            <li>Cambios en precios o condiciones por parte de las aseguradoras</li>
+          </ul>
+          
+          <h2>8. Modificaciones a los Términos</h2>
+          <p>Nos reservamos el derecho de modificar estos términos en cualquier momento. Los cambios serán notificados a través de nuestro sitio web o por correo electrónico. El uso continuado del servicio después de dichas modificaciones constituye la aceptación de los nuevos términos.</p>
+          
+          <h2>9. Ley Aplicable y Jurisdicción</h2>
+          <p>Estos términos se regirán e interpretarán de acuerdo con las leyes del país donde opera nuestro servicio. Cualquier disputa será sometida a la jurisdicción exclusiva de los tribunales competentes.</p>
+          
+          <h2>10. Contacto</h2>
+          <p>Para cualquier consulta sobre estos términos y condiciones, puede contactarnos a través de nuestros canales oficiales de atención al cliente.</p>
+          
+          <p><strong>Última actualización:</strong> Noviembre 2025</p>
         `,
       },
       success: {
