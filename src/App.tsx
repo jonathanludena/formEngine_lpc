@@ -38,9 +38,9 @@ const App = () => {
       {/* Main Content */}
       <div className="flex-1 p-8 md:ml-64 overflow-auto">
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/cotizar" element={<UnifiedQuotePage />} />
-          <Route path="/reclamos" element={<ClaimPage />} />
+          <Route path="/formEngine_lpc" element={<HomePage />} />
+          <Route path="/formEngine_lpc/cotizar" element={<UnifiedQuotePage />} />
+          <Route path="/formEngine_lpc/reclamos" element={<ClaimPage />} />
         </Routes>
       </div>
     </div>
