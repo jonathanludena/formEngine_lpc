@@ -19,7 +19,7 @@ export const ClaimPage = () => {
       setInsuranceType(insuranceTypeParam);
       setSubmitted(false);
     }
-  }, [insuranceTypeParam]);
+  }, [insuranceTypeParam, insuranceType]);
 
   const handleSubmit = async (data: ClaimFormData) => {
     setIsLoading(true);

@@ -20,7 +20,7 @@ export const UnifiedQuotePage = () => {
       setInsuranceType(insuranceTypeParam);
       setQuoteResults(null);
     }
-  }, [insuranceTypeParam]);
+  }, [insuranceTypeParam, insuranceType]);
 
   const handleSubmit = async (_data: unknown) => {
     setIsLoading(true);

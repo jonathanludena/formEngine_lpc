@@ -37,16 +37,29 @@ export const ClaimForm = ({
     control,
     watch,
     formState: { errors, isSubmitting, isValid },
-  } = useForm<ClaimFormData>({
+  } = useForm<Record<string, unknown>>({
     resolver: zodResolver(getSchema()),
     mode: 'onChange',
     defaultValues: {
       insuranceType,
       ...initialData,
-    } as Partial<ClaimFormData>,
+    } as Partial<Record<string, unknown>>,
   });
 
-  const policeReport = insuranceType === 'vehicle' ? watch('policeReport' as any) : false;
+  const policeReport = insuranceType === 'vehicle' ? Boolean(watch('policeReport')) : false;
+
+  const getError = (path: string): string | undefined => {
+    const parts = path.split('.');
+    let curr: unknown = errors;
+    for (const part of parts) {
+      if (curr && typeof curr === 'object' && part in (curr as Record<string, unknown>)) {
+        curr = (curr as Record<string, unknown>)[part];
+      } else {
+        return undefined;
+      }
+    }
+    return (curr as { message?: string } | undefined)?.message;
+  };
 
   const healthClaimTypes: SelectOption[] = [
     { value: 'consultation', label: 'Consulta Médica' },
@@ -62,9 +75,10 @@ export const ClaimForm = ({
     { value: 'total_loss', label: 'Pérdida Total' },
   ];
 
-  const handleFormSubmit = async (data: ClaimFormData) => {
+  const handleFormSubmit = async (data: Record<string, unknown>) => {
     try {
-      await onSubmit(data);
+      const payload = data as unknown as ClaimFormData;
+      await onSubmit(payload);
     } catch (error) {
       console.error('Error submitting claim:', error);
     }
@@ -91,7 +105,7 @@ export const ClaimForm = ({
                   <FormField
                     label={copies.fields.policyNumber.label}
                     placeholder={copies.fields.policyNumber.placeholder}
-                    error={errors.policyNumber?.message}
+                    error={getError('policyNumber')}
                     {...register('policyNumber')}
                   />
 
@@ -103,9 +117,9 @@ export const ClaimForm = ({
                         label="Tipo de Reclamo"
                         placeholder="Selecciona el tipo de reclamo"
                         options={insuranceType === 'health' ? healthClaimTypes : vehicleClaimTypes}
-                        value={field.value}
+                        value={typeof field.value === 'string' ? field.value : undefined}
                         onValueChange={field.onChange}
-                        error={errors.claimType?.message}
+                        error={getError('claimType')}
                       />
                     )}
                   />
@@ -124,14 +138,14 @@ export const ClaimForm = ({
                     <FormField
                       label="Nombre"
                       placeholder="Tu nombre"
-                      error={errors.personalInfo?.firstName?.message}
+                      error={getError('personalInfo.firstName')}
                       {...register('personalInfo.firstName')}
                     />
 
                     <FormField
                       label="Apellido"
                       placeholder="Tu apellido"
-                      error={errors.personalInfo?.lastName?.message}
+                      error={getError('personalInfo.lastName')}
                       {...register('personalInfo.lastName')}
                     />
                   </div>
@@ -141,7 +155,7 @@ export const ClaimForm = ({
                       label="Email"
                       type="email"
                       placeholder="tu@email.com"
-                      error={errors.personalInfo?.email?.message}
+                      error={getError('personalInfo.email')}
                       {...register('personalInfo.email')}
                     />
 
@@ -152,7 +166,7 @@ export const ClaimForm = ({
                         <FormField
                           label="Teléfono"
                           type="tel"
-                          value={field.value ?? ''}
+                              value={typeof field.value === 'string' ? field.value : ''}
                           onChange={(e) => {
                             const raw = (e.target as HTMLInputElement).value || '';
                             if (!raw.startsWith('+593')) {
@@ -167,14 +181,8 @@ export const ClaimForm = ({
                           onFocus={() => {
                             if (!field.value) field.onChange('+593');
                           }}
-                          placeholder={
-                            copies.fields?.policyNumber // keep type-checker happy; if phone placeholder exists in copies use it
-                              ? (copies.fields as any).phone && String((copies.fields as any).phone.placeholder).startsWith('+593')
-                                ? (copies.fields as any).phone.placeholder
-                                : `+593${(copies.fields as any).phone?.placeholder || ' 9XXXXXXXX'}`
-                              : '+593 9XXXXXXXX'
-                          }
-                          error={errors.personalInfo?.phone?.message}
+                          placeholder={'+593 9XXXXXXXX'}
+                          error={getError('personalInfo.phone')}
                           inputMode="numeric"
                           maxLength={13}
                         />
@@ -195,7 +203,7 @@ export const ClaimForm = ({
                   <FormField
                     label={copies.fields.incidentDate.label}
                     type="date"
-                    error={errors.incidentDate?.message}
+                    error={getError('incidentDate')}
                     {...register('incidentDate')}
                   />
 
@@ -203,7 +211,7 @@ export const ClaimForm = ({
                     label={copies.fields.description.label}
                     placeholder={copies.fields.description.placeholder}
                     rows={5}
-                    error={errors.description?.message}
+                    error={getError('description')}
                     {...register('description')}
                     maxLength={1000}
                   />
@@ -222,15 +230,15 @@ export const ClaimForm = ({
                     <FormField
                       label="Centro Médico"
                       placeholder="Hospital o clínica donde fue atendido"
-                      error={(errors as any).medicalCenter?.message}
-                      {...register('medicalCenter' as any)}
+                      error={getError('medicalCenter')}
+                      {...register('medicalCenter')}
                     />
 
                     <FormField
                       label="Diagnóstico (opcional)"
                       placeholder="Diagnóstico médico"
-                      error={(errors as any).diagnosis?.message}
-                      {...register('diagnosis' as any)}
+                      error={getError('diagnosis')}
+                      {...register('diagnosis')}
                     />
 
                     <FormField
@@ -238,8 +246,8 @@ export const ClaimForm = ({
                       type="number"
                       step="0.01"
                       placeholder="0.00"
-                      error={(errors as any).totalAmount?.message}
-                      {...register('totalAmount' as any, { valueAsNumber: true })}
+                      error={getError('totalAmount')}
+                      {...register('totalAmount', { valueAsNumber: true })}
                     />
                   </div>
                 </AccordionContent>
@@ -257,24 +265,24 @@ export const ClaimForm = ({
                     <FormField
                       label="Placa del Vehículo"
                       placeholder="ABC-1234"
-                      error={(errors as any).vehiclePlate?.message}
-                      {...register('vehiclePlate' as any)}
+                      error={getError('vehiclePlate')}
+                      {...register('vehiclePlate')}
                     />
 
                     <FormField
                       label="Ubicación del Incidente"
                       placeholder="Dirección donde ocurrió el incidente"
-                      error={(errors as any).location?.message}
-                      {...register('location' as any)}
+                      error={getError('location')}
+                      {...register('location')}
                     />
 
                     <Controller
-                      name={'policeReport' as any}
+                      name="policeReport"
                       control={control}
                       render={({ field }) => (
                         <FormCheckbox
                           label="¿Se generó reporte policial?"
-                          checked={field.value}
+                          checked={Boolean(field.value)}
                           onCheckedChange={field.onChange}
                         />
                       )}
@@ -284,8 +292,8 @@ export const ClaimForm = ({
                       <FormField
                         label="Número de Reporte Policial"
                         placeholder="REP-123456"
-                        error={(errors as any).policeReportNumber?.message}
-                        {...register('policeReportNumber' as any)}
+                        error={getError('policeReportNumber')}
+                        {...register('policeReportNumber')}
                       />
                     )}
 
@@ -294,8 +302,8 @@ export const ClaimForm = ({
                       type="number"
                       step="0.01"
                       placeholder="0.00"
-                      error={(errors as any).estimatedDamage?.message}
-                      {...register('estimatedDamage' as any, { valueAsNumber: true })}
+                      error={getError('estimatedDamage')}
+                      {...register('estimatedDamage', { valueAsNumber: true })}
                     />
                   </div>
                 </AccordionContent>
