@@ -2,55 +2,10 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { useHomePage } from './useHomePage';
 
 export const HomePage = () => {
-  const features = [
-    {
-      title: 'Seguro de Salud',
-      description: 'Protección médica completa para ti y tu familia',
-      icon: '🏥',
-      prod: 'health',
-      color: 'bg-blue-50 dark:bg-blue-950',
-    },
-    {
-      title: 'Seguro Vehicular',
-      description: 'Cobertura integral para tu vehículo',
-      icon: '🚗',
-      prod: 'vehicle',
-      color: 'bg-green-50 dark:bg-green-950',
-    },
-    {
-      title: 'Seguro de Vida',
-      description: 'Tranquilidad para tu familia',
-      icon: '💼',
-      prod: 'life',
-      color: 'bg-purple-50 dark:bg-purple-950',
-    },
-    {
-      title: 'Seguro de Vida y Ahorro',
-      description: 'Protección y ahorro para tu futuro',
-      icon: '💰',
-      prod: 'life_savings',
-      color: 'bg-green-50 dark:bg-green-950',
-    },
-  ];
-
-  const claimOptions = [
-    {
-      title: 'Reclamo de Salud',
-      description: 'Reporta un reclamo médico o de hospitalización',
-      icon: '📋',
-      prod: 'health',
-      color: 'bg-red-50 dark:bg-red-950',
-    },
-    {
-      title: 'Reclamo Vehicular',
-      description: 'Reporta un siniestro de tu vehículo',
-      icon: '🚨',
-      prod: 'vehicle',
-      color: 'bg-orange-50 dark:bg-orange-950',
-    },
-  ];
+  const { features, claimOptions } = useHomePage();
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
@@ -80,7 +35,7 @@ export const HomePage = () => {
                 <CardDescription>{feature.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <Link to={'/cotizar'} state={{ prod: feature.prod }}>
+                <Link to={feature.to} state={feature.state}>
                   <Button className="w-full group">
                     Cotizar Ahora
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -107,7 +62,7 @@ export const HomePage = () => {
                 <CardDescription>{claim.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <Link to={'/reclamos'} state={{ prod: claim.prod }}>
+                <Link to={claim.to} state={claim.state}>
                   <Button variant="destructive" className="w-full group">
                     Reportar Ahora
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
