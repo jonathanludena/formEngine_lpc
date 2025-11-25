@@ -19,7 +19,7 @@ export function useHomePage() {
         icon: '🏥',
         prod: 'health',
         color: 'bg-blue-50 dark:bg-blue-950',
-        to: '/formEngine_lpc/cotizar',
+        to: '/cotizar',
         state: { prod: 'health' },
       },
       {
@@ -28,7 +28,7 @@ export function useHomePage() {
         icon: '🚗',
         prod: 'vehicle',
         color: 'bg-green-50 dark:bg-green-950',
-        to: '/formEngine_lpc/cotizar',
+        to: '/cotizar',
         state: { prod: 'vehicle' },
       },
       {
@@ -37,7 +37,7 @@ export function useHomePage() {
         icon: '💼',
         prod: 'life',
         color: 'bg-purple-50 dark:bg-purple-950',
-        to: '/formEngine_lpc/cotizar',
+        to: '/cotizar',
         state: { prod: 'life' },
       },
       {
@@ -46,7 +46,7 @@ export function useHomePage() {
         icon: '💰',
         prod: 'life_savings',
         color: 'bg-green-50 dark:bg-green-950',
-        to: '/formEngine_lpc/cotizar',
+        to: '/cotizar',
         state: { prod: 'life_savings' },
       },
     ],
@@ -61,7 +61,7 @@ export function useHomePage() {
         icon: '📋',
         prod: 'health',
         color: 'bg-red-50 dark:bg-red-950',
-        to: '/formEngine_lpc/reclamos',
+        to: '/reclamos',
         state: { prod: 'health' },
       },
       {
@@ -70,7 +70,7 @@ export function useHomePage() {
         icon: '🚨',
         prod: 'vehicle',
         color: 'bg-orange-50 dark:bg-orange-950',
-        to: '/formEngine_lpc/reclamos',
+        to: '/reclamos',
         state: { prod: 'vehicle' },
       },
     ],

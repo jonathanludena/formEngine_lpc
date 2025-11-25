@@ -9,9 +9,9 @@ import { UnifiedQuotePage } from './pages/UnifiedQuotePage';
 
 const App = () => {
   const navItems = [
-    { path: '/formEngine_lpc', label: 'Inicio', icon: '🏠' },
-    { path: '/formEngine_lpc/cotizar', label: 'Cotizar Seguro', icon: '📝' },
-    { path: '/formEngine_lpc/reclamos', label: 'Reportar Reclamo', icon: '📋' },
+    { path: '/', label: 'Inicio', icon: '🏠' },
+    { path: '/cotizar', label: 'Cotizar Seguro', icon: '📝' },
+    { path: '/reclamos', label: 'Reportar Reclamo', icon: '📋' },
   ];
 
   return (
@@ -38,9 +38,9 @@ const App = () => {
       {/* Main Content */}
       <div className="flex-1 p-8 md:ml-64 overflow-auto">
         <Routes>
-          <Route path="/formEngine_lpc" element={<HomePage />} />
-          <Route path="/formEngine_lpc/cotizar" element={<UnifiedQuotePage />} />
-          <Route path="/formEngine_lpc/reclamos" element={<ClaimPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/cotizar" element={<UnifiedQuotePage />} />
+          <Route path="/reclamos" element={<ClaimPage />} />
         </Routes>
       </div>
     </div>
