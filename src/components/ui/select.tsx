@@ -10,6 +10,8 @@ export interface SelectOption {
 
 export interface SelectProps {
   options: SelectOption[];
+  id?: string;
+  ariaLabel?: string;
   value?: string;
   onValueChange?: (value: string) => void;
   placeholder?: string;
@@ -24,6 +26,8 @@ const Select: React.FC<SelectProps> = ({
   placeholder = 'Seleccionar...',
   disabled = false,
   className,
+  id,
+  ariaLabel,
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(value || '');
@@ -90,6 +94,11 @@ const Select: React.FC<SelectProps> = ({
   return (
     <div ref={selectRef} className={clsx('relative', className)}>
       <button
+        id={id}
+        role="combobox"
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-label={ariaLabel}
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
