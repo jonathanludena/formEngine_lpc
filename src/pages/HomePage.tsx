@@ -21,10 +21,10 @@ export const HomePage = () => {
           </p>
 
           <div className="mt-8 flex justify-center gap-4">
-            <Link to={'/cotizar'} state={{ prod: 'health' }}>
+            <Link to={'/formEngine_lpc/cotizar'} state={{ prod: 'health' }}>
               <Button className="px-6 py-3">Cotizar</Button>
             </Link>
-            <Link to={'/reclamos'} state={{ prod: 'health' }}>
+            <Link to={'/formEngine_lpc/reclamos'} state={{ prod: 'health' }}>
               <Button variant="destructive" className="px-6 py-3">Reportar Reclamo</Button>
             </Link>
           </div>

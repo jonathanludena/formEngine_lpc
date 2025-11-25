@@ -9,9 +9,9 @@ import { UnifiedQuotePage } from './pages/UnifiedQuotePage';
 
 const App = () => {
   const navItems = [
-    { path: '/', label: 'Inicio', icon: '🏠' },
-    { path: '/cotizar', label: 'Cotizar Seguro', icon: '📝' },
-    { path: '/reclamos', label: 'Reportar Reclamo', icon: '📋' },
+    { path: '/formEngine_lpc', label: 'Inicio', icon: '🏠' },
+    { path: '/formEngine_lpc/cotizar', label: 'Cotizar Seguro', icon: '📝' },
+    { path: '/formEngine_lpc/reclamos', label: 'Reportar Reclamo', icon: '📋' },
   ];
 
   return (
