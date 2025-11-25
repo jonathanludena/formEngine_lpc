@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ClaimForm } from './ClaimForm';
@@ -69,7 +70,7 @@ describe('ClaimForm - Health Insurance', () => {
     const policyNumberInput = screen.getByPlaceholderText('POL-123456');
     await user.type(policyNumberInput, 'POL-987654');
 
-    const claimTypeButton = screen.getByRole('button', { name: /selecciona el tipo de reclamo/i });
+    const claimTypeButton = screen.getByRole('combobox', { name: /selecciona el tipo de reclamo/i });
     await user.click(claimTypeButton);
     await user.click(screen.getByText('Consulta Médica'));
 
@@ -211,7 +212,7 @@ describe('ClaimForm - Vehicle Insurance', () => {
 
     await user.type(screen.getByPlaceholderText('POL-123456'), 'POL-VEH123');
     
-    const claimTypeButton = screen.getByRole('button', { name: /selecciona el tipo de reclamo/i });
+    const claimTypeButton = screen.getByRole('combobox', { name: /selecciona el tipo de reclamo/i });
     await user.click(claimTypeButton);
     await user.click(screen.getByText('Accidente'));
 

@@ -4,18 +4,29 @@ import { z } from 'zod';
 const baseClaimSchema = z.object({
   policyNumber: z.string().min(5, 'Número de póliza inválido'),
   personalInfo: z.object({
-    firstName: z.string().min(2, 'El nombre es requerido'),
-    lastName: z.string().min(2, 'El apellido es requerido'),
+    firstName: z
+      .string()
+      .min(2, 'El nombre es requerido')
+      .max(50)
+      .regex(/^[A-Za-zÀ-ÖØ-öø-ÿ\u00C0-\u024F\s'-]+$/, 'El nombre contiene caracteres inválidos'),
+    lastName: z
+      .string()
+      .min(2, 'El apellido es requerido')
+      .max(50)
+      .regex(/^[A-Za-zÀ-ÖØ-öø-ÿ\u00C0-\u024F\s'-]+$/, 'El apellido contiene caracteres inválidos'),
     email: z.string().email('Email inválido'),
     phone: z
       .string()
-      .min(10, 'El teléfono debe tener al menos 10 dígitos')
-      .regex(/^\+?[\d\s-()]+$/, 'Formato de teléfono inválido'),
+      .regex(/^\+593\d{9}$/, 'Teléfono inválido. Debe usar formato +593XXXXXXXXX'),
   }),
   incidentDate: z
     .string()
     .refine((date) => new Date(date) <= new Date(), 'La fecha no puede ser futura'),
-  description: z.string().min(20, 'La descripción debe tener al menos 20 caracteres').max(500),
+  description: z
+  .string()
+  .min(20, 'La descripción debe tener al menos 20 caracteres')
+  .max(1000, 'La descripción no puede exceder 1000 caracteres')
+    .regex(/^[A-Za-zÀ-ÖØ-öø-ÿ0-9\s,.\-'"]+$/, 'La descripción contiene caracteres inválidos'),
 });
 
 // Health Claim Schema

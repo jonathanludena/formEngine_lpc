@@ -103,6 +103,7 @@ export const InsuranceQuoteForm = ({
     register,
     handleSubmit,
     control,
+    setValue,
     watch,
     reset,
     formState: { errors, isSubmitting },
@@ -129,6 +130,77 @@ export const InsuranceQuoteForm = ({
     insuranceType === 'health'
       ? (watch('coverageType' as keyof QuoteFormData) as string | undefined)
       : null;
+  const identificationTypeValue = watch('personalInfo.identificationType' as keyof QuoteFormData) as string | undefined;
+
+  // Date limits
+  const today = new Date();
+  const maxBirthDate = today.toISOString().split('T')[0];
+  const minBirth = new Date();
+  minBirth.setFullYear(minBirth.getFullYear() - 120);
+  const minBirthDate = minBirth.toISOString().split('T')[0];
+
+  // Vehicle helpers
+  const currentYear = new Date().getFullYear();
+  const vehicleYearMin = currentYear - 5;
+  const vehicleYearMax = currentYear + 1;
+
+  // Brands / models (mock Ecuador local market)
+  const VEHICLE_BRANDS: SelectOption[] = [
+    { value: 'toyota', label: 'Toyota' },
+    { value: 'chevrolet', label: 'Chevrolet' },
+    { value: 'nissan', label: 'Nissan' },
+    { value: 'hyundai', label: 'Hyundai' },
+    { value: 'kia', label: 'Kia' },
+    { value: 'ford', label: 'Ford' },
+    { value: 'mitsubishi', label: 'Mitsubishi' },
+    { value: 'suzuki', label: 'Suzuki' },
+  ];
+
+  const MODEL_MAP: Record<string, SelectOption[]> = {
+    toyota: [
+      { value: 'corolla', label: 'Corolla' },
+      { value: 'rav4', label: 'RAV4' },
+    ],
+    chevrolet: [{ value: 'cruze', label: 'Cruze' }, { value: 'dmax', label: 'D-MAX' }],
+    nissan: [{ value: 'sentra', label: 'Sentra' }, { value: 'xtrail', label: 'X-Trail' }],
+    hyundai: [{ value: 'accent', label: 'Accent' }, { value: 'tucson', label: 'Tucson' }],
+    kia: [{ value: 'rio', label: 'Rio' }, { value: 'sportage', label: 'Sportage' }],
+    ford: [{ value: 'ranger', label: 'Ranger' }, { value: 'escape', label: 'Escape' }],
+    mitsubishi: [{ value: 'l200', label: 'L200' }, { value: 'outlander', label: 'Outlander' }],
+    suzuki: [{ value: 'swift', label: 'Swift' }, { value: 'vitara', label: 'Vitara' }],
+  };
+
+  const [modelOptions, setModelOptions] = useState<SelectOption[]>([]);
+
+  // Update models when brand changes
+  useEffect(() => {
+    const brandValue = watch('vehicleBrand' as keyof QuoteFormData) as string | undefined;
+    if (brandValue && MODEL_MAP[brandValue]) {
+      setModelOptions(MODEL_MAP[brandValue]);
+    } else {
+      setModelOptions([]);
+      // clear vehicleModel if brand cleared
+      setValue('vehicleModel' as keyof QuoteFormData, '' as unknown as QuoteFormData[keyof QuoteFormData]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch('vehicleBrand')]);
+
+  const beneficiaryRelationshipOptions: SelectOption[] = [
+    { value: 'hijo', label: 'Hijo/a' },
+    { value: 'conyuge', label: 'Cónyuge' },
+    { value: 'padre', label: 'Padre' },
+    { value: 'madre', label: 'Madre' },
+    { value: 'hermano', label: 'Hermano/a' },
+    { value: 'pareja', label: 'Pareja' },
+  ];
+
+  const occupationOptions: SelectOption[] = [
+    { value: 'comerciante', label: 'Comerciante' },
+    { value: 'ingeniero', label: 'Ingeniero' },
+    { value: 'doctor', label: 'Doctor' },
+    { value: 'estudiante', label: 'Estudiante' },
+    { value: 'otro', label: 'Otro' },
+  ];
 
   // Beneficiaries for life insurance
   const { fields, append, remove } = useFieldArray<
@@ -188,6 +260,7 @@ export const InsuranceQuoteForm = ({
                         placeholder={copies.fields.firstName.placeholder}
                         error={errors.personalInfo?.firstName?.message}
                         {...register('personalInfo.firstName')}
+                        pattern="^[A-Za-zñÑ\s'-]+$"
                       />
 
                       <FormField
@@ -195,6 +268,7 @@ export const InsuranceQuoteForm = ({
                         placeholder={copies.fields.lastName.placeholder}
                         error={errors.personalInfo?.lastName?.message}
                         {...register('personalInfo.lastName')}
+                        pattern="^[A-Za-zñÑ\s'-]+$"
                       />
                     </div>
 
@@ -210,9 +284,11 @@ export const InsuranceQuoteForm = ({
                       <FormField
                         label={copies.fields.phone.label}
                         type="tel"
-                        placeholder={copies.fields.phone.placeholder}
+                        placeholder={"+593" + (copies.fields.phone.placeholder || ' 9XX XXX XXXX')}
                         error={errors.personalInfo?.phone?.message}
                         {...register('personalInfo.phone')}
+                        inputMode="numeric"
+                        pattern="^\+593\d{9}$"
                       />
                     </div>
 
@@ -222,6 +298,8 @@ export const InsuranceQuoteForm = ({
                         type="date"
                         error={errors.personalInfo?.birthDate?.message}
                         {...register('personalInfo.birthDate')}
+                        max={maxBirthDate}
+                        min={minBirthDate}
                       />
 
                       <Controller
@@ -245,6 +323,15 @@ export const InsuranceQuoteForm = ({
                       placeholder={copies.fields.identificationNumber.placeholder}
                       error={errors.personalInfo?.identificationNumber?.message}
                       {...register('personalInfo.identificationNumber')}
+                      inputMode={identificationTypeValue === 'cedula' || identificationTypeValue === 'ruc' ? 'numeric' : 'text'}
+                      pattern={
+                        identificationTypeValue === 'cedula'
+                          ? "\\d{10}"
+                          : identificationTypeValue === 'ruc'
+                          ? "\\d{13}"
+                          : "[A-Za-z0-9]{5,12}"
+                      }
+                      maxLength={identificationTypeValue === 'cedula' ? 10 : identificationTypeValue === 'ruc' ? 13 : 12}
                     />
                   </div>
                 </AccordionContent>
@@ -375,6 +462,8 @@ export const InsuranceQuoteForm = ({
                         {...register('coverageAmount' as keyof QuoteFormData, {
                           valueAsNumber: true,
                         })}
+                        min={5000}
+                        step={1000}
                       />
 
                       {insuranceType === 'life_savings' && (
@@ -387,6 +476,8 @@ export const InsuranceQuoteForm = ({
                             {...register('savingsGoal' as keyof QuoteFormData, {
                               valueAsNumber: true,
                             })}
+                            min={5000}
+                            step={1000}
                           />
 
                           <FormField
@@ -397,17 +488,28 @@ export const InsuranceQuoteForm = ({
                             {...register('termYears' as keyof QuoteFormData, {
                               valueAsNumber: true,
                             })}
+                            min={5}
+                            max={30}
                           />
                         </>
                       )}
 
                       {insuranceType === 'life' && (
                         <>
-                          <FormField
-                            label="Ocupación"
-                            placeholder="Ingeniero, Doctor, etc."
-                            error={getFieldError('occupation')}
-                            {...register('occupation' as keyof QuoteFormData)}
+                          <Controller
+                            name={'occupation' as keyof QuoteFormData}
+                            control={control}
+                            render={({ field }) => (
+                              <FormSelect
+                                id="occupation"
+                                label="Ocupación"
+                                placeholder="Selecciona ocupación"
+                                options={occupationOptions}
+                                value={field.value as string}
+                                onValueChange={field.onChange}
+                                error={getFieldError('occupation')}
+                              />
+                            )}
                           />
 
                           <Controller
@@ -475,12 +577,19 @@ export const InsuranceQuoteForm = ({
                             />
 
                             <div className="grid grid-cols-2 gap-4">
-                              <FormField
-                                label="Parentesco"
-                                placeholder="Hijo, Cónyuge, etc."
-                                error={getFieldError(`beneficiaries.${index}.relationship`)}
-                                {...register(
-                                  `beneficiaries.${index}.relationship` as keyof QuoteFormData
+                              <Controller
+                                name={`beneficiaries.${index}.relationship` as unknown as keyof QuoteFormData}
+                                control={control}
+                                render={({ field }) => (
+                                  <FormSelect
+                                    id={`beneficiaries-${index}-relationship`}
+                                    label="Parentesco"
+                                    placeholder="Selecciona parentesco"
+                                    options={beneficiaryRelationshipOptions}
+                                    value={String(field.value ?? '')}
+                                    onValueChange={(v) => field.onChange(v)}
+                                    error={getFieldError(`beneficiaries.${index}.relationship`)}
+                                  />
                                 )}
                               />
 
@@ -522,7 +631,8 @@ export const InsuranceQuoteForm = ({
                         control={control}
                         render={({ field }) => (
                           <FormSelect
-                            label="Tipo de Vehículo"
+                                id="vehicleType"
+                                label="Tipo de Vehículo"
                             placeholder="Selecciona el tipo"
                             options={vehicleTypes}
                             value={field.value as string}
@@ -533,18 +643,37 @@ export const InsuranceQuoteForm = ({
                       />
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <FormField
-                          label="Marca"
-                          placeholder="Toyota, Chevrolet, etc."
-                          error={getFieldError('vehicleBrand')}
-                          {...register('vehicleBrand' as keyof QuoteFormData)}
+                        <Controller
+                          name={'vehicleBrand' as keyof QuoteFormData}
+                          control={control}
+                          render={({ field }) => (
+                            <FormSelect
+                              id="vehicleBrand"
+                              label="Marca"
+                              placeholder="Selecciona la marca"
+                              options={VEHICLE_BRANDS}
+                              value={String(field.value ?? '')}
+                              onValueChange={(v) => field.onChange(v)}
+                              error={getFieldError('vehicleBrand')}
+                            />
+                          )}
                         />
 
-                        <FormField
-                          label="Modelo"
-                          placeholder="Corolla, Cruze, etc."
-                          error={getFieldError('vehicleModel')}
-                          {...register('vehicleModel' as keyof QuoteFormData)}
+                        <Controller
+                          name={'vehicleModel' as keyof QuoteFormData}
+                          control={control}
+                          render={({ field }) => (
+                            <FormSelect
+                              id="vehicleModel"
+                              label="Modelo"
+                              placeholder="Selecciona el modelo"
+                              options={modelOptions}
+                              value={String(field.value ?? '')}
+                              onValueChange={(v) => field.onChange(v)}
+                              error={getFieldError('vehicleModel')}
+                              disabled={modelOptions.length === 0}
+                            />
+                          )}
                         />
                       </div>
 
@@ -557,6 +686,9 @@ export const InsuranceQuoteForm = ({
                           {...register('vehicleYear' as keyof QuoteFormData, {
                             valueAsNumber: true,
                           })}
+                          min={vehicleYearMin}
+                          max={vehicleYearMax}
+                          step={1}
                         />
 
                         <FormField
@@ -567,6 +699,8 @@ export const InsuranceQuoteForm = ({
                           {...register('vehicleValue' as keyof QuoteFormData, {
                             valueAsNumber: true,
                           })}
+                          min={15000}
+                          step={1000}
                         />
                       </div>
 

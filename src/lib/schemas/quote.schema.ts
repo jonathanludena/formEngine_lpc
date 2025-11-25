@@ -5,24 +5,51 @@ export const personalInfoSchema = z.object({
   firstName: z
     .string()
     .min(2, 'El nombre debe tener al menos 2 caracteres')
-    .max(50, 'El nombre no puede exceder 50 caracteres'),
+    .max(50, 'El nombre no puede exceder 50 caracteres')
+    .regex(/^[A-Za-zÀ-ÖØ-öø-ÿ\u00C0-\u024F\s'-]+$/, "El nombre contiene caracteres inválidos"),
   lastName: z
     .string()
     .min(2, 'El apellido debe tener al menos 2 caracteres')
-    .max(50, 'El apellido no puede exceder 50 caracteres'),
+    .max(50, 'El apellido no puede exceder 50 caracteres')
+    .regex(/^[A-Za-zÀ-ÖØ-öø-ÿ\u00C0-\u024F\s'-]+$/, "El apellido contiene caracteres inválidos"),
   email: z.string().email('Email inválido'),
   phone: z
     .string()
-    .min(10, 'El teléfono debe tener al menos 10 dígitos')
-    .regex(/^\+?[\d\s-()]+$/, 'Formato de teléfono inválido'),
+    .regex(/^\+593\d{9}$/, 'Teléfono inválido. Debe usar formato +593XXXXXXXXX'),
   birthDate: z.string().refine((date) => {
     const birthDate = new Date(date);
     const today = new Date();
-    const age = today.getFullYear() - birthDate.getFullYear();
-    return age >= 18 && age <= 100;
-  }, 'Debe ser mayor de 18 años'),
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return (
+      birthDate <= today &&
+      age >= 18 &&
+      age <= 100
+    );
+  }, 'Fecha de nacimiento inválida'),
   identificationType: z.enum(['cedula', 'passport', 'ruc']),
-  identificationNumber: z.string().min(5, 'Número de identificación inválido'),
+  identificationNumber: z.string().min(1, 'Número de identificación inválido'),
+}).refine((data) => {
+  // refine identificationNumber according to identificationType
+  const idType = data.identificationType;
+  const idNum = data.identificationNumber;
+  if (idType === 'cedula') {
+    return /^\d{10}$/.test(idNum);
+  }
+  if (idType === 'ruc') {
+    return /^\d{13}$/.test(idNum);
+  }
+  // passport: allow alphanumeric between 5 and 12
+  if (idType === 'passport') {
+    return /^[A-Za-z0-9]{5,12}$/.test(idNum);
+  }
+  return true;
+}, {
+  message: 'Número de identificación inválido para el tipo seleccionado',
+  path: ['identificationNumber'],
 });
 
 // Base Quote Schema
@@ -46,7 +73,13 @@ export const healthQuoteSchema = baseQuoteSchema.extend({
 // Life Quote Schema
 const beneficiarySchema = z.object({
   name: z.string().min(2, 'El nombre del beneficiario es requerido'),
-  relationship: z.string().min(2, 'La relación es requerida'),
+  relationship: z
+    .string()
+    .min(2, 'La relación del beneficiario es requerida')
+    .refine((val) => {
+      const allowed = ['hijo', 'conyuge', 'padre', 'madre', 'hermano', 'pareja', 'esposa'];
+      return allowed.includes(String(val).toLowerCase());
+    }, 'Relación de beneficiario inválida'),
   percentage: z.number().min(1).max(100),
 });
 

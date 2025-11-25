@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { InsuranceQuoteForm } from './InsuranceQuoteForm';
@@ -74,9 +75,9 @@ describe('InsuranceQuoteForm - Health Insurance', () => {
     await user.type(screen.getByPlaceholderText(/\+593/), '+593991234567');
     await user.type(screen.getByLabelText('Fecha de Nacimiento'), '1990-05-15');
 
-    // Get all buttons with "Selecciona" and use the first one (ID type)
-    const selectButtons = screen.getAllByRole('button', { name: /selecciona/i });
-    await user.click(selectButtons[0]); // First is ID type select
+    // Click the identification type select (uses placeholder 'Selecciona')
+    const idTypeButton = screen.getByRole('combobox', { name: /Selecciona Tipo de Identificación/i });
+    await user.click(idTypeButton);
     await user.click(screen.getByText('Cédula'));
 
     await user.type(screen.getByPlaceholderText('1234567890'), '1234567890');
@@ -92,7 +93,7 @@ describe('InsuranceQuoteForm - Health Insurance', () => {
     const insuranceSection = screen.getByText('Detalles del Seguro');
     await user.click(insuranceSection);
 
-    const coverageButton = screen.getByRole('button', { name: /selecciona el tipo de cobertura/i });
+    const coverageButton = screen.getByRole('combobox', { name: /selecciona el tipo/i });
     await user.click(coverageButton);
     await user.click(screen.getByText('Individual'));
 
@@ -118,7 +119,7 @@ describe('InsuranceQuoteForm - Health Insurance', () => {
     const insuranceSection = screen.getByText('Detalles del Seguro');
     await user.click(insuranceSection);
 
-    const coverageButton = screen.getByRole('button', { name: /selecciona el tipo de cobertura/i });
+    const coverageButton = screen.getByRole('combobox', { name: /selecciona el tipo de cobertura/i });
     await user.click(coverageButton);
     await user.click(screen.getByText('Familiar'));
 
@@ -317,9 +318,9 @@ describe('InsuranceQuoteForm - Vehicle Insurance', () => {
     await user.type(screen.getByPlaceholderText(/\+593/), '+593987654321');
     await user.type(screen.getByLabelText('Fecha de Nacimiento'), '1985-08-20');
 
-    // Use getByText to find the select button by its placeholder text
-    const idTypeButtons = screen.getAllByRole('button', { name: /selecciona/i });
-    await user.click(idTypeButtons[0]); // First "Selecciona" button is for ID type
+    // Click the identification type select by its aria label
+    const idTypeButtons = screen.getByRole('combobox', { name: /Selecciona Tipo de Identificación/i });
+    await user.click(idTypeButtons);
     
     await waitFor(() => {
       expect(screen.getByText('Cédula')).toBeVisible();
@@ -339,10 +340,10 @@ describe('InsuranceQuoteForm - Vehicle Insurance', () => {
     await user.click(vehicleSection);
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /selecciona el tipo/i })).toBeVisible();
+      expect(screen.getByRole('combobox', { name: /selecciona el tipo/i })).toBeVisible();
     });
 
-    const vehicleTypeButton = screen.getByRole('button', { name: /selecciona el tipo/i });
+    const vehicleTypeButton = screen.getByRole('combobox', { name: /selecciona el tipo/i });
     await user.click(vehicleTypeButton);
     
     await waitFor(() => {
@@ -351,18 +352,26 @@ describe('InsuranceQuoteForm - Vehicle Insurance', () => {
     
     await user.click(screen.getByText('Auto'));
 
-    await user.type(screen.getByPlaceholderText(/Toyota/), 'Toyota');
-    await user.type(screen.getByPlaceholderText(/Corolla/), 'Corolla');
+    // Select brand and model using selects (brand -> model are selects now)
+    const brandButton = screen.getByRole('combobox', { name: /Selecciona la marca/i });
+    await user.click(brandButton);
+    await waitFor(() => expect(screen.getByText('Toyota')).toBeVisible());
+    await user.click(screen.getByText('Toyota'));
+
+    const modelButton = screen.getByRole('combobox', { name: /Selecciona el modelo|Selecciona el modelo/i });
+    await user.click(modelButton);
+    await waitFor(() => expect(screen.getByText('Corolla')).toBeVisible());
+    await user.click(screen.getByText('Corolla'));
     await user.type(screen.getByPlaceholderText('2020'), '2020');
     await user.type(screen.getByPlaceholderText('15000'), '18000');
 
     // Verify vehicle info was entered
-    expect(screen.getByDisplayValue('Toyota')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('Corolla')).toBeInTheDocument();
+    expect(screen.getByText('Toyota')).toBeInTheDocument();
+    expect(screen.getByText('Corolla')).toBeInTheDocument();
     expect(screen.getByDisplayValue('2020')).toBeInTheDocument();
     expect(screen.getByDisplayValue('18000')).toBeInTheDocument();
 
-    const coverageTypeButton = screen.getByRole('button', { name: /selecciona la cobertura/i });
+    const coverageTypeButton = screen.getByRole('combobox', { name: /selecciona la cobertura/i });
     await user.click(coverageTypeButton);
     
     await waitFor(() => {

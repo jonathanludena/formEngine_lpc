@@ -148,9 +148,11 @@ export const ClaimForm = ({
                     <FormField
                       label="Teléfono"
                       type="tel"
-                      placeholder="+593 99 123 4567"
+                      placeholder="+593 9XXXXXXXX"
                       error={errors.personalInfo?.phone?.message}
                       {...register('personalInfo.phone')}
+                      inputMode="numeric"
+                      pattern="^\+593\d{9}$"
                     />
                   </div>
                 </div>
@@ -177,6 +179,7 @@ export const ClaimForm = ({
                     rows={5}
                     error={errors.description?.message}
                     {...register('description')}
+                    maxLength={1000}
                   />
                 </div>
               </AccordionContent>
