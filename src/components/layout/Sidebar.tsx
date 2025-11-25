@@ -19,7 +19,7 @@ const Sidebar: React.FC<Props> = ({ navItems, version = '2.1.0' }) => {
     <div className="w-64 bg-card border-r min-h-screen p-6 relative">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-primary">Form Engine</h1>
-        <p className="text-sm text-muted-foreground">Sistema de Cotizaciones</p>
+        <p className="text-sm text-muted-foreground">Sistema de Formularios Dinámicos</p>
       </div>
 
       <nav className="space-y-2">
@@ -39,8 +39,8 @@ const Sidebar: React.FC<Props> = ({ navItems, version = '2.1.0' }) => {
 
       <div className="absolute bottom-6 left-6 right-6 pt-4 border-t">
         <div className="text-xs text-muted-foreground space-y-1">
-          <p>Version: {version}</p>
-          <p>© 2024 LPC</p>
+          <p>Versión: {version}</p>
+          <p>© 2025 LPC</p>
         </div>
       </div>
     </div>
