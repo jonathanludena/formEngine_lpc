@@ -1,57 +1,19 @@
 import { InsuranceQuoteForm } from '@/components/organisms';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { generateMockHealthQuote } from '@/data';
-import { InsuranceType, QuoteResult } from '@/lib/types';
 import { CheckCircle2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useUnifiedQuotePage } from './useUnifiedQuotePage';
 
 export const UnifiedQuotePage = () => {
-  const location = useLocation();
-  const locationInsuranceType = location.state?.prod;
-  const [insuranceType, setInsuranceType] = useState<InsuranceType>(
-    locationInsuranceType || 'health'
-  );
-  const [quoteResults, setQuoteResults] = useState<QuoteResult[] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (locationInsuranceType && locationInsuranceType !== insuranceType) {
-      setInsuranceType(locationInsuranceType);
-      setQuoteResults(null);
-    }
-  }, [locationInsuranceType, insuranceType]);
-
-  const handleSubmit = async (_data: unknown) => {
-    setIsLoading(true);
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    const results = generateMockHealthQuote();
-    setQuoteResults(results);
-    setIsLoading(false);
-
-    setTimeout(() => {
-      document.getElementById('results')?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-  };
-
-  const insuranceTypes = [
-    { value: 'health' as InsuranceType, label: '🏥 Salud', color: 'bg-blue-100 dark:bg-blue-900' },
-    { value: 'life' as InsuranceType, label: '💼 Vida', color: 'bg-purple-100 dark:bg-purple-900' },
-    {
-      value: 'life_savings' as InsuranceType,
-      label: '💰 Vida y Ahorro',
-      color: 'bg-green-100 dark:bg-green-900',
-    },
-    {
-      value: 'vehicle' as InsuranceType,
-      label: '🚗 Vehicular',
-      color: 'bg-orange-100 dark:bg-orange-900',
-    },
-  ];
+  const {
+    insuranceType,
+    insuranceTypes,
+    quoteResults,
+    isLoading,
+    handleSubmit,
+    selectType,
+    clearResults,
+  } = useUnifiedQuotePage();
 
   return (
     <div className="space-y-8">
@@ -66,10 +28,7 @@ export const UnifiedQuotePage = () => {
           {insuranceTypes.map((type) => (
             <button
               key={type.value}
-              onClick={() => {
-                setInsuranceType(type.value);
-                setQuoteResults(null);
-              }}
+              onClick={() => selectType(type.value)}
               className={`p-4 rounded-lg border-2 transition-all ${
                 insuranceType === type.value
                   ? 'border-primary bg-primary/10'
@@ -167,7 +126,7 @@ export const UnifiedQuotePage = () => {
             <Button
               variant="outline"
               onClick={() => {
-                setQuoteResults(null);
+                clearResults();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             >
