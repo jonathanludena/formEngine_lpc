@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.3.0](///compare/2.2.1...2.3.0) (2025-11-25)
+
+### Features
+
+- add predeploy script and update gh-pages dependency 33f86a3
+
+### Bug Fixes
+
+- update navigation paths to include base path for consistency 04c57da
+- update route paths to include base path for navigation 3ae6456
+
 ## [2.2.1](///compare/2.2.0...2.2.1) (2025-11-25)
 
 ### Bug Fixes
