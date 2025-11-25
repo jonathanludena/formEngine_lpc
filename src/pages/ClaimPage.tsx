@@ -1,40 +1,12 @@
 import { ClaimForm } from '@/components/organisms';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ClaimFormData } from '@/lib/types';
 import { CheckCircle2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useClaimPage } from './useClaimPage';
 
 export const ClaimPage = () => {
-  const location = useLocation();
-  const locationInsuranceType = location.state?.prod;
-  const [insuranceType, setInsuranceType] = useState<'health' | 'vehicle'>(
-    locationInsuranceType || 'health'
-  );
-  const [submitted, setSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (locationInsuranceType && locationInsuranceType !== insuranceType) {
-      setInsuranceType(locationInsuranceType);
-      setSubmitted(false);
-    }
-  }, [locationInsuranceType, insuranceType]);
-
-  const handleSubmit = async (_data: ClaimFormData) => {
-    setIsLoading(true);
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    setIsLoading(false);
-    setSubmitted(true);
-
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 100);
-  };
+  const { insuranceType, submitted, isLoading, submissionResult, handleSubmit, selectType, resetSubmitted } =
+    useClaimPage();
 
   if (submitted) {
     return (
@@ -51,16 +23,35 @@ export const ClaimPage = () => {
               Hemos registrado tu reclamo exitosamente. Nuestro equipo lo revisará y te
               contactaremos en un plazo máximo de 48 horas.
             </p>
-            <div className="bg-muted p-4 rounded-lg">
-              <p className="font-semibold">Número de Seguimiento</p>
-              <p className="text-2xl font-mono text-primary">
-                CLM-{Date.now().toString().slice(-6)}
-              </p>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Guarda este número para dar seguimiento a tu reclamo
-            </p>
-            <Button onClick={() => setSubmitted(false)} className="mt-6">
+            {submissionResult ? (
+              <div className="bg-muted p-4 rounded-lg text-left">
+                <p className="font-semibold">Número de Seguimiento</p>
+                <p className="text-2xl font-mono text-primary">{submissionResult.id}</p>
+                <p className="mt-2 text-sm">Fecha: {new Date(submissionResult.submittedAt).toLocaleString()}</p>
+                {submissionResult.data && (
+                  <div className="mt-4 space-y-2">
+                    <p className="font-semibold">Detalles del Reclamo</p>
+                    {submissionResult.data.policyNumber && (
+                      <p className="text-sm">Póliza: {submissionResult.data.policyNumber}</p>
+                    )}
+                    {submissionResult.data.incidentDate && (
+                      <p className="text-sm">Fecha de incidente: {submissionResult.data.incidentDate}</p>
+                    )}
+                    {submissionResult.data.description && (
+                      <p className="text-sm">Descripción: {submissionResult.data.description}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="bg-muted p-4 rounded-lg">
+                <p className="font-semibold">Número de Seguimiento</p>
+                <p className="text-2xl font-mono text-primary">CLM-{Date.now().toString().slice(-6)}</p>
+              </div>
+            )}
+
+            <p className="text-sm text-muted-foreground">Guarda este número para dar seguimiento a tu reclamo</p>
+            <Button onClick={() => resetSubmitted()} className="mt-6">
               Nuevo Reclamo
             </Button>
           </CardContent>
@@ -80,7 +71,7 @@ export const ClaimPage = () => {
         {/* Insurance Type Selector */}
         <div className="flex gap-4 justify-center">
           <button
-            onClick={() => setInsuranceType('health')}
+            onClick={() => selectType('health')}
             className={`px-6 py-3 rounded-lg border-2 transition-all ${
               insuranceType === 'health'
                 ? 'border-primary bg-primary/10'
@@ -90,7 +81,7 @@ export const ClaimPage = () => {
             🏥 Seguro de Salud
           </button>
           <button
-            onClick={() => setInsuranceType('vehicle')}
+            onClick={() => selectType('vehicle')}
             className={`px-6 py-3 rounded-lg border-2 transition-all ${
               insuranceType === 'vehicle'
                 ? 'border-primary bg-primary/10'
