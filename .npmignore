@@ -1,0 +1,45 @@
+# Directorios de desarrollo
+public/
+src/
+docs/
+dist-demo/
+.vscode/
+.idea/
+.github/
+.husky/
+
+# Archivos de configuración
+*.log
+.DS_Store
+.env*
+.npmrc
+vite.config.ts
+tsconfig.json
+tsconfig.node.json
+tailwind.config.js
+postcss.config.js
+eslint.config.js
+commitlint.config.cjs
+.eslintrc.json
+.prettierrc
+.prettierignore
+.gitignore
+
+# Testing y coverage
+coverage/
+coverage-*
+*.test.tsx
+*.test.ts
+vitest.config.ts
+test/
+
+# Documentación y guías de desarrollo
+*.md
+!README.md
+CHANGELOG.md
+START_HERE.md
+GETTING_STARTED.md
+TEST_README.md
+
+# Demo y ejemplos
+index.html
