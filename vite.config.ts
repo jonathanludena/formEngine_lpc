@@ -45,7 +45,6 @@ export default defineConfig(({ mode }) => {
             'clsx',
             'tailwind-merge',
             'lucide-react',
-            'react-router-dom',
             /^react\/.*/,
             /^react-dom\/.*/,
           ],

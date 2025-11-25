@@ -57,8 +57,7 @@ Tu proyecto **DEBE** tener instaladas estas dependencias:
     "@tanstack/react-query": "^5.62.0",
     "clsx": "^2.1.0",
     "tailwind-merge": "^2.5.0",
-    "lucide-react": "^0.454.0",
-    "react-router-dom": "^6.28.0"
+    "lucide-react": "^0.454.0"
   }
 }
 ```
@@ -71,85 +70,85 @@ La librería requiere Tailwind CSS en el proyecto consumidor:
 // tailwind.config.js
 export default {
   content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@lpc/form-engine/dist/**/*.{js,cjs}", // ⚠️ Importante
+    './src/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@lpc/form-engine/dist/**/*.{js,cjs}', // ⚠️ Importante
   ],
   theme: {
     extend: {
       // Copiar las CSS variables de formEngine_lpc/tailwind.config.js
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
       },
       keyframes: {
-        "fade-in": {
-          from: { opacity: "0" },
-          to: { opacity: "1" },
+        'fade-in': {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
         },
-        "zoom-in": {
-          from: { transform: "scale(0.95)" },
-          to: { transform: "scale(1)" },
+        'zoom-in': {
+          from: { transform: 'scale(0.95)' },
+          to: { transform: 'scale(1)' },
         },
-        "slide-in-from-left": {
-          from: { transform: "translateX(-100%)" },
-          to: { transform: "translateX(0)" },
+        'slide-in-from-left': {
+          from: { transform: 'translateX(-100%)' },
+          to: { transform: 'translateX(0)' },
         },
-        "slide-in-from-right": {
-          from: { transform: "translateX(100%)" },
-          to: { transform: "translateX(0)" },
+        'slide-in-from-right': {
+          from: { transform: 'translateX(100%)' },
+          to: { transform: 'translateX(0)' },
         },
-        "slide-in-from-top": {
-          from: { transform: "translateY(-100%)" },
-          to: { transform: "translateY(0)" },
+        'slide-in-from-top': {
+          from: { transform: 'translateY(-100%)' },
+          to: { transform: 'translateY(0)' },
         },
-        "slide-in-from-bottom": {
-          from: { transform: "translateY(100%)" },
-          to: { transform: "translateY(0)" },
+        'slide-in-from-bottom': {
+          from: { transform: 'translateY(100%)' },
+          to: { transform: 'translateY(0)' },
         },
       },
       animation: {
-        "fade-in": "fade-in 0.2s ease-out",
-        "zoom-in": "zoom-in 0.2s ease-out",
-        "slide-in-from-left": "slide-in-from-left 0.3s ease-out",
-        "slide-in-from-right": "slide-in-from-right 0.3s ease-out",
-        "slide-in-from-top": "slide-in-from-top 0.3s ease-out",
-        "slide-in-from-bottom": "slide-in-from-bottom 0.3s ease-out",
+        'fade-in': 'fade-in 0.2s ease-out',
+        'zoom-in': 'zoom-in 0.2s ease-out',
+        'slide-in-from-left': 'slide-in-from-left 0.3s ease-out',
+        'slide-in-from-right': 'slide-in-from-right 0.3s ease-out',
+        'slide-in-from-top': 'slide-in-from-top 0.3s ease-out',
+        'slide-in-from-bottom': 'slide-in-from-bottom 0.3s ease-out',
       },
     },
   },
@@ -270,10 +269,7 @@ function ClaimPage() {
 
 ```tsx
 // Componentes principales
-import {
-  InsuranceQuoteForm,
-  ClaimForm,
-} from '@lpc/form-engine';
+import { InsuranceQuoteForm, ClaimForm } from '@lpc/form-engine';
 
 // Tipos TypeScript
 import type {
@@ -286,21 +282,10 @@ import type {
 } from '@lpc/form-engine';
 
 // Hooks
-import {
-  useInsuranceForm,
-  useClaimForm,
-} from '@lpc/form-engine';
+import { useInsuranceForm, useClaimForm } from '@lpc/form-engine';
 
 // Componentes UI (si necesitas usarlos directamente)
-import {
-  Button,
-  Input,
-  Select,
-  Checkbox,
-  Dialog,
-  Sheet,
-  Card,
-} from '@lpc/form-engine';
+import { Button, Input, Select, Checkbox, Dialog, Sheet, Card } from '@lpc/form-engine';
 ```
 
 ## 🔧 Configuración Avanzada
@@ -316,11 +301,7 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <InsuranceQuoteForm
-        insuranceType="health"
-        brandId="lpc"
-        onSubmit={console.log}
-      />
+      <InsuranceQuoteForm insuranceType="health" brandId="lpc" onSubmit={console.log} />
     </QueryClientProvider>
   );
 }
@@ -336,13 +317,15 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route 
-          path="/quote" 
-          element={<InsuranceQuoteForm insuranceType="health" brandId="lpc" onSubmit={console.log} />} 
+        <Route
+          path="/quote"
+          element={
+            <InsuranceQuoteForm insuranceType="health" brandId="lpc" onSubmit={console.log} />
+          }
         />
-        <Route 
-          path="/claim" 
-          element={<ClaimForm insuranceType="health" brandId="lpc" onSubmit={console.log} />} 
+        <Route
+          path="/claim"
+          element={<ClaimForm insuranceType="health" brandId="lpc" onSubmit={console.log} />}
         />
       </Routes>
     </BrowserRouter>
@@ -367,6 +350,7 @@ import { InsuranceQuoteForm } from '@lpc/form-engine';
 ### Error: "Cannot find module '@lpc/form-engine'"
 
 Verifica que está instalado:
+
 ```bash
 npm list @lpc/form-engine
 ```
@@ -374,6 +358,7 @@ npm list @lpc/form-engine
 ### Error: Estilos no se aplican
 
 Asegúrate de:
+
 1. Importar `@lpc/form-engine/styles.css`
 2. Configurar Tailwind CSS con el content path correcto
 3. Copiar las CSS variables
@@ -381,6 +366,7 @@ Asegúrate de:
 ### Error: "Module not found: Can't resolve 'react'"
 
 Instala las peer dependencies:
+
 ```bash
 npm install react react-dom react-hook-form zod @hookform/resolvers @tanstack/react-query
 ```
@@ -388,11 +374,13 @@ npm install react react-dom react-hook-form zod @hookform/resolvers @tanstack/re
 ### Error: TypeScript no encuentra los tipos
 
 Verifica que `dist/index.d.ts` existe:
+
 ```bash
 ls node_modules/@lpc/form-engine/dist/
 ```
 
 Si falta, reconstruye la librería:
+
 ```bash
 cd formEngine_lpc
 npm run build:lib
