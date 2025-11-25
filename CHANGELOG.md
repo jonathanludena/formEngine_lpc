@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.2.1](///compare/2.2.0...2.2.1) (2025-11-25)
+
+### Bug Fixes
+
+- update dts plugin configuration to insert types entry 9ca1434
+
 ## 2.2.0 (2025-11-25)
 
 ### Features
