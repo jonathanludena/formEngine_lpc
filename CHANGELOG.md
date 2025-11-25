@@ -1,5 +1,37 @@
 # Changelog
 
+## 2.2.0 (2025-11-25)
+
+### Features
+
+- add accessibility attributes to Select component for improved usability 09715c7
+- add dropdownRef to Select component for improved click outside handling dfc4b64
+- add pre-existing conditions handling in InsuranceQuoteForm and update schemas 18f46ad
+- create useClaimPage hook for improved state management in ClaimPage b2d3f32
+- define font family and apply styles to body in globals.css a7df66c
+- enhance ClaimForm and InsuranceQuoteForm with improved accessibility 375061f
+- enhance ClaimForm and pages with improved error handling and state management 6c3a245
+- enhance form behavior by disabling submit button until validation 6ba35f8
+- enhance routing and state management for insurance types in pages 686573c
+- extract useUnifiedQuotePage hook for improved state management 0b22614
+- implement Sidebar component for navigation and enhance HomePage layout 0787613
+- implement useHomePage hook for centralized feature and claim options management 0bebc67
+- improved validation and user experience 503269d
+- integrate DOMPurify and html-react-parser for enhanced content rendering in TermsModal 69fa418
+- refactor routing and state management in ClaimPage and UnifiedQuotePage 841cf78
+- remove unused parameter from handleSubmit in ClaimPage ed605fd
+- update FormCheckbox to support link text and improve label handling in InsuranceQuoteForm 76fbcea
+- update FormSelect component to use combobox role and add id prop for accessibility aac430c
+- update phone number handling in forms and schemas for improved validation and user experience 19981a6
+- update terms and conditions in brand-copies for clarity and compliance 0f04b0d
+
+### Bug Fixes
+
+- adjust layout and positioning of Sidebar and footer elements for improved responsiveness f247d22
+- refine type handling in InsuranceQuoteForm for improved type safety a4e12da
+- **release:** correct release-it configuration 489454a
+- update sidebar description and footer year for accuracy b544e63
+
 Todos los cambios notables del proyecto serán documentados en este archivo.
 
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),

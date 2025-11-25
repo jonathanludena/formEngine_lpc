@@ -1,6 +1,6 @@
 {
   "name": "@lpc/form-engine",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Sistema de gestión de formularios dinámicos para broker de seguros",
   "type": "module",
   "main": "./dist/index.cjs",
