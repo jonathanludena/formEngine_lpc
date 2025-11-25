@@ -16,8 +16,7 @@ export default defineConfig(({ mode }) => {
       plugins: [
         react(),
         dts({
-          include: ['src/lib/index.ts', 'src/components/**/*.tsx'],
-          rollupTypes: true,
+          insertTypesEntry: true,
         }),
       ],
       resolve: {
