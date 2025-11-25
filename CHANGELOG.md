@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](///compare/2.3.0...2.3.1) (2025-11-25)
+
+### Bug Fixes
+
+- update dependencies in package-lock.json for improved compatibility 6e3c456
+- update navigation paths to remove base path for consistency b306d5e
+
 ## [2.3.0](///compare/2.2.1...2.3.0) (2025-11-25)
 
 ### Features

@@ -1,6 +1,6 @@
 {
   "name": "@jonathanludena/form-engine",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Sistema de gestión de formularios dinámicos para broker de seguros",
   "type": "module",
   "main": "./dist/index.cjs",
