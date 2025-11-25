@@ -22,9 +22,8 @@ export const ClaimPage = () => {
     }
   }, [locationInsuranceType, insuranceType]);
 
-  const handleSubmit = async (data: ClaimFormData) => {
+  const handleSubmit = async (_data: ClaimFormData) => {
     setIsLoading(true);
-    console.log('Claim data:', data);
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 2000));
