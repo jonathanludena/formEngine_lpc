@@ -28,6 +28,7 @@ const Select: React.FC<SelectProps> = ({
   const [isOpen, setIsOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(value || '');
   const selectRef = React.useRef<HTMLDivElement>(null);
+  const dropdownRef = React.useRef<HTMLDivElement | null>(null);
   const [dropdownStyle, setDropdownStyle] = React.useState<{
     top: number;
     left: number;
@@ -40,7 +41,10 @@ const Select: React.FC<SelectProps> = ({
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      const clickedInsideSelect = selectRef.current && selectRef.current.contains(target);
+      const clickedInsideDropdown = dropdownRef.current && dropdownRef.current.contains(target);
+      if (!clickedInsideSelect && !clickedInsideDropdown) {
         setIsOpen(false);
       }
     };
@@ -104,6 +108,7 @@ const Select: React.FC<SelectProps> = ({
       {isOpen && dropdownStyle &&
         createPortal(
           <div
+            ref={dropdownRef}
             style={{ position: 'absolute', top: dropdownStyle.top, left: dropdownStyle.left, width: dropdownStyle.width }}
             className="z-50 mt-1 rounded-md border bg-popover text-popover-foreground shadow-md"
           >
