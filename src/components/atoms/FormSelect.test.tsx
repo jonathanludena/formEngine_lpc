@@ -91,7 +91,7 @@ describe('FormSelect', () => {
       />
     );
 
-    const trigger = screen.getByRole('button', { name: 'Choose' });
+    const trigger = screen.getByRole('combobox', { name: /Choose/i });
     await user.click(trigger);
     
     const option = screen.getByText('Option 1');
@@ -121,7 +121,7 @@ describe('FormSelect', () => {
         placeholder="Choose"
       />
     );
-    const trigger = screen.getByRole('button', { name: 'Choose' });
+    const trigger = screen.getByRole('combobox', { name: /Choose/i });
     expect(trigger).toBeDisabled();
   });
 
@@ -136,7 +136,7 @@ describe('FormSelect', () => {
       />
     );
 
-    const trigger = screen.getByRole('button', { name: 'Choose' });
+    const trigger = screen.getByRole('combobox', { name: /Choose/i });
     await user.click(trigger);
     
     expect(screen.getByText('Option 1')).toBeInTheDocument();

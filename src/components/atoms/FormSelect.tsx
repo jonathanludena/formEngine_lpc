@@ -11,17 +11,20 @@ export interface FormSelectProps {
   value?: string;
   onValueChange?: (value: string) => void;
   disabled?: boolean;
+  id?: string;
 }
 
 const FormSelect = forwardRef<HTMLDivElement, FormSelectProps>(
-  ({ label, error, helperText, placeholder, options, value, onValueChange, disabled }, ref) => {
+  ({ label, error, helperText, placeholder, options, value, onValueChange, disabled, id }, ref) => {
     return (
       <div className="space-y-2" ref={ref}>
-        {label && <Label>{label}</Label>}
+        {label && <Label htmlFor={id}>{label}</Label>}
         <Select
           value={value}
           onValueChange={onValueChange}
           disabled={disabled}
+          id={id}
+          ariaLabel={`${placeholder ? placeholder : ''}${label ? (placeholder ? ' ' : '') + label : ''}`}
           placeholder={placeholder}
           options={options}
           className={error ? 'border-destructive' : ''}
