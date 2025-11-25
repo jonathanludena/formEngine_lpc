@@ -12,11 +12,8 @@
   "hooks": {},
   "plugins": {
     "@release-it/conventional-changelog": {
-      "preset": {
-        "name": "conventionalcommits"
-      },
-      "infile": "CHANGELOG.md",
-      "includeUnconventionalCommits": false
+      "preset": "conventionalcommits",
+      "infile": "CHANGELOG.md"
     }
   }
 }
