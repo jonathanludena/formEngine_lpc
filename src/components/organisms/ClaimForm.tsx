@@ -37,20 +37,20 @@ export const ClaimForm = ({
     control,
     watch,
     formState: { errors, isSubmitting, isValid },
-  } = useForm<Record<string, unknown>>({
+  } = useForm<ClaimFormData>({
     resolver: zodResolver(getSchema()),
     mode: 'onChange',
     defaultValues: {
       insuranceType,
       ...initialData,
-    } as Partial<Record<string, unknown>>,
+    } as Partial<ClaimFormData>,
   });
 
-  const policeReport = insuranceType === 'vehicle' ? Boolean(watch('policeReport')) : false;
+  const policeReport = insuranceType === 'vehicle' ? watch('policeReport' as keyof VehicleClaimData) : false;
 
   const getError = (path: string): string | undefined => {
     const parts = path.split('.');
-    let curr: unknown = errors;
+    let curr: unknown = errors as unknown;
     for (const part of parts) {
       if (curr && typeof curr === 'object' && part in (curr as Record<string, unknown>)) {
         curr = (curr as Record<string, unknown>)[part];
@@ -75,10 +75,9 @@ export const ClaimForm = ({
     { value: 'total_loss', label: 'Pérdida Total' },
   ];
 
-  const handleFormSubmit = async (data: Record<string, unknown>) => {
+  const handleFormSubmit = async (data: ClaimFormData) => {
     try {
-      const payload = data as unknown as ClaimFormData;
-      await onSubmit(payload);
+      await onSubmit(data);
     } catch (error) {
       console.error('Error submitting claim:', error);
     }
@@ -166,25 +165,13 @@ export const ClaimForm = ({
                         <FormField
                           label="Teléfono"
                           type="tel"
-                              value={typeof field.value === 'string' ? field.value : ''}
-                          onChange={(e) => {
-                            const raw = (e.target as HTMLInputElement).value || '';
-                            if (!raw.startsWith('+593')) {
-                              const digits = raw.replace(/\D/g, '');
-                              const normalized = digits.replace(/^0+/, '');
-                              field.onChange(normalized ? `+593${normalized}` : '');
-                            } else {
-                              const after = raw.slice(4).replace(/\D/g, '');
-                              field.onChange(after ? `+593${after}` : '+593');
-                            }
-                          }}
-                          onFocus={() => {
-                            if (!field.value) field.onChange('+593');
-                          }}
-                          placeholder={'+593 9XXXXXXXX'}
+                          value={typeof field.value === 'string' ? field.value : ''}
+                          onChange={field.onChange}
+                          onFocus={() => {}}
+                          placeholder={'9XXXXXXXX'}
                           error={getError('personalInfo.phone')}
                           inputMode="numeric"
-                          maxLength={13}
+                          maxLength={9}
                         />
                       )}
                     />

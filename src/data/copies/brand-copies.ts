@@ -82,7 +82,7 @@ export const brandCopies: Record<BrandId, BrandCopies> = {
         },
         phone: {
           label: 'Teléfono',
-          placeholder: '+593 99 123 4567',
+          placeholder: '991234567',
           error: 'Teléfono inválido',
         },
         birthDate: {

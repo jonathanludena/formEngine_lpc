@@ -289,28 +289,12 @@ export const InsuranceQuoteForm = ({
                             label={copies.fields.phone.label}
                             type="tel"
                             value={field.value ?? ''}
-                            onChange={(e) => {
-                              const raw = (e.target as HTMLInputElement).value || '';
-                              if (!raw.startsWith('+593')) {
-                                const digits = raw.replace(/\D/g, '');
-                                const normalized = digits.replace(/^0+/, '');
-                                field.onChange(normalized ? `+593${normalized}` : '');
-                              } else {
-                                const after = raw.slice(4).replace(/\D/g, '');
-                                field.onChange(after ? `+593${after}` : '+593');
-                              }
-                            }}
-                            onFocus={() => {
-                              if (!field.value) field.onChange('+593');
-                            }}
-                            placeholder={
-                              copies.fields.phone.placeholder && String(copies.fields.phone.placeholder).startsWith('+593')
-                                ? copies.fields.phone.placeholder
-                                : `+593${copies.fields.phone.placeholder || ' 9XX XXX XXXX'}`
-                            }
+                            onChange={field.onChange}
+                            onFocus={() => {}}
+                            placeholder={copies.fields.phone.placeholder?.replace(/\+593\s?/, '') ?? '9XX XXX XXXX'}
                             error={errors.personalInfo?.phone?.message}
                             inputMode="numeric"
-                            maxLength={13}
+                            maxLength={9}
                           />
                         )}
                       />

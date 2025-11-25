@@ -17,7 +17,7 @@ const baseClaimSchema = z.object({
     email: z.string().email('Email inválido'),
     phone: z
       .string()
-      .regex(/^\+593\d{9}$/, 'Teléfono inválido. Debe usar formato +593XXXXXXXXX'),
+      .regex(/^(?:9\d{8}|[2-7]\d{6,7})$/, 'Teléfono inválido. Use solo dígitos sin prefijo; móvil 9 dígitos, fijo 7-8 dígitos'),
   }),
   incidentDate: z
     .string()

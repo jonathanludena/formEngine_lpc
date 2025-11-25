@@ -18,7 +18,7 @@ vi.mock('@/data', () => ({
         firstName: { label: 'Nombre', placeholder: 'Tu nombre' },
         lastName: { label: 'Apellido', placeholder: 'Tu apellido' },
         email: { label: 'Email', placeholder: 'tu@email.com' },
-        phone: { label: 'Teléfono', placeholder: '+593 99 123 4567' },
+        phone: { label: 'Teléfono', placeholder: '991234567' },
         birthDate: { label: 'Fecha de Nacimiento' },
         identificationType: { label: 'Tipo de Identificación', placeholder: 'Selecciona' },
         identificationNumber: { label: 'Número de Identificación', placeholder: '1234567890' },
@@ -72,7 +72,7 @@ describe('InsuranceQuoteForm - Health Insurance', () => {
     await user.type(screen.getByPlaceholderText('Tu nombre'), 'Carlos');
     await user.type(screen.getByPlaceholderText('Tu apellido'), 'Sánchez');
     await user.type(screen.getByPlaceholderText('tu@email.com'), 'carlos@test.com');
-    await user.type(screen.getByPlaceholderText(/\+593/), '+593991234567');
+    await user.type(screen.getByPlaceholderText('991234567'), '991234567');
     await user.type(screen.getByLabelText('Fecha de Nacimiento'), '1990-05-15');
 
     // Click the identification type select (uses placeholder 'Selecciona')
@@ -86,7 +86,7 @@ describe('InsuranceQuoteForm - Health Insurance', () => {
     expect(screen.getByDisplayValue('Carlos')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Sánchez')).toBeInTheDocument();
     expect(screen.getByDisplayValue('carlos@test.com')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('+593991234567')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('991234567')).toBeInTheDocument();
     expect(screen.getByDisplayValue('1234567890')).toBeInTheDocument();
 
     // Fill insurance details
@@ -315,7 +315,7 @@ describe('InsuranceQuoteForm - Vehicle Insurance', () => {
     await user.type(screen.getByPlaceholderText('Tu nombre'), 'Ana');
     await user.type(screen.getByPlaceholderText('Tu apellido'), 'López');
     await user.type(screen.getByPlaceholderText('tu@email.com'), 'ana@test.com');
-    await user.type(screen.getByPlaceholderText(/\+593/), '+593987654321');
+    await user.type(screen.getByPlaceholderText('991234567'), '987654321');
     await user.type(screen.getByLabelText('Fecha de Nacimiento'), '1985-08-20');
 
     // Click the identification type select by its aria label
@@ -463,7 +463,7 @@ describe('InsuranceQuoteForm - Common Features', () => {
         firstName: 'Test',
         lastName: 'User',
         email: 'test@example.com',
-        phone: '+593999999999',
+        phone: '999999999',
         birthDate: '1990-01-01',
         identificationType: 'cedula' as const,
         identificationNumber: '1234567890',

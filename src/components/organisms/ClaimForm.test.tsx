@@ -81,7 +81,7 @@ describe('ClaimForm - Health Insurance', () => {
     await user.type(screen.getByPlaceholderText('Tu nombre'), 'Juan');
     await user.type(screen.getByPlaceholderText('Tu apellido'), 'Pérez');
     await user.type(screen.getByPlaceholderText('tu@email.com'), 'juan@test.com');
-    await user.type(screen.getByPlaceholderText(/\+593/), '+593991234567');
+    await user.type(screen.getByPlaceholderText('9XXXXXXXX'), '991234567');
 
     // Expandir y llenar Detalles del Incidente
     const incidentSection = screen.getByText('Detalles del Incidente');
@@ -115,7 +115,7 @@ describe('ClaimForm - Health Insurance', () => {
             firstName: 'Juan',
             lastName: 'Pérez',
             email: 'juan@test.com',
-            phone: '+593991234567',
+            phone: '991234567',
           }),
           medicalCenter: 'Hospital Metropolitano',
           totalAmount: 250.50,
@@ -223,7 +223,7 @@ describe('ClaimForm - Vehicle Insurance', () => {
     await user.type(screen.getByPlaceholderText('Tu nombre'), 'María');
     await user.type(screen.getByPlaceholderText('Tu apellido'), 'González');
     await user.type(screen.getByPlaceholderText('tu@email.com'), 'maria@test.com');
-    await user.type(screen.getByPlaceholderText(/\+593/), '+593987654321');
+    await user.type(screen.getByPlaceholderText('9XXXXXXXX'), '987654321');
 
     // Llenar detalles del incidente
     const incidentSection = screen.getByText('Detalles del Incidente');
@@ -294,11 +294,11 @@ describe('ClaimForm - Vehicle Insurance', () => {
     const initialData = {
       policyNumber: 'POL-INITIAL',
       claimType: 'damage' as const,
-      personalInfo: {
+        personalInfo: {
         firstName: 'Test',
         lastName: 'User',
         email: 'test@example.com',
-        phone: '+593999999999',
+          phone: '999999999',
       },
     };
 
