@@ -10,14 +10,31 @@ export const HomePage = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       {/* Hero Section */}
-      <div className="text-center space-y-4 py-12">
-        <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-          Form Engine LPC
-        </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Sistema de gestión de formularios dinámicos para Broker de Seguros. Cotiza y compara
-          seguros de manera fácil y rápida.
-        </p>
+      <div className="relative overflow-hidden rounded-lg py-16 px-6 sm:px-12 bg-gradient-to-r from-primary/10 via-white to-blue-50 dark:from-primary-900 dark:via-slate-900 dark:to-blue-950">
+        <div className="max-w-3xl mx-auto text-center">
+          <h1 className="text-4xl py-2.5 md:text-6xl font-extrabold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">
+            Form Engine LPC
+          </h1>
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            Sistema de gestión de formularios dinámicos para brokers de seguros — cotiza, compara y
+            gestiona reclamos con validaciones avanzadas y experiencia coherente por marca.
+          </p>
+
+          <div className="mt-8 flex justify-center gap-4">
+            <Link to={'/cotizar'} state={{ prod: 'health' }}>
+              <Button className="px-6 py-3">Cotizar</Button>
+            </Link>
+            <Link to={'/reclamos'} state={{ prod: 'health' }}>
+              <Button variant="destructive" className="px-6 py-3">Reportar Reclamo</Button>
+            </Link>
+          </div>
+
+          <div className="mt-6 flex justify-center gap-3 text-sm text-muted-foreground">
+            <span className="px-3 py-1 bg-muted rounded-full">Multi-marca</span>
+            <span className="px-3 py-1 bg-muted rounded-full">Validaciones Avanzadas</span>
+            <span className="px-3 py-1 bg-muted rounded-full">Copys Personalizados</span>
+          </div>
+        </div>
       </div>
 
       {/* Features Grid - Cotizaciones */}
