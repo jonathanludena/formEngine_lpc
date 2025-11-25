@@ -36,7 +36,9 @@
     "release": "release-it",
     "release:minor": "release-it minor",
     "release:major": "release-it major",
-    "release:patch": "release-it patch"
+    "release:patch": "release-it patch",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist-demo"
   },
   "keywords": [
     "insurance",
@@ -76,6 +78,7 @@
     "eslint": "9.39.1",
     "eslint-plugin-react-hooks": "5.0.0",
     "eslint-plugin-react-refresh": "0.4.14",
+    "gh-pages": "^6.3.0",
     "globals": "^16.5.0",
     "husky": "^9.1.7",
     "jsdom": "^25.0.1",
