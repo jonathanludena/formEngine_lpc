@@ -1,25 +1,26 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { ClaimForm } from '@/components/organisms';
-import { ClaimFormData } from '@/lib/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ClaimFormData } from '@/lib/types';
 import { CheckCircle2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export const ClaimPage = () => {
-  const { insuranceType: insuranceTypeParam } = useParams<{ insuranceType?: 'health' | 'vehicle' }>();
+  const location = useLocation();
+  const locationInsuranceType = location.state?.prod;
   const [insuranceType, setInsuranceType] = useState<'health' | 'vehicle'>(
-    insuranceTypeParam || 'health'
+    locationInsuranceType || 'health'
   );
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (insuranceTypeParam && insuranceTypeParam !== insuranceType) {
-      setInsuranceType(insuranceTypeParam);
+    if (locationInsuranceType && locationInsuranceType !== insuranceType) {
+      setInsuranceType(locationInsuranceType);
       setSubmitted(false);
     }
-  }, [insuranceTypeParam, insuranceType]);
+  }, [locationInsuranceType, insuranceType]);
 
   const handleSubmit = async (data: ClaimFormData) => {
     setIsLoading(true);
@@ -53,7 +54,9 @@ export const ClaimPage = () => {
             </p>
             <div className="bg-muted p-4 rounded-lg">
               <p className="font-semibold">Número de Seguimiento</p>
-              <p className="text-2xl font-mono text-primary">CLM-{Date.now().toString().slice(-6)}</p>
+              <p className="text-2xl font-mono text-primary">
+                CLM-{Date.now().toString().slice(-6)}
+              </p>
             </div>
             <p className="text-sm text-muted-foreground">
               Guarda este número para dar seguimiento a tu reclamo

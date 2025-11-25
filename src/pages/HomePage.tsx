@@ -9,28 +9,28 @@ export const HomePage = () => {
       title: 'Seguro de Salud',
       description: 'Protección médica completa para ti y tu familia',
       icon: '🏥',
-      path: '/cotizar/health',
+      prod: 'health',
       color: 'bg-blue-50 dark:bg-blue-950',
     },
     {
       title: 'Seguro Vehicular',
       description: 'Cobertura integral para tu vehículo',
       icon: '🚗',
-      path: '/cotizar/vehicle',
+      prod: 'vehicle',
       color: 'bg-green-50 dark:bg-green-950',
     },
     {
       title: 'Seguro de Vida',
       description: 'Tranquilidad para tu familia',
       icon: '💼',
-      path: '/cotizar/life',
+      prod: 'life',
       color: 'bg-purple-50 dark:bg-purple-950',
     },
     {
       title: 'Seguro de Vida y Ahorro',
       description: 'Protección y ahorro para tu futuro',
       icon: '💰',
-      path: '/cotizar/life_savings',
+      prod: 'life_savings',
       color: 'bg-green-50 dark:bg-green-950',
     },
   ];
@@ -40,14 +40,14 @@ export const HomePage = () => {
       title: 'Reclamo de Salud',
       description: 'Reporta un reclamo médico o de hospitalización',
       icon: '📋',
-      path: '/reclamos/health',
+      prod: 'health',
       color: 'bg-red-50 dark:bg-red-950',
     },
     {
       title: 'Reclamo Vehicular',
       description: 'Reporta un siniestro de tu vehículo',
       icon: '🚨',
-      path: '/reclamos/vehicle',
+      prod: 'vehicle',
       color: 'bg-orange-50 dark:bg-orange-950',
     },
   ];
@@ -60,8 +60,8 @@ export const HomePage = () => {
           Form Engine LPC
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Sistema de gestión de formularios dinámicos para Broker de Seguros. 
-          Cotiza y compara seguros de manera fácil y rápida.
+          Sistema de gestión de formularios dinámicos para Broker de Seguros. Cotiza y compara
+          seguros de manera fácil y rápida.
         </p>
       </div>
 
@@ -80,7 +80,7 @@ export const HomePage = () => {
                 <CardDescription>{feature.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <Link to={feature.path}>
+                <Link to={'/cotizar'} state={{ prod: feature.prod }}>
                   <Button className="w-full group">
                     Cotizar Ahora
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -107,7 +107,7 @@ export const HomePage = () => {
                 <CardDescription>{claim.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <Link to={claim.path}>
+                <Link to={'/reclamos'} state={{ prod: claim.prod }}>
                   <Button variant="destructive" className="w-full group">
                     Reportar Ahora
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -127,33 +127,25 @@ export const HomePage = () => {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <h3 className="font-semibold flex items-center gap-2">
-                ✅ Formularios Dinámicos
-              </h3>
+              <h3 className="font-semibold flex items-center gap-2">✅ Formularios Dinámicos</h3>
               <p className="text-sm text-muted-foreground">
                 Formularios adaptables según el tipo de seguro y marca
               </p>
             </div>
             <div className="space-y-2">
-              <h3 className="font-semibold flex items-center gap-2">
-                ✅ Validaciones Avanzadas
-              </h3>
+              <h3 className="font-semibold flex items-center gap-2">✅ Validaciones Avanzadas</h3>
               <p className="text-sm text-muted-foreground">
                 Validación en tiempo real con Zod y react-hook-form
               </p>
             </div>
             <div className="space-y-2">
-              <h3 className="font-semibold flex items-center gap-2">
-                ✅ Multi-marca
-              </h3>
+              <h3 className="font-semibold flex items-center gap-2">✅ Multi-marca</h3>
               <p className="text-sm text-muted-foreground">
                 Copys personalizados por marca o empresa
               </p>
             </div>
             <div className="space-y-2">
-              <h3 className="font-semibold flex items-center gap-2">
-                ✅ Comparación de Seguros
-              </h3>
+              <h3 className="font-semibold flex items-center gap-2">✅ Comparación de Seguros</h3>
               <p className="text-sm text-muted-foreground">
                 Compara coberturas de múltiples aseguradoras
               </p>
@@ -169,7 +161,16 @@ export const HomePage = () => {
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-3">
-            {['React', 'TypeScript', 'Vite', 'TailwindCSS', 'shadcn/ui', 'Zod', 'React Hook Form', 'TanStack Query'].map((tech) => (
+            {[
+              'React',
+              'TypeScript',
+              'Vite',
+              'TailwindCSS',
+              'shadcn/ui',
+              'Zod',
+              'React Hook Form',
+              'TanStack Query',
+            ].map((tech) => (
               <span
                 key={tech}
                 className="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium"

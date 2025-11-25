@@ -1,26 +1,27 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { InsuranceQuoteForm } from '@/components/organisms';
-import { QuoteResult, InsuranceType } from '@/lib/types';
-import { generateMockHealthQuote } from '@/data';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { generateMockHealthQuote } from '@/data';
+import { InsuranceType, QuoteResult } from '@/lib/types';
 import { CheckCircle2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export const UnifiedQuotePage = () => {
-  const { insuranceType: insuranceTypeParam } = useParams<{ insuranceType?: InsuranceType }>();
+  const location = useLocation();
+  const locationInsuranceType = location.state?.prod;
   const [insuranceType, setInsuranceType] = useState<InsuranceType>(
-    insuranceTypeParam || 'health'
+    locationInsuranceType || 'health'
   );
   const [quoteResults, setQuoteResults] = useState<QuoteResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (insuranceTypeParam && insuranceTypeParam !== insuranceType) {
-      setInsuranceType(insuranceTypeParam);
+    if (locationInsuranceType && locationInsuranceType !== insuranceType) {
+      setInsuranceType(locationInsuranceType);
       setQuoteResults(null);
     }
-  }, [insuranceTypeParam, insuranceType]);
+  }, [locationInsuranceType, insuranceType]);
 
   const handleSubmit = async (_data: unknown) => {
     setIsLoading(true);
@@ -77,7 +78,9 @@ export const UnifiedQuotePage = () => {
             >
               <div className="text-center">
                 <div className="text-2xl mb-2">{type.label.split(' ')[0]}</div>
-                <div className="text-sm font-medium">{type.label.split(' ').slice(1).join(' ')}</div>
+                <div className="text-sm font-medium">
+                  {type.label.split(' ').slice(1).join(' ')}
+                </div>
               </div>
             </button>
           ))}

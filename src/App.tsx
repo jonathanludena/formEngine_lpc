@@ -74,9 +74,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/cotizar" element={<UnifiedQuotePage />} />
-          <Route path="/cotizar/:insuranceType" element={<UnifiedQuotePage />} />
           <Route path="/reclamos" element={<ClaimPage />} />
-          <Route path="/reclamos/:insuranceType" element={<ClaimPage />} />
         </Routes>
       </div>
     </div>
