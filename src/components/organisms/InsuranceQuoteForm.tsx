@@ -290,11 +290,11 @@ export const InsuranceQuoteForm = ({
                             type="tel"
                             value={field.value ?? ''}
                             onChange={field.onChange}
-                            onFocus={() => {}}
+                            onFocus={() => { }}
                             placeholder={copies.fields.phone.placeholder?.replace(/\+593\s?/, '') ?? '9XX XXX XXXX'}
                             error={errors.personalInfo?.phone?.message}
                             inputMode="numeric"
-                            maxLength={9}
+                            maxLength={10}
                           />
                         )}
                       />
@@ -336,8 +336,8 @@ export const InsuranceQuoteForm = ({
                         identificationTypeValue === 'cedula'
                           ? "\\d{10}"
                           : identificationTypeValue === 'ruc'
-                          ? "\\d{13}"
-                          : "[A-Za-z0-9]{5,12}"
+                            ? "\\d{13}"
+                            : "[A-Za-z0-9]{5,12}"
                       }
                       maxLength={identificationTypeValue === 'cedula' ? 10 : identificationTypeValue === 'ruc' ? 13 : 12}
                     />
@@ -366,7 +366,7 @@ export const InsuranceQuoteForm = ({
                             error={
                               'coverageType' in errors
                                 ? (errors as Record<string, { message?: string }>).coverageType
-                                    ?.message
+                                  ?.message
                                 : undefined
                             }
                           />
@@ -639,8 +639,8 @@ export const InsuranceQuoteForm = ({
                         control={control}
                         render={({ field }) => (
                           <FormSelect
-                                id="vehicleType"
-                                label="Tipo de Vehículo"
+                            id="vehicleType"
+                            label="Tipo de Vehículo"
                             placeholder="Selecciona el tipo"
                             options={vehicleTypes}
                             value={field.value as string}

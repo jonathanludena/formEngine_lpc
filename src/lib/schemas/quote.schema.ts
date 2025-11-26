@@ -15,7 +15,7 @@ export const personalInfoSchema = z.object({
   email: z.string().email('Email inválido'),
   phone: z
     .string()
-    .regex(/^(?:9\d{8}|[2-7]\d{6,7})$/, 'Teléfono inválido. Use solo dígitos sin prefijo; móvil 9 dígitos, fijo 7-8 dígitos'),
+    .regex(/^\d{10,}$/, 'Teléfono inválido. Debe contener al menos 10 dígitos numéricos'),
   birthDate: z.string().refine((date) => {
     const birthDate = new Date(date);
     const today = new Date();

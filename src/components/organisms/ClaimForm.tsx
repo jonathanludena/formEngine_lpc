@@ -167,11 +167,11 @@ export const ClaimForm = ({
                           type="tel"
                           value={typeof field.value === 'string' ? field.value : ''}
                           onChange={field.onChange}
-                          onFocus={() => {}}
-                          placeholder={'9XXXXXXXX'}
+                          onFocus={() => { }}
+                          placeholder={'09XXXXXXXX'}
                           error={getError('personalInfo.phone')}
                           inputMode="numeric"
-                          maxLength={9}
+                          maxLength={10}
                         />
                       )}
                     />

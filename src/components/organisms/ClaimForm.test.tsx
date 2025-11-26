@@ -55,7 +55,7 @@ describe('ClaimForm - Health Insurance', () => {
 
   it('submits health claim with valid data', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <ClaimForm
         insuranceType="health"
@@ -81,7 +81,7 @@ describe('ClaimForm - Health Insurance', () => {
     await user.type(screen.getByPlaceholderText('Tu nombre'), 'Juan');
     await user.type(screen.getByPlaceholderText('Tu apellido'), 'Pérez');
     await user.type(screen.getByPlaceholderText('tu@email.com'), 'juan@test.com');
-    await user.type(screen.getByPlaceholderText('9XXXXXXXX'), '991234567');
+    await user.type(screen.getByPlaceholderText('09XXXXXXXX'), '0991234567');
 
     // Expandir y llenar Detalles del Incidente
     const incidentSection = screen.getByText('Detalles del Incidente');
@@ -115,7 +115,7 @@ describe('ClaimForm - Health Insurance', () => {
             firstName: 'Juan',
             lastName: 'Pérez',
             email: 'juan@test.com',
-            phone: '991234567',
+            phone: '0991234567',
           }),
           medicalCenter: 'Hospital Metropolitano',
           totalAmount: 250.50,
@@ -126,7 +126,7 @@ describe('ClaimForm - Health Insurance', () => {
 
   it('displays validation errors for health claim', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <ClaimForm
         insuranceType="health"
@@ -169,7 +169,7 @@ describe('ClaimForm - Vehicle Insurance', () => {
 
   it('shows police report number field when police report is checked', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <ClaimForm
         insuranceType="vehicle"
@@ -185,8 +185,8 @@ describe('ClaimForm - Vehicle Insurance', () => {
     expect(screen.queryByLabelText(/Número de Reporte Policial/i)).not.toBeInTheDocument();
 
     // Marcar checkbox de reporte policial
-    const policeReportCheckbox = screen.getByRole('checkbox', { 
-      name: /Se generó reporte policial/i 
+    const policeReportCheckbox = screen.getByRole('checkbox', {
+      name: /Se generó reporte policial/i
     });
     await user.click(policeReportCheckbox);
 
@@ -198,7 +198,7 @@ describe('ClaimForm - Vehicle Insurance', () => {
 
   it('submits vehicle claim with police report', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <ClaimForm
         insuranceType="vehicle"
@@ -211,7 +211,7 @@ describe('ClaimForm - Vehicle Insurance', () => {
     await user.click(policySection);
 
     await user.type(screen.getByPlaceholderText('POL-123456'), 'POL-VEH123');
-    
+
     const claimTypeButton = screen.getByRole('combobox', { name: /selecciona el tipo de reclamo/i });
     await user.click(claimTypeButton);
     await user.click(screen.getByText('Accidente'));
@@ -223,7 +223,7 @@ describe('ClaimForm - Vehicle Insurance', () => {
     await user.type(screen.getByPlaceholderText('Tu nombre'), 'María');
     await user.type(screen.getByPlaceholderText('Tu apellido'), 'González');
     await user.type(screen.getByPlaceholderText('tu@email.com'), 'maria@test.com');
-    await user.type(screen.getByPlaceholderText('9XXXXXXXX'), '987654321');
+    await user.type(screen.getByPlaceholderText('09XXXXXXXX'), '0987654321');
 
     // Llenar detalles del incidente
     const incidentSection = screen.getByText('Detalles del Incidente');
@@ -284,7 +284,7 @@ describe('ClaimForm - Vehicle Insurance', () => {
 
     const submitButton = screen.getByRole('button', { name: /Enviar Reclamo/i });
     expect(submitButton).toBeDisabled();
-    
+
     // Verificar que el ícono de loading está presente
     const loadingIcon = submitButton.querySelector('svg.animate-spin');
     expect(loadingIcon).toBeInTheDocument();
@@ -294,11 +294,11 @@ describe('ClaimForm - Vehicle Insurance', () => {
     const initialData = {
       policyNumber: 'POL-INITIAL',
       claimType: 'damage' as const,
-        personalInfo: {
+      personalInfo: {
         firstName: 'Test',
         lastName: 'User',
         email: 'test@example.com',
-          phone: '999999999',
+        phone: '0999999999',
       },
     };
 

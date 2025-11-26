@@ -17,15 +17,15 @@ const baseClaimSchema = z.object({
     email: z.string().email('Email inválido'),
     phone: z
       .string()
-      .regex(/^(?:9\d{8}|[2-7]\d{6,7})$/, 'Teléfono inválido. Use solo dígitos sin prefijo; móvil 9 dígitos, fijo 7-8 dígitos'),
+      .regex(/^\d{10,}$/, 'Teléfono inválido. Debe contener al menos 10 dígitos numéricos'),
   }),
   incidentDate: z
     .string()
     .refine((date) => new Date(date) <= new Date(), 'La fecha no puede ser futura'),
   description: z
-  .string()
-  .min(20, 'La descripción debe tener al menos 20 caracteres')
-  .max(1000, 'La descripción no puede exceder 1000 caracteres')
+    .string()
+    .min(20, 'La descripción debe tener al menos 20 caracteres')
+    .max(1000, 'La descripción no puede exceder 1000 caracteres')
     .regex(/^[A-Za-zÀ-ÖØ-öø-ÿ0-9\s,.\-'"]+$/, 'La descripción contiene caracteres inválidos'),
 });
 

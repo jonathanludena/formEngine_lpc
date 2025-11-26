@@ -18,7 +18,7 @@ vi.mock('@/data', () => ({
         firstName: { label: 'Nombre', placeholder: 'Tu nombre' },
         lastName: { label: 'Apellido', placeholder: 'Tu apellido' },
         email: { label: 'Email', placeholder: 'tu@email.com' },
-        phone: { label: 'Teléfono', placeholder: '991234567' },
+        phone: { label: 'Teléfono', placeholder: '09XXXXXXXX' },
         birthDate: { label: 'Fecha de Nacimiento' },
         identificationType: { label: 'Tipo de Identificación', placeholder: 'Selecciona' },
         identificationNumber: { label: 'Número de Identificación', placeholder: '1234567890' },
@@ -57,7 +57,7 @@ describe('InsuranceQuoteForm - Health Insurance', () => {
   it('allows filling health insurance quote form', async () => {
     const user = userEvent.setup();
     const mockOnSubmit = vi.fn();
-    
+
     render(
       <InsuranceQuoteForm
         insuranceType="health"
@@ -72,7 +72,7 @@ describe('InsuranceQuoteForm - Health Insurance', () => {
     await user.type(screen.getByPlaceholderText('Tu nombre'), 'Carlos');
     await user.type(screen.getByPlaceholderText('Tu apellido'), 'Sánchez');
     await user.type(screen.getByPlaceholderText('tu@email.com'), 'carlos@test.com');
-    await user.type(screen.getByPlaceholderText('991234567'), '991234567');
+    await user.type(screen.getByPlaceholderText('09XXXXXXXX'), '0991234567');
     await user.type(screen.getByLabelText('Fecha de Nacimiento'), '1990-05-15');
 
     // Click the identification type select (uses placeholder 'Selecciona')
@@ -86,7 +86,7 @@ describe('InsuranceQuoteForm - Health Insurance', () => {
     expect(screen.getByDisplayValue('Carlos')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Sánchez')).toBeInTheDocument();
     expect(screen.getByDisplayValue('carlos@test.com')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('991234567')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('0991234567')).toBeInTheDocument();
     expect(screen.getByDisplayValue('1234567890')).toBeInTheDocument();
 
     // Fill insurance details
@@ -108,7 +108,7 @@ describe('InsuranceQuoteForm - Health Insurance', () => {
 
   it('shows dependents field for family coverage', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <InsuranceQuoteForm
         insuranceType="health"
@@ -142,7 +142,7 @@ describe('InsuranceQuoteForm - Health Insurance', () => {
 
   it('enables submit button when terms are accepted', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <InsuranceQuoteForm
         insuranceType="health"
@@ -171,7 +171,7 @@ describe('InsuranceQuoteForm - Life Insurance', () => {
 
   it('renders life insurance specific fields', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <InsuranceQuoteForm
         insuranceType="life"
@@ -191,7 +191,7 @@ describe('InsuranceQuoteForm - Life Insurance', () => {
 
   it('shows beneficiaries section for life insurance', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <InsuranceQuoteForm
         insuranceType="life"
@@ -203,14 +203,14 @@ describe('InsuranceQuoteForm - Life Insurance', () => {
     await user.click(beneficiariesSection);
 
     expect(screen.getByText(/Agrega los beneficiarios de tu póliza/i)).toBeInTheDocument();
-    
+
     const addButton = screen.getByRole('button', { name: /Agregar/i });
     expect(addButton).toBeInTheDocument();
   });
 
   it('can add and remove beneficiaries', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <InsuranceQuoteForm
         insuranceType="life"
@@ -222,7 +222,7 @@ describe('InsuranceQuoteForm - Life Insurance', () => {
     await user.click(beneficiariesSection);
 
     const addButton = screen.getByRole('button', { name: /Agregar/i });
-    
+
     // Add first beneficiary
     await user.click(addButton);
     expect(screen.getByText('Beneficiario 1')).toBeInTheDocument();
@@ -246,7 +246,7 @@ describe('InsuranceQuoteForm - Life Savings Insurance', () => {
 
   it('renders life savings specific fields', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <InsuranceQuoteForm
         insuranceType="life_savings"
@@ -274,7 +274,7 @@ describe('InsuranceQuoteForm - Vehicle Insurance', () => {
 
   it('renders vehicle insurance specific fields', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <InsuranceQuoteForm
         insuranceType="vehicle"
@@ -296,7 +296,7 @@ describe('InsuranceQuoteForm - Vehicle Insurance', () => {
   it('allows filling vehicle insurance quote form', async () => {
     const user = userEvent.setup();
     const mockOnSubmit = vi.fn();
-    
+
     render(
       <InsuranceQuoteForm
         insuranceType="vehicle"
@@ -315,17 +315,17 @@ describe('InsuranceQuoteForm - Vehicle Insurance', () => {
     await user.type(screen.getByPlaceholderText('Tu nombre'), 'Ana');
     await user.type(screen.getByPlaceholderText('Tu apellido'), 'López');
     await user.type(screen.getByPlaceholderText('tu@email.com'), 'ana@test.com');
-    await user.type(screen.getByPlaceholderText('991234567'), '987654321');
+    await user.type(screen.getByPlaceholderText('09XXXXXXXX'), '0987654321');
     await user.type(screen.getByLabelText('Fecha de Nacimiento'), '1985-08-20');
 
     // Click the identification type select by its aria label
     const idTypeButtons = screen.getByRole('combobox', { name: /Selecciona Tipo de Identificación/i });
     await user.click(idTypeButtons);
-    
+
     await waitFor(() => {
       expect(screen.getByText('Cédula')).toBeVisible();
     });
-    
+
     await user.click(screen.getByText('Cédula'));
 
     await user.type(screen.getByPlaceholderText('1234567890'), '0987654321');
@@ -345,11 +345,11 @@ describe('InsuranceQuoteForm - Vehicle Insurance', () => {
 
     const vehicleTypeButton = screen.getByRole('combobox', { name: /selecciona el tipo/i });
     await user.click(vehicleTypeButton);
-    
+
     await waitFor(() => {
       expect(screen.getByText('Auto')).toBeVisible();
     });
-    
+
     await user.click(screen.getByText('Auto'));
 
     // Select brand and model using selects (brand -> model are selects now)
@@ -373,11 +373,11 @@ describe('InsuranceQuoteForm - Vehicle Insurance', () => {
 
     const coverageTypeButton = screen.getByRole('combobox', { name: /selecciona la cobertura/i });
     await user.click(coverageTypeButton);
-    
+
     await waitFor(() => {
       expect(screen.getByText('Completa')).toBeVisible();
     });
-    
+
     await user.click(screen.getByText('Completa'));
 
     // Accept terms
@@ -408,14 +408,14 @@ describe('InsuranceQuoteForm - Common Features', () => {
 
     const submitButton = screen.getByRole('button', { name: /Obtener Cotización/i });
     expect(submitButton).toBeDisabled();
-    
+
     const loadingIcon = submitButton.querySelector('svg.animate-spin');
     expect(loadingIcon).toBeInTheDocument();
   });
 
   it('opens terms modal when clicking view terms', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <InsuranceQuoteForm
         insuranceType="health"
@@ -463,7 +463,7 @@ describe('InsuranceQuoteForm - Common Features', () => {
         firstName: 'Test',
         lastName: 'User',
         email: 'test@example.com',
-        phone: '999999999',
+        phone: '0999999999',
         birthDate: '1990-01-01',
         identificationType: 'cedula' as const,
         identificationNumber: '1234567890',
@@ -486,7 +486,7 @@ describe('InsuranceQuoteForm - Common Features', () => {
 
   it('validates required fields', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <InsuranceQuoteForm
         insuranceType="health"
