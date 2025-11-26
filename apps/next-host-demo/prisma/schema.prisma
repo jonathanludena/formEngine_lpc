@@ -1,0 +1,228 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Broker model
+model Broker {
+  id        String      @id @default(uuid())
+  name      String
+  code      String      @unique
+  email     String
+  phone     String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  insurers  Insurer[]
+  quotes    Quote[]
+  prospects Prospect[]
+}
+
+// Insurer model (Aseguradoras)
+model Insurer {
+  id        String   @id @default(uuid())
+  name      String
+  code      String   @unique
+  brokerId  String
+  broker    Broker   @relation(fields: [brokerId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  plans     Plan[]
+  claims    Claim[]
+}
+
+// Plan model
+model Plan {
+  id          String   @id @default(uuid())
+  name        String
+  code        String
+  insurerId   String
+  insurer     Insurer  @relation(fields: [insurerId], references: [id])
+  insuranceType String // health, life, life_savings, vehicle
+  coverageType  String // basic, complete, premium, etc
+  price       Float
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  quotes      Quote[]
+
+  @@unique([insurerId, code])
+}
+
+// Vehicle Make (Marca)
+model VehicleMake {
+  id        String         @id @default(uuid())
+  name      String         @unique
+  code      String         @unique
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  models    VehicleModel[]
+}
+
+// Vehicle Model (Modelo)
+model VehicleModel {
+  id        String       @id @default(uuid())
+  name      String
+  code      String
+  makeId    String
+  make      VehicleMake  @relation(fields: [makeId], references: [id])
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@unique([makeId, code])
+}
+
+// Vehicle Type (Tipo)
+model VehicleType {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  code      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Province (Provincia)
+model Province {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  code      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  cantons   Canton[]
+}
+
+// Canton
+model Canton {
+  id         String   @id @default(uuid())
+  name       String
+  code       String
+  provinceId String
+  province   Province @relation(fields: [provinceId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([provinceId, code])
+}
+
+// Occupation (Ocupación laboral)
+model Occupation {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  code      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Marital Status (Estado civil)
+model MaritalStatus {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  code      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ID Document Type (Tipo de documento de identificación)
+model IdDocumentType {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  code      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Customer (Cliente)
+model Customer {
+  id                     String   @id @default(uuid())
+  firstName              String
+  lastName               String
+  email                  String   @unique
+  phone                  String
+  birthDate              DateTime
+  identificationType     String
+  identificationNumber   String   @unique
+  address                String?
+  city                   String?
+  province               String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  insured                Insured[]
+  claims                 Claim[]
+}
+
+// Insured (Asegurado)
+model Insured {
+  id                     String   @id @default(uuid())
+  customerId             String
+  customer               Customer @relation(fields: [customerId], references: [id])
+  policyNumber           String   @unique
+  insuranceType          String   // health, life, vehicle
+  startDate              DateTime
+  endDate                DateTime?
+  status                 String   @default("active") // active, expired, cancelled
+  coverageDetails        String? // JSON string
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+// Prospect (Prospecto - clientes potenciales)
+model Prospect {
+  id                     String   @id @default(uuid())
+  brokerId               String
+  broker                 Broker   @relation(fields: [brokerId], references: [id])
+  firstName              String
+  lastName               String
+  email                  String
+  phone                  String
+  insuranceType          String   // health, life, vehicle
+  status                 String   @default("new") // new, contacted, qualified, converted, lost
+  notes                  String?
+  source                 String?  // web, referral, etc
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+// Quote (Cotización)
+model Quote {
+  id                     String   @id @default(uuid())
+  brokerId               String
+  broker                 Broker   @relation(fields: [brokerId], references: [id])
+  planId                 String?
+  plan                   Plan?    @relation(fields: [planId], references: [id])
+  firstName              String
+  lastName               String
+  email                  String
+  phone                  String
+  birthDate              DateTime?
+  identificationType     String?
+  identificationNumber   String?
+  insuranceType          String   // health, life, life_savings, vehicle
+  quoteData              String   // JSON string with all quote details
+  estimatedPremium       Float?
+  status                 String   @default("pending") // pending, accepted, rejected
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+// Claim (Reclamo)
+model Claim {
+  id                     String   @id @default(uuid())
+  customerId             String
+  customer               Customer @relation(fields: [customerId], references: [id])
+  insurerId              String?
+  insurer                Insurer? @relation(fields: [insurerId], references: [id])
+  policyNumber           String
+  claimType              String
+  insuranceType          String   // health, vehicle
+  incidentDate           DateTime
+  description            String
+  claimData              String   // JSON string with claim-specific details
+  status                 String   @default("submitted") // submitted, under_review, approved, rejected, paid
+  estimatedAmount        Float?
+  approvedAmount         Float?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
