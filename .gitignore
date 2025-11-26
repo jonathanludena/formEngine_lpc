@@ -28,10 +28,63 @@ dist-ssr
 .env
 .env.local
 .env.production
+.env.turso
+.env.development
+.env.test
+
+# Prisma
+prisma/*.db
+prisma/*.db-journal
+*.db
+*.db-journal
+migrations/
+
+# Next.js
+.next/
+out/
+build/
+.turbo/
 
 # test coverage
 coverage
 coverage-*
+*.lcov
+.nyc_output
 
 # npmrc
 .npmrc
+
+# OS
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+.cache/
+
+# Package manager
+.pnpm-debug.log
+.yarn/cache
+.yarn/install-state.gz
+.yarn/build-state.yml
+.yarn/unplugged
+.pnpm-store/
+
+# Build artifacts
+*.tsbuildinfo
+.eslintcache
+
+# IDE
+*.code-workspace
+.history/
+.vscode-test/
+
+# Dependencies
+package-lock.json
+yarn.lock

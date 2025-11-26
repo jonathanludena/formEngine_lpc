@@ -55,10 +55,10 @@ export interface BrandCopies {
 }
 
 export const brandCopies: Record<BrandId, BrandCopies> = {
-  brand_A: {
+  LPC001: {
     quoteForm: {
       title: 'Cotiza tu Seguro',
-      subtitle: 'Compara y elige la mejor opción para ti y tu familia',
+      subtitle: 'Encuentra la protección perfecta para ti y tu familia con LPC Insurance Broker',
       steps: {
         personalInfo: 'Información Personal',
         insuranceDetails: 'Detalles del Seguro',
@@ -104,8 +104,8 @@ export const brandCopies: Record<BrandId, BrandCopies> = {
           placeholder: 'Selecciona un tipo',
         },
         acceptTerms: {
-          label: 'Acepto los',
-          error: 'Debes aceptar los términos',
+          label: 'Acepto los términos y condiciones',
+          error: 'Debes aceptar los términos y condiciones para continuar',
         },
       },
       buttons: {
@@ -184,28 +184,28 @@ export const brandCopies: Record<BrandId, BrandCopies> = {
         `,
       },
       success: {
-        title: '¡Cotización Generada!',
-        message: 'Hemos enviado las opciones de seguros a tu correo electrónico.',
+        title: '¡Cotización Generada Exitosamente!',
+        message: 'Hemos enviado las mejores opciones de seguros a tu correo electrónico. Revísalo para conocer los detalles.',
       },
     },
     claimForm: {
-      title: 'Reportar un Reclamo',
-      subtitle: 'Ingresa los detalles de tu reclamo para procesarlo',
+      title: 'Reportar un Siniestro',
+      subtitle: 'Completa el formulario para iniciar el proceso de tu reclamo',
       fields: {
         policyNumber: {
           label: 'Número de Póliza',
-          placeholder: 'POL-123456',
-          error: 'Número de póliza inválido',
+          placeholder: 'Ej: POL-123456',
+          error: 'El número de póliza es requerido',
         },
         incidentDate: {
-          label: 'Fecha del Incidente',
-          placeholder: 'DD/MM/AAAA',
-          error: 'Fecha inválida',
+          label: 'Fecha del Siniestro',
+          placeholder: 'Selecciona la fecha',
+          error: 'La fecha del siniestro es requerida',
         },
         description: {
-          label: 'Descripción del Incidente',
-          placeholder: 'Describe lo ocurrido...',
-          error: 'La descripción es requerida',
+          label: 'Descripción del Siniestro',
+          placeholder: 'Describe detalladamente lo ocurrido...',
+          error: 'La descripción es requerida y debe tener al menos 20 caracteres',
         },
       },
       buttons: {
@@ -213,8 +213,8 @@ export const brandCopies: Record<BrandId, BrandCopies> = {
         cancel: 'Cancelar',
       },
       success: {
-        title: '¡Reclamo Registrado!',
-        message: 'Hemos recibido tu reclamo. Te contactaremos pronto.',
+        title: '¡Reclamo Registrado Exitosamente!',
+        message: 'Hemos recibido tu reclamo. Un ejecutivo de LPC se contactará contigo en las próximas 24 horas.',
       },
     },
   },

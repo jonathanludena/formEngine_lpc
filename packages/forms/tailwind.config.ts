@@ -41,11 +41,25 @@ const config: Config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        // Airbnb Design System Colors
+        airbnb: {
+          rausch: '#FF5A5F',
+          babu: '#00A699',
+          hoa: '#FC642D',
+          foggy: '#F4F4F4',
+          hof: '#767676',
+          kakapo: '#7BC043',
+          arches: '#FC642D',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+      },
+      boxShadow: {
+        'airbnb': '0 2px 4px rgba(0,0,0,0.08)',
+        'airbnb-hover': '0 4px 12px rgba(0,0,0,0.15)',
       },
     },
   },

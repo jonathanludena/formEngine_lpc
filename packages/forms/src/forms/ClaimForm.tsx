@@ -28,7 +28,7 @@ export interface ClaimFormProps {
 
 export const ClaimForm = forwardRef<HTMLDivElement, ClaimFormProps>(({ className }, ref) => {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [brand, setBrand] = useState<BrandId>('default');
+  const [brand, setBrand] = useState<BrandId>('LPC001');
   const [insuranceType, setInsuranceType] = useState<'health' | 'vehicle'>('health');
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<FormResultDetail | null>(null);

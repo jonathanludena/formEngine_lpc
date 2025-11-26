@@ -26,7 +26,7 @@ export interface InsuranceQuoteFormProps {
 export const InsuranceQuoteForm = forwardRef<HTMLDivElement, InsuranceQuoteFormProps>(
   ({ className }, ref) => {
     const rootRef = useRef<HTMLDivElement>(null);
-    const [brand, setBrand] = useState<BrandId>('default');
+    const [brand, setBrand] = useState<BrandId>('LPC001');
     const [insuranceType, setInsuranceType] = useState<InsuranceType>('health');
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState<FormResultDetail | null>(null);

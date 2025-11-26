@@ -3,11 +3,11 @@
 import { FormHostShell } from '@/components/organisms/FormHostShell';
 import type { FormStartDetail } from '@jonathanludena/forms';
 
-export default function ClaimHealthPage() {
+export default function ClaimVehiclePage() {
   const config: FormStartDetail = {
-    brand: 'default',
+    brand: 'LPC001',
     feature: 'claim',
-    insurance: 'health',
+    insurance: 'vehicule',
   };
 
   const handleSubmit = async (data: unknown) => {
@@ -43,15 +43,15 @@ export default function ClaimHealthPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
-      <div className="max-w-5xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Registrar Reclamo de Salud</h1>
-          <p className="text-gray-600">Complete el formulario para registrar su reclamo</p>
-        </div>
-        
-        <FormHostShell formType="claim" config={config} onSubmit={handleSubmit} />
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">Registrar Siniestro Vehicular</h1>
+        <p className="text-muted-foreground mt-2">
+          Completa el formulario para registrar el siniestro de tu vehículo
+        </p>
       </div>
-    </main>
+      
+      <FormHostShell formType="claim" config={config} onSubmit={handleSubmit} />
+    </div>
   );
 }

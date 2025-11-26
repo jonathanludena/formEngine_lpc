@@ -15,6 +15,25 @@ const nextConfig: NextConfig = {
     },
   },
 
+  // Webpack configuration to ignore problematic files from libsql
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Ignore README and LICENSE files from @libsql packages
+      config.externals = config.externals || [];
+      config.externals.push({
+        'better-sqlite3': 'commonjs better-sqlite3',
+      });
+      
+      config.module = config.module || {};
+      config.module.rules = config.module.rules || [];
+      config.module.rules.push({
+        test: /\.(md|txt)$/,
+        type: 'asset/source',
+      });
+    }
+    return config;
+  },
+
   // Security headers
   async headers() {
     return [

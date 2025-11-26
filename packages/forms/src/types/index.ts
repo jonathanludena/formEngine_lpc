@@ -1,5 +1,5 @@
 // Re-export all types from the main src/lib/types
-export type BrandId = 'default' | 'liberty' | 'metlife' | 'panamerican';
+export type BrandId = 'default' | 'LPC001' | 'brand_B';
 
 export type InsuranceType = 'health' | 'life' | 'life_savings' | 'vehicle';
 

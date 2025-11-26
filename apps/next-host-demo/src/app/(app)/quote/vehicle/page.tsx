@@ -3,16 +3,15 @@
 import { FormHostShell } from '@/components/organisms/FormHostShell';
 import type { FormStartDetail } from '@jonathanludena/forms';
 
-export default function QuoteHealthPage() {
+export default function QuoteVehiclePage() {
   const config: FormStartDetail = {
-    brand: 'default',
+    brand: 'LPC001',
     feature: 'quote',
-    insurance: 'health',
+    insurance: 'vehicule',
   };
 
   const handleSubmit = async (data: unknown) => {
     try {
-      // Get a demo broker ID (in production, this would come from auth/session)
       const brokersResponse = await fetch('/api/brokers');
       const brokersData = await brokersResponse.json();
       const brokerId = brokersData.data?.[0]?.id || 'demo-broker';
@@ -52,15 +51,15 @@ export default function QuoteHealthPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
-      <div className="max-w-5xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Cotizar Seguro de Salud</h1>
-          <p className="text-gray-600">Complete el formulario para recibir una cotización</p>
-        </div>
-        
-        <FormHostShell formType="quote" config={config} onSubmit={handleSubmit} />
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">Cotización de Seguro Vehicular</h1>
+        <p className="text-muted-foreground mt-2">
+          Protege tu vehículo con las mejores opciones del mercado
+        </p>
       </div>
-    </main>
+      
+      <FormHostShell formType="quote" config={config} onSubmit={handleSubmit} />
+    </div>
   );
 }
