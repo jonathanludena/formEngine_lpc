@@ -20,8 +20,18 @@ export type InsuredModel = runtime.Types.Result.DefaultSelection<Prisma.$Insured
 
 export type AggregateInsured = {
   _count: InsuredCountAggregateOutputType | null
+  _avg: InsuredAvgAggregateOutputType | null
+  _sum: InsuredSumAggregateOutputType | null
   _min: InsuredMinAggregateOutputType | null
   _max: InsuredMaxAggregateOutputType | null
+}
+
+export type InsuredAvgAggregateOutputType = {
+  premium: number | null
+}
+
+export type InsuredSumAggregateOutputType = {
+  premium: number | null
 }
 
 export type InsuredMinAggregateOutputType = {
@@ -29,10 +39,15 @@ export type InsuredMinAggregateOutputType = {
   customerId: string | null
   policyNumber: string | null
   insuranceType: string | null
+  planId: string | null
   startDate: Date | null
   endDate: Date | null
   status: string | null
+  premium: number | null
   coverageDetails: string | null
+  vehicleDetails: string | null
+  healthDetails: string | null
+  lifeDetails: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -42,10 +57,15 @@ export type InsuredMaxAggregateOutputType = {
   customerId: string | null
   policyNumber: string | null
   insuranceType: string | null
+  planId: string | null
   startDate: Date | null
   endDate: Date | null
   status: string | null
+  premium: number | null
   coverageDetails: string | null
+  vehicleDetails: string | null
+  healthDetails: string | null
+  lifeDetails: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -55,25 +75,43 @@ export type InsuredCountAggregateOutputType = {
   customerId: number
   policyNumber: number
   insuranceType: number
+  planId: number
   startDate: number
   endDate: number
   status: number
+  premium: number
   coverageDetails: number
+  vehicleDetails: number
+  healthDetails: number
+  lifeDetails: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
 
+export type InsuredAvgAggregateInputType = {
+  premium?: true
+}
+
+export type InsuredSumAggregateInputType = {
+  premium?: true
+}
+
 export type InsuredMinAggregateInputType = {
   id?: true
   customerId?: true
   policyNumber?: true
   insuranceType?: true
+  planId?: true
   startDate?: true
   endDate?: true
   status?: true
+  premium?: true
   coverageDetails?: true
+  vehicleDetails?: true
+  healthDetails?: true
+  lifeDetails?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -83,10 +121,15 @@ export type InsuredMaxAggregateInputType = {
   customerId?: true
   policyNumber?: true
   insuranceType?: true
+  planId?: true
   startDate?: true
   endDate?: true
   status?: true
+  premium?: true
   coverageDetails?: true
+  vehicleDetails?: true
+  healthDetails?: true
+  lifeDetails?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -96,10 +139,15 @@ export type InsuredCountAggregateInputType = {
   customerId?: true
   policyNumber?: true
   insuranceType?: true
+  planId?: true
   startDate?: true
   endDate?: true
   status?: true
+  premium?: true
   coverageDetails?: true
+  vehicleDetails?: true
+  healthDetails?: true
+  lifeDetails?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -143,6 +191,18 @@ export type InsuredAggregateArgs<ExtArgs extends runtime.Types.Extensions.Intern
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: InsuredAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: InsuredSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: InsuredMinAggregateInputType
@@ -173,6 +233,8 @@ export type InsuredGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   _count?: InsuredCountAggregateInputType | true
+  _avg?: InsuredAvgAggregateInputType
+  _sum?: InsuredSumAggregateInputType
   _min?: InsuredMinAggregateInputType
   _max?: InsuredMaxAggregateInputType
 }
@@ -182,13 +244,20 @@ export type InsuredGroupByOutputType = {
   customerId: string
   policyNumber: string
   insuranceType: string
+  planId: string | null
   startDate: Date
   endDate: Date | null
   status: string
+  premium: number | null
   coverageDetails: string | null
+  vehicleDetails: string | null
+  healthDetails: string | null
+  lifeDetails: string | null
   createdAt: Date
   updatedAt: Date
   _count: InsuredCountAggregateOutputType | null
+  _avg: InsuredAvgAggregateOutputType | null
+  _sum: InsuredSumAggregateOutputType | null
   _min: InsuredMinAggregateOutputType | null
   _max: InsuredMaxAggregateOutputType | null
 }
@@ -216,13 +285,20 @@ export type InsuredWhereInput = {
   customerId?: Prisma.StringFilter<"Insured"> | string
   policyNumber?: Prisma.StringFilter<"Insured"> | string
   insuranceType?: Prisma.StringFilter<"Insured"> | string
+  planId?: Prisma.StringNullableFilter<"Insured"> | string | null
   startDate?: Prisma.DateTimeFilter<"Insured"> | Date | string
   endDate?: Prisma.DateTimeNullableFilter<"Insured"> | Date | string | null
   status?: Prisma.StringFilter<"Insured"> | string
+  premium?: Prisma.FloatNullableFilter<"Insured"> | number | null
   coverageDetails?: Prisma.StringNullableFilter<"Insured"> | string | null
+  vehicleDetails?: Prisma.StringNullableFilter<"Insured"> | string | null
+  healthDetails?: Prisma.StringNullableFilter<"Insured"> | string | null
+  lifeDetails?: Prisma.StringNullableFilter<"Insured"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Insured"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Insured"> | Date | string
   customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
+  plan?: Prisma.XOR<Prisma.PlanNullableScalarRelationFilter, Prisma.PlanWhereInput> | null
+  dependents?: Prisma.DependentListRelationFilter
 }
 
 export type InsuredOrderByWithRelationInput = {
@@ -230,13 +306,20 @@ export type InsuredOrderByWithRelationInput = {
   customerId?: Prisma.SortOrder
   policyNumber?: Prisma.SortOrder
   insuranceType?: Prisma.SortOrder
+  planId?: Prisma.SortOrderInput | Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  premium?: Prisma.SortOrderInput | Prisma.SortOrder
   coverageDetails?: Prisma.SortOrderInput | Prisma.SortOrder
+  vehicleDetails?: Prisma.SortOrderInput | Prisma.SortOrder
+  healthDetails?: Prisma.SortOrderInput | Prisma.SortOrder
+  lifeDetails?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   customer?: Prisma.CustomerOrderByWithRelationInput
+  plan?: Prisma.PlanOrderByWithRelationInput
+  dependents?: Prisma.DependentOrderByRelationAggregateInput
 }
 
 export type InsuredWhereUniqueInput = Prisma.AtLeast<{
@@ -247,13 +330,20 @@ export type InsuredWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.InsuredWhereInput | Prisma.InsuredWhereInput[]
   customerId?: Prisma.StringFilter<"Insured"> | string
   insuranceType?: Prisma.StringFilter<"Insured"> | string
+  planId?: Prisma.StringNullableFilter<"Insured"> | string | null
   startDate?: Prisma.DateTimeFilter<"Insured"> | Date | string
   endDate?: Prisma.DateTimeNullableFilter<"Insured"> | Date | string | null
   status?: Prisma.StringFilter<"Insured"> | string
+  premium?: Prisma.FloatNullableFilter<"Insured"> | number | null
   coverageDetails?: Prisma.StringNullableFilter<"Insured"> | string | null
+  vehicleDetails?: Prisma.StringNullableFilter<"Insured"> | string | null
+  healthDetails?: Prisma.StringNullableFilter<"Insured"> | string | null
+  lifeDetails?: Prisma.StringNullableFilter<"Insured"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Insured"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Insured"> | Date | string
   customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
+  plan?: Prisma.XOR<Prisma.PlanNullableScalarRelationFilter, Prisma.PlanWhereInput> | null
+  dependents?: Prisma.DependentListRelationFilter
 }, "id" | "policyNumber">
 
 export type InsuredOrderByWithAggregationInput = {
@@ -261,15 +351,22 @@ export type InsuredOrderByWithAggregationInput = {
   customerId?: Prisma.SortOrder
   policyNumber?: Prisma.SortOrder
   insuranceType?: Prisma.SortOrder
+  planId?: Prisma.SortOrderInput | Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  premium?: Prisma.SortOrderInput | Prisma.SortOrder
   coverageDetails?: Prisma.SortOrderInput | Prisma.SortOrder
+  vehicleDetails?: Prisma.SortOrderInput | Prisma.SortOrder
+  healthDetails?: Prisma.SortOrderInput | Prisma.SortOrder
+  lifeDetails?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.InsuredCountOrderByAggregateInput
+  _avg?: Prisma.InsuredAvgOrderByAggregateInput
   _max?: Prisma.InsuredMaxOrderByAggregateInput
   _min?: Prisma.InsuredMinOrderByAggregateInput
+  _sum?: Prisma.InsuredSumOrderByAggregateInput
 }
 
 export type InsuredScalarWhereWithAggregatesInput = {
@@ -280,10 +377,15 @@ export type InsuredScalarWhereWithAggregatesInput = {
   customerId?: Prisma.StringWithAggregatesFilter<"Insured"> | string
   policyNumber?: Prisma.StringWithAggregatesFilter<"Insured"> | string
   insuranceType?: Prisma.StringWithAggregatesFilter<"Insured"> | string
+  planId?: Prisma.StringNullableWithAggregatesFilter<"Insured"> | string | null
   startDate?: Prisma.DateTimeWithAggregatesFilter<"Insured"> | Date | string
   endDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Insured"> | Date | string | null
   status?: Prisma.StringWithAggregatesFilter<"Insured"> | string
+  premium?: Prisma.FloatNullableWithAggregatesFilter<"Insured"> | number | null
   coverageDetails?: Prisma.StringNullableWithAggregatesFilter<"Insured"> | string | null
+  vehicleDetails?: Prisma.StringNullableWithAggregatesFilter<"Insured"> | string | null
+  healthDetails?: Prisma.StringNullableWithAggregatesFilter<"Insured"> | string | null
+  lifeDetails?: Prisma.StringNullableWithAggregatesFilter<"Insured"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Insured"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Insured"> | Date | string
 }
@@ -295,10 +397,16 @@ export type InsuredCreateInput = {
   startDate: Date | string
   endDate?: Date | string | null
   status?: string
+  premium?: number | null
   coverageDetails?: string | null
+  vehicleDetails?: string | null
+  healthDetails?: string | null
+  lifeDetails?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   customer: Prisma.CustomerCreateNestedOneWithoutInsuredInput
+  plan?: Prisma.PlanCreateNestedOneWithoutInsuredInput
+  dependents?: Prisma.DependentCreateNestedManyWithoutInsuredInput
 }
 
 export type InsuredUncheckedCreateInput = {
@@ -306,12 +414,18 @@ export type InsuredUncheckedCreateInput = {
   customerId: string
   policyNumber: string
   insuranceType: string
+  planId?: string | null
   startDate: Date | string
   endDate?: Date | string | null
   status?: string
+  premium?: number | null
   coverageDetails?: string | null
+  vehicleDetails?: string | null
+  healthDetails?: string | null
+  lifeDetails?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  dependents?: Prisma.DependentUncheckedCreateNestedManyWithoutInsuredInput
 }
 
 export type InsuredUpdateInput = {
@@ -321,10 +435,16 @@ export type InsuredUpdateInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  premium?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   coverageDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  healthDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lifeDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   customer?: Prisma.CustomerUpdateOneRequiredWithoutInsuredNestedInput
+  plan?: Prisma.PlanUpdateOneWithoutInsuredNestedInput
+  dependents?: Prisma.DependentUpdateManyWithoutInsuredNestedInput
 }
 
 export type InsuredUncheckedUpdateInput = {
@@ -332,12 +452,18 @@ export type InsuredUncheckedUpdateInput = {
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
   policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
   insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
+  planId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  premium?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   coverageDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  healthDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lifeDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dependents?: Prisma.DependentUncheckedUpdateManyWithoutInsuredNestedInput
 }
 
 export type InsuredCreateManyInput = {
@@ -345,10 +471,15 @@ export type InsuredCreateManyInput = {
   customerId: string
   policyNumber: string
   insuranceType: string
+  planId?: string | null
   startDate: Date | string
   endDate?: Date | string | null
   status?: string
+  premium?: number | null
   coverageDetails?: string | null
+  vehicleDetails?: string | null
+  healthDetails?: string | null
+  lifeDetails?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -360,7 +491,11 @@ export type InsuredUpdateManyMutationInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  premium?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   coverageDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  healthDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lifeDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -370,10 +505,15 @@ export type InsuredUncheckedUpdateManyInput = {
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
   policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
   insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
+  planId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  premium?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   coverageDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  healthDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lifeDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -393,12 +533,21 @@ export type InsuredCountOrderByAggregateInput = {
   customerId?: Prisma.SortOrder
   policyNumber?: Prisma.SortOrder
   insuranceType?: Prisma.SortOrder
+  planId?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  premium?: Prisma.SortOrder
   coverageDetails?: Prisma.SortOrder
+  vehicleDetails?: Prisma.SortOrder
+  healthDetails?: Prisma.SortOrder
+  lifeDetails?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type InsuredAvgOrderByAggregateInput = {
+  premium?: Prisma.SortOrder
 }
 
 export type InsuredMaxOrderByAggregateInput = {
@@ -406,10 +555,15 @@ export type InsuredMaxOrderByAggregateInput = {
   customerId?: Prisma.SortOrder
   policyNumber?: Prisma.SortOrder
   insuranceType?: Prisma.SortOrder
+  planId?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  premium?: Prisma.SortOrder
   coverageDetails?: Prisma.SortOrder
+  vehicleDetails?: Prisma.SortOrder
+  healthDetails?: Prisma.SortOrder
+  lifeDetails?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -419,12 +573,68 @@ export type InsuredMinOrderByAggregateInput = {
   customerId?: Prisma.SortOrder
   policyNumber?: Prisma.SortOrder
   insuranceType?: Prisma.SortOrder
+  planId?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  premium?: Prisma.SortOrder
   coverageDetails?: Prisma.SortOrder
+  vehicleDetails?: Prisma.SortOrder
+  healthDetails?: Prisma.SortOrder
+  lifeDetails?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type InsuredSumOrderByAggregateInput = {
+  premium?: Prisma.SortOrder
+}
+
+export type InsuredScalarRelationFilter = {
+  is?: Prisma.InsuredWhereInput
+  isNot?: Prisma.InsuredWhereInput
+}
+
+export type InsuredCreateNestedManyWithoutPlanInput = {
+  create?: Prisma.XOR<Prisma.InsuredCreateWithoutPlanInput, Prisma.InsuredUncheckedCreateWithoutPlanInput> | Prisma.InsuredCreateWithoutPlanInput[] | Prisma.InsuredUncheckedCreateWithoutPlanInput[]
+  connectOrCreate?: Prisma.InsuredCreateOrConnectWithoutPlanInput | Prisma.InsuredCreateOrConnectWithoutPlanInput[]
+  createMany?: Prisma.InsuredCreateManyPlanInputEnvelope
+  connect?: Prisma.InsuredWhereUniqueInput | Prisma.InsuredWhereUniqueInput[]
+}
+
+export type InsuredUncheckedCreateNestedManyWithoutPlanInput = {
+  create?: Prisma.XOR<Prisma.InsuredCreateWithoutPlanInput, Prisma.InsuredUncheckedCreateWithoutPlanInput> | Prisma.InsuredCreateWithoutPlanInput[] | Prisma.InsuredUncheckedCreateWithoutPlanInput[]
+  connectOrCreate?: Prisma.InsuredCreateOrConnectWithoutPlanInput | Prisma.InsuredCreateOrConnectWithoutPlanInput[]
+  createMany?: Prisma.InsuredCreateManyPlanInputEnvelope
+  connect?: Prisma.InsuredWhereUniqueInput | Prisma.InsuredWhereUniqueInput[]
+}
+
+export type InsuredUpdateManyWithoutPlanNestedInput = {
+  create?: Prisma.XOR<Prisma.InsuredCreateWithoutPlanInput, Prisma.InsuredUncheckedCreateWithoutPlanInput> | Prisma.InsuredCreateWithoutPlanInput[] | Prisma.InsuredUncheckedCreateWithoutPlanInput[]
+  connectOrCreate?: Prisma.InsuredCreateOrConnectWithoutPlanInput | Prisma.InsuredCreateOrConnectWithoutPlanInput[]
+  upsert?: Prisma.InsuredUpsertWithWhereUniqueWithoutPlanInput | Prisma.InsuredUpsertWithWhereUniqueWithoutPlanInput[]
+  createMany?: Prisma.InsuredCreateManyPlanInputEnvelope
+  set?: Prisma.InsuredWhereUniqueInput | Prisma.InsuredWhereUniqueInput[]
+  disconnect?: Prisma.InsuredWhereUniqueInput | Prisma.InsuredWhereUniqueInput[]
+  delete?: Prisma.InsuredWhereUniqueInput | Prisma.InsuredWhereUniqueInput[]
+  connect?: Prisma.InsuredWhereUniqueInput | Prisma.InsuredWhereUniqueInput[]
+  update?: Prisma.InsuredUpdateWithWhereUniqueWithoutPlanInput | Prisma.InsuredUpdateWithWhereUniqueWithoutPlanInput[]
+  updateMany?: Prisma.InsuredUpdateManyWithWhereWithoutPlanInput | Prisma.InsuredUpdateManyWithWhereWithoutPlanInput[]
+  deleteMany?: Prisma.InsuredScalarWhereInput | Prisma.InsuredScalarWhereInput[]
+}
+
+export type InsuredUncheckedUpdateManyWithoutPlanNestedInput = {
+  create?: Prisma.XOR<Prisma.InsuredCreateWithoutPlanInput, Prisma.InsuredUncheckedCreateWithoutPlanInput> | Prisma.InsuredCreateWithoutPlanInput[] | Prisma.InsuredUncheckedCreateWithoutPlanInput[]
+  connectOrCreate?: Prisma.InsuredCreateOrConnectWithoutPlanInput | Prisma.InsuredCreateOrConnectWithoutPlanInput[]
+  upsert?: Prisma.InsuredUpsertWithWhereUniqueWithoutPlanInput | Prisma.InsuredUpsertWithWhereUniqueWithoutPlanInput[]
+  createMany?: Prisma.InsuredCreateManyPlanInputEnvelope
+  set?: Prisma.InsuredWhereUniqueInput | Prisma.InsuredWhereUniqueInput[]
+  disconnect?: Prisma.InsuredWhereUniqueInput | Prisma.InsuredWhereUniqueInput[]
+  delete?: Prisma.InsuredWhereUniqueInput | Prisma.InsuredWhereUniqueInput[]
+  connect?: Prisma.InsuredWhereUniqueInput | Prisma.InsuredWhereUniqueInput[]
+  update?: Prisma.InsuredUpdateWithWhereUniqueWithoutPlanInput | Prisma.InsuredUpdateWithWhereUniqueWithoutPlanInput[]
+  updateMany?: Prisma.InsuredUpdateManyWithWhereWithoutPlanInput | Prisma.InsuredUpdateManyWithWhereWithoutPlanInput[]
+  deleteMany?: Prisma.InsuredScalarWhereInput | Prisma.InsuredScalarWhereInput[]
 }
 
 export type InsuredCreateNestedManyWithoutCustomerInput = {
@@ -473,6 +683,110 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type InsuredCreateNestedOneWithoutDependentsInput = {
+  create?: Prisma.XOR<Prisma.InsuredCreateWithoutDependentsInput, Prisma.InsuredUncheckedCreateWithoutDependentsInput>
+  connectOrCreate?: Prisma.InsuredCreateOrConnectWithoutDependentsInput
+  connect?: Prisma.InsuredWhereUniqueInput
+}
+
+export type InsuredUpdateOneRequiredWithoutDependentsNestedInput = {
+  create?: Prisma.XOR<Prisma.InsuredCreateWithoutDependentsInput, Prisma.InsuredUncheckedCreateWithoutDependentsInput>
+  connectOrCreate?: Prisma.InsuredCreateOrConnectWithoutDependentsInput
+  upsert?: Prisma.InsuredUpsertWithoutDependentsInput
+  connect?: Prisma.InsuredWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InsuredUpdateToOneWithWhereWithoutDependentsInput, Prisma.InsuredUpdateWithoutDependentsInput>, Prisma.InsuredUncheckedUpdateWithoutDependentsInput>
+}
+
+export type InsuredCreateWithoutPlanInput = {
+  id?: string
+  policyNumber: string
+  insuranceType: string
+  startDate: Date | string
+  endDate?: Date | string | null
+  status?: string
+  premium?: number | null
+  coverageDetails?: string | null
+  vehicleDetails?: string | null
+  healthDetails?: string | null
+  lifeDetails?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  customer: Prisma.CustomerCreateNestedOneWithoutInsuredInput
+  dependents?: Prisma.DependentCreateNestedManyWithoutInsuredInput
+}
+
+export type InsuredUncheckedCreateWithoutPlanInput = {
+  id?: string
+  customerId: string
+  policyNumber: string
+  insuranceType: string
+  startDate: Date | string
+  endDate?: Date | string | null
+  status?: string
+  premium?: number | null
+  coverageDetails?: string | null
+  vehicleDetails?: string | null
+  healthDetails?: string | null
+  lifeDetails?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  dependents?: Prisma.DependentUncheckedCreateNestedManyWithoutInsuredInput
+}
+
+export type InsuredCreateOrConnectWithoutPlanInput = {
+  where: Prisma.InsuredWhereUniqueInput
+  create: Prisma.XOR<Prisma.InsuredCreateWithoutPlanInput, Prisma.InsuredUncheckedCreateWithoutPlanInput>
+}
+
+export type InsuredCreateManyPlanInputEnvelope = {
+  data: Prisma.InsuredCreateManyPlanInput | Prisma.InsuredCreateManyPlanInput[]
+}
+
+export type InsuredUpsertWithWhereUniqueWithoutPlanInput = {
+  where: Prisma.InsuredWhereUniqueInput
+  update: Prisma.XOR<Prisma.InsuredUpdateWithoutPlanInput, Prisma.InsuredUncheckedUpdateWithoutPlanInput>
+  create: Prisma.XOR<Prisma.InsuredCreateWithoutPlanInput, Prisma.InsuredUncheckedCreateWithoutPlanInput>
+}
+
+export type InsuredUpdateWithWhereUniqueWithoutPlanInput = {
+  where: Prisma.InsuredWhereUniqueInput
+  data: Prisma.XOR<Prisma.InsuredUpdateWithoutPlanInput, Prisma.InsuredUncheckedUpdateWithoutPlanInput>
+}
+
+export type InsuredUpdateManyWithWhereWithoutPlanInput = {
+  where: Prisma.InsuredScalarWhereInput
+  data: Prisma.XOR<Prisma.InsuredUpdateManyMutationInput, Prisma.InsuredUncheckedUpdateManyWithoutPlanInput>
+}
+
+export type InsuredScalarWhereInput = {
+  AND?: Prisma.InsuredScalarWhereInput | Prisma.InsuredScalarWhereInput[]
+  OR?: Prisma.InsuredScalarWhereInput[]
+  NOT?: Prisma.InsuredScalarWhereInput | Prisma.InsuredScalarWhereInput[]
+  id?: Prisma.StringFilter<"Insured"> | string
+  customerId?: Prisma.StringFilter<"Insured"> | string
+  policyNumber?: Prisma.StringFilter<"Insured"> | string
+  insuranceType?: Prisma.StringFilter<"Insured"> | string
+  planId?: Prisma.StringNullableFilter<"Insured"> | string | null
+  startDate?: Prisma.DateTimeFilter<"Insured"> | Date | string
+  endDate?: Prisma.DateTimeNullableFilter<"Insured"> | Date | string | null
+  status?: Prisma.StringFilter<"Insured"> | string
+  premium?: Prisma.FloatNullableFilter<"Insured"> | number | null
+  coverageDetails?: Prisma.StringNullableFilter<"Insured"> | string | null
+  vehicleDetails?: Prisma.StringNullableFilter<"Insured"> | string | null
+  healthDetails?: Prisma.StringNullableFilter<"Insured"> | string | null
+  lifeDetails?: Prisma.StringNullableFilter<"Insured"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Insured"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Insured"> | Date | string
+}
+
 export type InsuredCreateWithoutCustomerInput = {
   id?: string
   policyNumber: string
@@ -480,21 +794,33 @@ export type InsuredCreateWithoutCustomerInput = {
   startDate: Date | string
   endDate?: Date | string | null
   status?: string
+  premium?: number | null
   coverageDetails?: string | null
+  vehicleDetails?: string | null
+  healthDetails?: string | null
+  lifeDetails?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  plan?: Prisma.PlanCreateNestedOneWithoutInsuredInput
+  dependents?: Prisma.DependentCreateNestedManyWithoutInsuredInput
 }
 
 export type InsuredUncheckedCreateWithoutCustomerInput = {
   id?: string
   policyNumber: string
   insuranceType: string
+  planId?: string | null
   startDate: Date | string
   endDate?: Date | string | null
   status?: string
+  premium?: number | null
   coverageDetails?: string | null
+  vehicleDetails?: string | null
+  healthDetails?: string | null
+  lifeDetails?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  dependents?: Prisma.DependentUncheckedCreateNestedManyWithoutInsuredInput
 }
 
 export type InsuredCreateOrConnectWithoutCustomerInput = {
@@ -522,30 +848,177 @@ export type InsuredUpdateManyWithWhereWithoutCustomerInput = {
   data: Prisma.XOR<Prisma.InsuredUpdateManyMutationInput, Prisma.InsuredUncheckedUpdateManyWithoutCustomerInput>
 }
 
-export type InsuredScalarWhereInput = {
-  AND?: Prisma.InsuredScalarWhereInput | Prisma.InsuredScalarWhereInput[]
-  OR?: Prisma.InsuredScalarWhereInput[]
-  NOT?: Prisma.InsuredScalarWhereInput | Prisma.InsuredScalarWhereInput[]
-  id?: Prisma.StringFilter<"Insured"> | string
-  customerId?: Prisma.StringFilter<"Insured"> | string
-  policyNumber?: Prisma.StringFilter<"Insured"> | string
-  insuranceType?: Prisma.StringFilter<"Insured"> | string
-  startDate?: Prisma.DateTimeFilter<"Insured"> | Date | string
-  endDate?: Prisma.DateTimeNullableFilter<"Insured"> | Date | string | null
-  status?: Prisma.StringFilter<"Insured"> | string
-  coverageDetails?: Prisma.StringNullableFilter<"Insured"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Insured"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Insured"> | Date | string
-}
-
-export type InsuredCreateManyCustomerInput = {
+export type InsuredCreateWithoutDependentsInput = {
   id?: string
   policyNumber: string
   insuranceType: string
   startDate: Date | string
   endDate?: Date | string | null
   status?: string
+  premium?: number | null
   coverageDetails?: string | null
+  vehicleDetails?: string | null
+  healthDetails?: string | null
+  lifeDetails?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  customer: Prisma.CustomerCreateNestedOneWithoutInsuredInput
+  plan?: Prisma.PlanCreateNestedOneWithoutInsuredInput
+}
+
+export type InsuredUncheckedCreateWithoutDependentsInput = {
+  id?: string
+  customerId: string
+  policyNumber: string
+  insuranceType: string
+  planId?: string | null
+  startDate: Date | string
+  endDate?: Date | string | null
+  status?: string
+  premium?: number | null
+  coverageDetails?: string | null
+  vehicleDetails?: string | null
+  healthDetails?: string | null
+  lifeDetails?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type InsuredCreateOrConnectWithoutDependentsInput = {
+  where: Prisma.InsuredWhereUniqueInput
+  create: Prisma.XOR<Prisma.InsuredCreateWithoutDependentsInput, Prisma.InsuredUncheckedCreateWithoutDependentsInput>
+}
+
+export type InsuredUpsertWithoutDependentsInput = {
+  update: Prisma.XOR<Prisma.InsuredUpdateWithoutDependentsInput, Prisma.InsuredUncheckedUpdateWithoutDependentsInput>
+  create: Prisma.XOR<Prisma.InsuredCreateWithoutDependentsInput, Prisma.InsuredUncheckedCreateWithoutDependentsInput>
+  where?: Prisma.InsuredWhereInput
+}
+
+export type InsuredUpdateToOneWithWhereWithoutDependentsInput = {
+  where?: Prisma.InsuredWhereInput
+  data: Prisma.XOR<Prisma.InsuredUpdateWithoutDependentsInput, Prisma.InsuredUncheckedUpdateWithoutDependentsInput>
+}
+
+export type InsuredUpdateWithoutDependentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  premium?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  coverageDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  healthDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lifeDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  customer?: Prisma.CustomerUpdateOneRequiredWithoutInsuredNestedInput
+  plan?: Prisma.PlanUpdateOneWithoutInsuredNestedInput
+}
+
+export type InsuredUncheckedUpdateWithoutDependentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
+  planId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  premium?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  coverageDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  healthDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lifeDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type InsuredCreateManyPlanInput = {
+  id?: string
+  customerId: string
+  policyNumber: string
+  insuranceType: string
+  startDate: Date | string
+  endDate?: Date | string | null
+  status?: string
+  premium?: number | null
+  coverageDetails?: string | null
+  vehicleDetails?: string | null
+  healthDetails?: string | null
+  lifeDetails?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type InsuredUpdateWithoutPlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  premium?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  coverageDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  healthDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lifeDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  customer?: Prisma.CustomerUpdateOneRequiredWithoutInsuredNestedInput
+  dependents?: Prisma.DependentUpdateManyWithoutInsuredNestedInput
+}
+
+export type InsuredUncheckedUpdateWithoutPlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  premium?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  coverageDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  healthDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lifeDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dependents?: Prisma.DependentUncheckedUpdateManyWithoutInsuredNestedInput
+}
+
+export type InsuredUncheckedUpdateManyWithoutPlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  premium?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  coverageDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  healthDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lifeDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type InsuredCreateManyCustomerInput = {
+  id?: string
+  policyNumber: string
+  insuranceType: string
+  planId?: string | null
+  startDate: Date | string
+  endDate?: Date | string | null
+  status?: string
+  premium?: number | null
+  coverageDetails?: string | null
+  vehicleDetails?: string | null
+  healthDetails?: string | null
+  lifeDetails?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -557,35 +1030,81 @@ export type InsuredUpdateWithoutCustomerInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  premium?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   coverageDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  healthDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lifeDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  plan?: Prisma.PlanUpdateOneWithoutInsuredNestedInput
+  dependents?: Prisma.DependentUpdateManyWithoutInsuredNestedInput
 }
 
 export type InsuredUncheckedUpdateWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
   insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
+  planId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  premium?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   coverageDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  healthDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lifeDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dependents?: Prisma.DependentUncheckedUpdateManyWithoutInsuredNestedInput
 }
 
 export type InsuredUncheckedUpdateManyWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
   insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
+  planId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  premium?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   coverageDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  healthDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lifeDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type InsuredCountOutputType
+ */
+
+export type InsuredCountOutputType = {
+  dependents: number
+}
+
+export type InsuredCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  dependents?: boolean | InsuredCountOutputTypeCountDependentsArgs
+}
+
+/**
+ * InsuredCountOutputType without action
+ */
+export type InsuredCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InsuredCountOutputType
+   */
+  select?: Prisma.InsuredCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * InsuredCountOutputType without action
+ */
+export type InsuredCountOutputTypeCountDependentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DependentWhereInput
+}
 
 
 export type InsuredSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -593,13 +1112,21 @@ export type InsuredSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   customerId?: boolean
   policyNumber?: boolean
   insuranceType?: boolean
+  planId?: boolean
   startDate?: boolean
   endDate?: boolean
   status?: boolean
+  premium?: boolean
   coverageDetails?: boolean
+  vehicleDetails?: boolean
+  healthDetails?: boolean
+  lifeDetails?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
+  plan?: boolean | Prisma.Insured$planArgs<ExtArgs>
+  dependents?: boolean | Prisma.Insured$dependentsArgs<ExtArgs>
+  _count?: boolean | Prisma.InsuredCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["insured"]>
 
 export type InsuredSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -607,13 +1134,19 @@ export type InsuredSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   customerId?: boolean
   policyNumber?: boolean
   insuranceType?: boolean
+  planId?: boolean
   startDate?: boolean
   endDate?: boolean
   status?: boolean
+  premium?: boolean
   coverageDetails?: boolean
+  vehicleDetails?: boolean
+  healthDetails?: boolean
+  lifeDetails?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
+  plan?: boolean | Prisma.Insured$planArgs<ExtArgs>
 }, ExtArgs["result"]["insured"]>
 
 export type InsuredSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -621,13 +1154,19 @@ export type InsuredSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   customerId?: boolean
   policyNumber?: boolean
   insuranceType?: boolean
+  planId?: boolean
   startDate?: boolean
   endDate?: boolean
   status?: boolean
+  premium?: boolean
   coverageDetails?: boolean
+  vehicleDetails?: boolean
+  healthDetails?: boolean
+  lifeDetails?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
+  plan?: boolean | Prisma.Insured$planArgs<ExtArgs>
 }, ExtArgs["result"]["insured"]>
 
 export type InsuredSelectScalar = {
@@ -635,39 +1174,56 @@ export type InsuredSelectScalar = {
   customerId?: boolean
   policyNumber?: boolean
   insuranceType?: boolean
+  planId?: boolean
   startDate?: boolean
   endDate?: boolean
   status?: boolean
+  premium?: boolean
   coverageDetails?: boolean
+  vehicleDetails?: boolean
+  healthDetails?: boolean
+  lifeDetails?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type InsuredOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "customerId" | "policyNumber" | "insuranceType" | "startDate" | "endDate" | "status" | "coverageDetails" | "createdAt" | "updatedAt", ExtArgs["result"]["insured"]>
+export type InsuredOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "customerId" | "policyNumber" | "insuranceType" | "planId" | "startDate" | "endDate" | "status" | "premium" | "coverageDetails" | "vehicleDetails" | "healthDetails" | "lifeDetails" | "createdAt" | "updatedAt", ExtArgs["result"]["insured"]>
 export type InsuredInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
+  plan?: boolean | Prisma.Insured$planArgs<ExtArgs>
+  dependents?: boolean | Prisma.Insured$dependentsArgs<ExtArgs>
+  _count?: boolean | Prisma.InsuredCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type InsuredIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
+  plan?: boolean | Prisma.Insured$planArgs<ExtArgs>
 }
 export type InsuredIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
+  plan?: boolean | Prisma.Insured$planArgs<ExtArgs>
 }
 
 export type $InsuredPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Insured"
   objects: {
     customer: Prisma.$CustomerPayload<ExtArgs>
+    plan: Prisma.$PlanPayload<ExtArgs> | null
+    dependents: Prisma.$DependentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     customerId: string
     policyNumber: string
     insuranceType: string
+    planId: string | null
     startDate: Date
     endDate: Date | null
     status: string
+    premium: number | null
     coverageDetails: string | null
+    vehicleDetails: string | null
+    healthDetails: string | null
+    lifeDetails: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["insured"]>
@@ -1065,6 +1621,8 @@ readonly fields: InsuredFieldRefs;
 export interface Prisma__InsuredClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   customer<T extends Prisma.CustomerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CustomerDefaultArgs<ExtArgs>>): Prisma.Prisma__CustomerClient<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  plan<T extends Prisma.Insured$planArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Insured$planArgs<ExtArgs>>): Prisma.Prisma__PlanClient<runtime.Types.Result.GetResult<Prisma.$PlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  dependents<T extends Prisma.Insured$dependentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Insured$dependentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DependentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1098,10 +1656,15 @@ export interface InsuredFieldRefs {
   readonly customerId: Prisma.FieldRef<"Insured", 'String'>
   readonly policyNumber: Prisma.FieldRef<"Insured", 'String'>
   readonly insuranceType: Prisma.FieldRef<"Insured", 'String'>
+  readonly planId: Prisma.FieldRef<"Insured", 'String'>
   readonly startDate: Prisma.FieldRef<"Insured", 'DateTime'>
   readonly endDate: Prisma.FieldRef<"Insured", 'DateTime'>
   readonly status: Prisma.FieldRef<"Insured", 'String'>
+  readonly premium: Prisma.FieldRef<"Insured", 'Float'>
   readonly coverageDetails: Prisma.FieldRef<"Insured", 'String'>
+  readonly vehicleDetails: Prisma.FieldRef<"Insured", 'String'>
+  readonly healthDetails: Prisma.FieldRef<"Insured", 'String'>
+  readonly lifeDetails: Prisma.FieldRef<"Insured", 'String'>
   readonly createdAt: Prisma.FieldRef<"Insured", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Insured", 'DateTime'>
 }
@@ -1495,6 +2058,49 @@ export type InsuredDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Insureds to delete.
    */
   limit?: number
+}
+
+/**
+ * Insured.plan
+ */
+export type Insured$planArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Plan
+   */
+  select?: Prisma.PlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Plan
+   */
+  omit?: Prisma.PlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlanInclude<ExtArgs> | null
+  where?: Prisma.PlanWhereInput
+}
+
+/**
+ * Insured.dependents
+ */
+export type Insured$dependentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Dependent
+   */
+  select?: Prisma.DependentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Dependent
+   */
+  omit?: Prisma.DependentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DependentInclude<ExtArgs> | null
+  where?: Prisma.DependentWhereInput
+  orderBy?: Prisma.DependentOrderByWithRelationInput | Prisma.DependentOrderByWithRelationInput[]
+  cursor?: Prisma.DependentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DependentScalarFieldEnum | Prisma.DependentScalarFieldEnum[]
 }
 
 /**

@@ -55,6 +55,16 @@ export type Insurer = Prisma.InsurerModel
  */
 export type Plan = Prisma.PlanModel
 /**
+ * Model MedicalCenter
+ * 
+ */
+export type MedicalCenter = Prisma.MedicalCenterModel
+/**
+ * Model PlanMedicalCenter
+ * 
+ */
+export type PlanMedicalCenter = Prisma.PlanMedicalCenterModel
+/**
  * Model VehicleMake
  * 
  */
@@ -104,6 +114,11 @@ export type Customer = Prisma.CustomerModel
  * 
  */
 export type Insured = Prisma.InsuredModel
+/**
+ * Model Dependent
+ * 
+ */
+export type Dependent = Prisma.DependentModel
 /**
  * Model Prospect
  * 

@@ -17,20 +17,36 @@ const nextConfig: NextConfig = {
 
   // Webpack configuration to ignore problematic files from libsql
   webpack: (config, { isServer }) => {
-    if (isServer) {
-      // Ignore README and LICENSE files from @libsql packages
+    if (!isServer) {
+      // Client-side: ignore server-only packages
+      config.resolve = config.resolve || {};
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      };
+    } else {
+      // Server-side: externalize libsql packages to avoid bundling issues
       config.externals = config.externals || [];
+      if (typeof config.externals === 'object' && !Array.isArray(config.externals)) {
+        config.externals = [config.externals];
+      }
       config.externals.push({
-        'better-sqlite3': 'commonjs better-sqlite3',
-      });
-      
-      config.module = config.module || {};
-      config.module.rules = config.module.rules || [];
-      config.module.rules.push({
-        test: /\.(md|txt)$/,
-        type: 'asset/source',
+        '@libsql/client': 'commonjs @libsql/client',
+        'libsql': 'commonjs libsql',
+        '@prisma/adapter-libsql': 'commonjs @prisma/adapter-libsql',
       });
     }
+    
+    // Handle .md files as assets
+    config.module = config.module || {};
+    config.module.rules = config.module.rules || [];
+    config.module.rules.push({
+      test: /\.md$/,
+      type: 'asset/source',
+    });
+    
     return config;
   },
 

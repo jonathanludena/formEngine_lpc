@@ -387,6 +387,8 @@ export const ModelName = {
   Broker: 'Broker',
   Insurer: 'Insurer',
   Plan: 'Plan',
+  MedicalCenter: 'MedicalCenter',
+  PlanMedicalCenter: 'PlanMedicalCenter',
   VehicleMake: 'VehicleMake',
   VehicleModel: 'VehicleModel',
   VehicleType: 'VehicleType',
@@ -397,6 +399,7 @@ export const ModelName = {
   IdDocumentType: 'IdDocumentType',
   Customer: 'Customer',
   Insured: 'Insured',
+  Dependent: 'Dependent',
   Prospect: 'Prospect',
   Quote: 'Quote',
   Claim: 'Claim'
@@ -415,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "broker" | "insurer" | "plan" | "vehicleMake" | "vehicleModel" | "vehicleType" | "province" | "canton" | "occupation" | "maritalStatus" | "idDocumentType" | "customer" | "insured" | "prospect" | "quote" | "claim"
+    modelProps: "broker" | "insurer" | "plan" | "medicalCenter" | "planMedicalCenter" | "vehicleMake" | "vehicleModel" | "vehicleType" | "province" | "canton" | "occupation" | "maritalStatus" | "idDocumentType" | "customer" | "insured" | "dependent" | "prospect" | "quote" | "claim"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -638,6 +641,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PlanCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PlanCountAggregateOutputType> | number
+        }
+      }
+    }
+    MedicalCenter: {
+      payload: Prisma.$MedicalCenterPayload<ExtArgs>
+      fields: Prisma.MedicalCenterFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MedicalCenterFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCenterPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MedicalCenterFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCenterPayload>
+        }
+        findFirst: {
+          args: Prisma.MedicalCenterFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCenterPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MedicalCenterFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCenterPayload>
+        }
+        findMany: {
+          args: Prisma.MedicalCenterFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCenterPayload>[]
+        }
+        create: {
+          args: Prisma.MedicalCenterCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCenterPayload>
+        }
+        createMany: {
+          args: Prisma.MedicalCenterCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MedicalCenterCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCenterPayload>[]
+        }
+        delete: {
+          args: Prisma.MedicalCenterDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCenterPayload>
+        }
+        update: {
+          args: Prisma.MedicalCenterUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCenterPayload>
+        }
+        deleteMany: {
+          args: Prisma.MedicalCenterDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MedicalCenterUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MedicalCenterUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCenterPayload>[]
+        }
+        upsert: {
+          args: Prisma.MedicalCenterUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCenterPayload>
+        }
+        aggregate: {
+          args: Prisma.MedicalCenterAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMedicalCenter>
+        }
+        groupBy: {
+          args: Prisma.MedicalCenterGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MedicalCenterGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MedicalCenterCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MedicalCenterCountAggregateOutputType> | number
+        }
+      }
+    }
+    PlanMedicalCenter: {
+      payload: Prisma.$PlanMedicalCenterPayload<ExtArgs>
+      fields: Prisma.PlanMedicalCenterFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PlanMedicalCenterFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanMedicalCenterPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PlanMedicalCenterFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanMedicalCenterPayload>
+        }
+        findFirst: {
+          args: Prisma.PlanMedicalCenterFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanMedicalCenterPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PlanMedicalCenterFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanMedicalCenterPayload>
+        }
+        findMany: {
+          args: Prisma.PlanMedicalCenterFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanMedicalCenterPayload>[]
+        }
+        create: {
+          args: Prisma.PlanMedicalCenterCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanMedicalCenterPayload>
+        }
+        createMany: {
+          args: Prisma.PlanMedicalCenterCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PlanMedicalCenterCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanMedicalCenterPayload>[]
+        }
+        delete: {
+          args: Prisma.PlanMedicalCenterDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanMedicalCenterPayload>
+        }
+        update: {
+          args: Prisma.PlanMedicalCenterUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanMedicalCenterPayload>
+        }
+        deleteMany: {
+          args: Prisma.PlanMedicalCenterDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PlanMedicalCenterUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PlanMedicalCenterUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanMedicalCenterPayload>[]
+        }
+        upsert: {
+          args: Prisma.PlanMedicalCenterUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanMedicalCenterPayload>
+        }
+        aggregate: {
+          args: Prisma.PlanMedicalCenterAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePlanMedicalCenter>
+        }
+        groupBy: {
+          args: Prisma.PlanMedicalCenterGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlanMedicalCenterGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PlanMedicalCenterCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlanMedicalCenterCountAggregateOutputType> | number
         }
       }
     }
@@ -1381,6 +1532,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Dependent: {
+      payload: Prisma.$DependentPayload<ExtArgs>
+      fields: Prisma.DependentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DependentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DependentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependentPayload>
+        }
+        findFirst: {
+          args: Prisma.DependentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DependentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependentPayload>
+        }
+        findMany: {
+          args: Prisma.DependentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependentPayload>[]
+        }
+        create: {
+          args: Prisma.DependentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependentPayload>
+        }
+        createMany: {
+          args: Prisma.DependentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DependentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependentPayload>[]
+        }
+        delete: {
+          args: Prisma.DependentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependentPayload>
+        }
+        update: {
+          args: Prisma.DependentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependentPayload>
+        }
+        deleteMany: {
+          args: Prisma.DependentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DependentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DependentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependentPayload>[]
+        }
+        upsert: {
+          args: Prisma.DependentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependentPayload>
+        }
+        aggregate: {
+          args: Prisma.DependentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDependent>
+        }
+        groupBy: {
+          args: Prisma.DependentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DependentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DependentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DependentCountAggregateOutputType> | number
+        }
+      }
+    }
     Prospect: {
       payload: Prisma.$ProspectPayload<ExtArgs>
       fields: Prisma.ProspectFieldRefs
@@ -1680,6 +1905,34 @@ export const PlanScalarFieldEnum = {
 export type PlanScalarFieldEnum = (typeof PlanScalarFieldEnum)[keyof typeof PlanScalarFieldEnum]
 
 
+export const MedicalCenterScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  address: 'address',
+  city: 'city',
+  province: 'province',
+  phone: 'phone',
+  email: 'email',
+  type: 'type',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MedicalCenterScalarFieldEnum = (typeof MedicalCenterScalarFieldEnum)[keyof typeof MedicalCenterScalarFieldEnum]
+
+
+export const PlanMedicalCenterScalarFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  medicalCenterId: 'medicalCenterId',
+  createdAt: 'createdAt'
+} as const
+
+export type PlanMedicalCenterScalarFieldEnum = (typeof PlanMedicalCenterScalarFieldEnum)[keyof typeof PlanMedicalCenterScalarFieldEnum]
+
+
 export const VehicleMakeScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -1794,15 +2047,38 @@ export const InsuredScalarFieldEnum = {
   customerId: 'customerId',
   policyNumber: 'policyNumber',
   insuranceType: 'insuranceType',
+  planId: 'planId',
   startDate: 'startDate',
   endDate: 'endDate',
   status: 'status',
+  premium: 'premium',
   coverageDetails: 'coverageDetails',
+  vehicleDetails: 'vehicleDetails',
+  healthDetails: 'healthDetails',
+  lifeDetails: 'lifeDetails',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type InsuredScalarFieldEnum = (typeof InsuredScalarFieldEnum)[keyof typeof InsuredScalarFieldEnum]
+
+
+export const DependentScalarFieldEnum = {
+  id: 'id',
+  insuredId: 'insuredId',
+  relationship: 'relationship',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  birthDate: 'birthDate',
+  gender: 'gender',
+  identificationType: 'identificationType',
+  identificationNumber: 'identificationNumber',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DependentScalarFieldEnum = (typeof DependentScalarFieldEnum)[keyof typeof DependentScalarFieldEnum]
 
 
 export const ProspectScalarFieldEnum = {
@@ -1909,6 +2185,13 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1996,6 +2279,8 @@ export type GlobalOmitConfig = {
   broker?: Prisma.BrokerOmit
   insurer?: Prisma.InsurerOmit
   plan?: Prisma.PlanOmit
+  medicalCenter?: Prisma.MedicalCenterOmit
+  planMedicalCenter?: Prisma.PlanMedicalCenterOmit
   vehicleMake?: Prisma.VehicleMakeOmit
   vehicleModel?: Prisma.VehicleModelOmit
   vehicleType?: Prisma.VehicleTypeOmit
@@ -2006,6 +2291,7 @@ export type GlobalOmitConfig = {
   idDocumentType?: Prisma.IdDocumentTypeOmit
   customer?: Prisma.CustomerOmit
   insured?: Prisma.InsuredOmit
+  dependent?: Prisma.DependentOmit
   prospect?: Prisma.ProspectOmit
   quote?: Prisma.QuoteOmit
   claim?: Prisma.ClaimOmit

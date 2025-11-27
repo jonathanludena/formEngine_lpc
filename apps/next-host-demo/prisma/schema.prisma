@@ -48,8 +48,39 @@ model Plan {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   quotes      Quote[]
+  insured     Insured[]
+  medicalCenters PlanMedicalCenter[]
 
   @@unique([insurerId, code])
+}
+
+// Medical Center (Centro Médico)
+model MedicalCenter {
+  id          String   @id @default(uuid())
+  name        String
+  code        String   @unique
+  address     String?
+  city        String?
+  province    String?
+  phone       String?
+  email       String?
+  type        String   // hospital, clinic, laboratory, pharmacy
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  plans       PlanMedicalCenter[]
+}
+
+// Relation table for Plan and MedicalCenter (many-to-many)
+model PlanMedicalCenter {
+  id              String         @id @default(uuid())
+  planId          String
+  plan            Plan           @relation(fields: [planId], references: [id])
+  medicalCenterId String
+  medicalCenter   MedicalCenter  @relation(fields: [medicalCenterId], references: [id])
+  createdAt       DateTime       @default(now())
+
+  @@unique([planId, medicalCenterId])
 }
 
 // Vehicle Make (Marca)
@@ -155,15 +186,39 @@ model Customer {
 
 // Insured (Asegurado)
 model Insured {
-  id                     String   @id @default(uuid())
+  id                     String      @id @default(uuid())
   customerId             String
-  customer               Customer @relation(fields: [customerId], references: [id])
-  policyNumber           String   @unique
-  insuranceType          String   // health, life, vehicle
+  customer               Customer    @relation(fields: [customerId], references: [id])
+  policyNumber           String      @unique
+  insuranceType          String      // health, life, vehicle
+  planId                 String?
+  plan                   Plan?       @relation(fields: [planId], references: [id])
   startDate              DateTime
   endDate                DateTime?
-  status                 String   @default("active") // active, expired, cancelled
-  coverageDetails        String? // JSON string
+  status                 String      @default("active") // active, expired, cancelled
+  premium                Float?      // Monthly premium
+  coverageDetails        String?     // JSON string with coverage specifics
+  vehicleDetails         String?     // JSON string for vehicle insurance
+  healthDetails          String?     // JSON string for health insurance
+  lifeDetails            String?     // JSON string for life insurance
+  createdAt              DateTime    @default(now())
+  updatedAt              DateTime    @updatedAt
+  dependents             Dependent[]
+}
+
+// Dependent (Dependiente - cónyuge, hijos, etc.)
+model Dependent {
+  id                     String   @id @default(uuid())
+  insuredId              String
+  insured                Insured  @relation(fields: [insuredId], references: [id])
+  relationship           String   // spouse, child, parent
+  firstName              String
+  lastName               String
+  birthDate              DateTime
+  gender                 String?
+  identificationType     String?
+  identificationNumber   String?
+  isActive               Boolean  @default(true)
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 }

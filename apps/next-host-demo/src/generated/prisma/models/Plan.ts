@@ -258,6 +258,8 @@ export type PlanWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Plan"> | Date | string
   insurer?: Prisma.XOR<Prisma.InsurerScalarRelationFilter, Prisma.InsurerWhereInput>
   quotes?: Prisma.QuoteListRelationFilter
+  insured?: Prisma.InsuredListRelationFilter
+  medicalCenters?: Prisma.PlanMedicalCenterListRelationFilter
 }
 
 export type PlanOrderByWithRelationInput = {
@@ -273,6 +275,8 @@ export type PlanOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   insurer?: Prisma.InsurerOrderByWithRelationInput
   quotes?: Prisma.QuoteOrderByRelationAggregateInput
+  insured?: Prisma.InsuredOrderByRelationAggregateInput
+  medicalCenters?: Prisma.PlanMedicalCenterOrderByRelationAggregateInput
 }
 
 export type PlanWhereUniqueInput = Prisma.AtLeast<{
@@ -292,6 +296,8 @@ export type PlanWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Plan"> | Date | string
   insurer?: Prisma.XOR<Prisma.InsurerScalarRelationFilter, Prisma.InsurerWhereInput>
   quotes?: Prisma.QuoteListRelationFilter
+  insured?: Prisma.InsuredListRelationFilter
+  medicalCenters?: Prisma.PlanMedicalCenterListRelationFilter
 }, "id" | "insurerId_code">
 
 export type PlanOrderByWithAggregationInput = {
@@ -340,6 +346,8 @@ export type PlanCreateInput = {
   updatedAt?: Date | string
   insurer: Prisma.InsurerCreateNestedOneWithoutPlansInput
   quotes?: Prisma.QuoteCreateNestedManyWithoutPlanInput
+  insured?: Prisma.InsuredCreateNestedManyWithoutPlanInput
+  medicalCenters?: Prisma.PlanMedicalCenterCreateNestedManyWithoutPlanInput
 }
 
 export type PlanUncheckedCreateInput = {
@@ -354,6 +362,8 @@ export type PlanUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutPlanInput
+  insured?: Prisma.InsuredUncheckedCreateNestedManyWithoutPlanInput
+  medicalCenters?: Prisma.PlanMedicalCenterUncheckedCreateNestedManyWithoutPlanInput
 }
 
 export type PlanUpdateInput = {
@@ -368,6 +378,8 @@ export type PlanUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   insurer?: Prisma.InsurerUpdateOneRequiredWithoutPlansNestedInput
   quotes?: Prisma.QuoteUpdateManyWithoutPlanNestedInput
+  insured?: Prisma.InsuredUpdateManyWithoutPlanNestedInput
+  medicalCenters?: Prisma.PlanMedicalCenterUpdateManyWithoutPlanNestedInput
 }
 
 export type PlanUncheckedUpdateInput = {
@@ -382,6 +394,8 @@ export type PlanUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutPlanNestedInput
+  insured?: Prisma.InsuredUncheckedUpdateManyWithoutPlanNestedInput
+  medicalCenters?: Prisma.PlanMedicalCenterUncheckedUpdateManyWithoutPlanNestedInput
 }
 
 export type PlanCreateManyInput = {
@@ -484,6 +498,11 @@ export type PlanSumOrderByAggregateInput = {
   price?: Prisma.SortOrder
 }
 
+export type PlanScalarRelationFilter = {
+  is?: Prisma.PlanWhereInput
+  isNot?: Prisma.PlanWhereInput
+}
+
 export type PlanNullableScalarRelationFilter = {
   is?: Prisma.PlanWhereInput | null
   isNot?: Prisma.PlanWhereInput | null
@@ -543,6 +562,36 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
+export type PlanCreateNestedOneWithoutMedicalCentersInput = {
+  create?: Prisma.XOR<Prisma.PlanCreateWithoutMedicalCentersInput, Prisma.PlanUncheckedCreateWithoutMedicalCentersInput>
+  connectOrCreate?: Prisma.PlanCreateOrConnectWithoutMedicalCentersInput
+  connect?: Prisma.PlanWhereUniqueInput
+}
+
+export type PlanUpdateOneRequiredWithoutMedicalCentersNestedInput = {
+  create?: Prisma.XOR<Prisma.PlanCreateWithoutMedicalCentersInput, Prisma.PlanUncheckedCreateWithoutMedicalCentersInput>
+  connectOrCreate?: Prisma.PlanCreateOrConnectWithoutMedicalCentersInput
+  upsert?: Prisma.PlanUpsertWithoutMedicalCentersInput
+  connect?: Prisma.PlanWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PlanUpdateToOneWithWhereWithoutMedicalCentersInput, Prisma.PlanUpdateWithoutMedicalCentersInput>, Prisma.PlanUncheckedUpdateWithoutMedicalCentersInput>
+}
+
+export type PlanCreateNestedOneWithoutInsuredInput = {
+  create?: Prisma.XOR<Prisma.PlanCreateWithoutInsuredInput, Prisma.PlanUncheckedCreateWithoutInsuredInput>
+  connectOrCreate?: Prisma.PlanCreateOrConnectWithoutInsuredInput
+  connect?: Prisma.PlanWhereUniqueInput
+}
+
+export type PlanUpdateOneWithoutInsuredNestedInput = {
+  create?: Prisma.XOR<Prisma.PlanCreateWithoutInsuredInput, Prisma.PlanUncheckedCreateWithoutInsuredInput>
+  connectOrCreate?: Prisma.PlanCreateOrConnectWithoutInsuredInput
+  upsert?: Prisma.PlanUpsertWithoutInsuredInput
+  disconnect?: Prisma.PlanWhereInput | boolean
+  delete?: Prisma.PlanWhereInput | boolean
+  connect?: Prisma.PlanWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PlanUpdateToOneWithWhereWithoutInsuredInput, Prisma.PlanUpdateWithoutInsuredInput>, Prisma.PlanUncheckedUpdateWithoutInsuredInput>
+}
+
 export type PlanCreateNestedOneWithoutQuotesInput = {
   create?: Prisma.XOR<Prisma.PlanCreateWithoutQuotesInput, Prisma.PlanUncheckedCreateWithoutQuotesInput>
   connectOrCreate?: Prisma.PlanCreateOrConnectWithoutQuotesInput
@@ -570,6 +619,8 @@ export type PlanCreateWithoutInsurerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   quotes?: Prisma.QuoteCreateNestedManyWithoutPlanInput
+  insured?: Prisma.InsuredCreateNestedManyWithoutPlanInput
+  medicalCenters?: Prisma.PlanMedicalCenterCreateNestedManyWithoutPlanInput
 }
 
 export type PlanUncheckedCreateWithoutInsurerInput = {
@@ -583,6 +634,8 @@ export type PlanUncheckedCreateWithoutInsurerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutPlanInput
+  insured?: Prisma.InsuredUncheckedCreateNestedManyWithoutPlanInput
+  medicalCenters?: Prisma.PlanMedicalCenterUncheckedCreateNestedManyWithoutPlanInput
 }
 
 export type PlanCreateOrConnectWithoutInsurerInput = {
@@ -626,6 +679,158 @@ export type PlanScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Plan"> | Date | string
 }
 
+export type PlanCreateWithoutMedicalCentersInput = {
+  id?: string
+  name: string
+  code: string
+  insuranceType: string
+  coverageType: string
+  price: number
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  insurer: Prisma.InsurerCreateNestedOneWithoutPlansInput
+  quotes?: Prisma.QuoteCreateNestedManyWithoutPlanInput
+  insured?: Prisma.InsuredCreateNestedManyWithoutPlanInput
+}
+
+export type PlanUncheckedCreateWithoutMedicalCentersInput = {
+  id?: string
+  name: string
+  code: string
+  insurerId: string
+  insuranceType: string
+  coverageType: string
+  price: number
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutPlanInput
+  insured?: Prisma.InsuredUncheckedCreateNestedManyWithoutPlanInput
+}
+
+export type PlanCreateOrConnectWithoutMedicalCentersInput = {
+  where: Prisma.PlanWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlanCreateWithoutMedicalCentersInput, Prisma.PlanUncheckedCreateWithoutMedicalCentersInput>
+}
+
+export type PlanUpsertWithoutMedicalCentersInput = {
+  update: Prisma.XOR<Prisma.PlanUpdateWithoutMedicalCentersInput, Prisma.PlanUncheckedUpdateWithoutMedicalCentersInput>
+  create: Prisma.XOR<Prisma.PlanCreateWithoutMedicalCentersInput, Prisma.PlanUncheckedCreateWithoutMedicalCentersInput>
+  where?: Prisma.PlanWhereInput
+}
+
+export type PlanUpdateToOneWithWhereWithoutMedicalCentersInput = {
+  where?: Prisma.PlanWhereInput
+  data: Prisma.XOR<Prisma.PlanUpdateWithoutMedicalCentersInput, Prisma.PlanUncheckedUpdateWithoutMedicalCentersInput>
+}
+
+export type PlanUpdateWithoutMedicalCentersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
+  coverageType?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  insurer?: Prisma.InsurerUpdateOneRequiredWithoutPlansNestedInput
+  quotes?: Prisma.QuoteUpdateManyWithoutPlanNestedInput
+  insured?: Prisma.InsuredUpdateManyWithoutPlanNestedInput
+}
+
+export type PlanUncheckedUpdateWithoutMedicalCentersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  insurerId?: Prisma.StringFieldUpdateOperationsInput | string
+  insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
+  coverageType?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  quotes?: Prisma.QuoteUncheckedUpdateManyWithoutPlanNestedInput
+  insured?: Prisma.InsuredUncheckedUpdateManyWithoutPlanNestedInput
+}
+
+export type PlanCreateWithoutInsuredInput = {
+  id?: string
+  name: string
+  code: string
+  insuranceType: string
+  coverageType: string
+  price: number
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  insurer: Prisma.InsurerCreateNestedOneWithoutPlansInput
+  quotes?: Prisma.QuoteCreateNestedManyWithoutPlanInput
+  medicalCenters?: Prisma.PlanMedicalCenterCreateNestedManyWithoutPlanInput
+}
+
+export type PlanUncheckedCreateWithoutInsuredInput = {
+  id?: string
+  name: string
+  code: string
+  insurerId: string
+  insuranceType: string
+  coverageType: string
+  price: number
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutPlanInput
+  medicalCenters?: Prisma.PlanMedicalCenterUncheckedCreateNestedManyWithoutPlanInput
+}
+
+export type PlanCreateOrConnectWithoutInsuredInput = {
+  where: Prisma.PlanWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlanCreateWithoutInsuredInput, Prisma.PlanUncheckedCreateWithoutInsuredInput>
+}
+
+export type PlanUpsertWithoutInsuredInput = {
+  update: Prisma.XOR<Prisma.PlanUpdateWithoutInsuredInput, Prisma.PlanUncheckedUpdateWithoutInsuredInput>
+  create: Prisma.XOR<Prisma.PlanCreateWithoutInsuredInput, Prisma.PlanUncheckedCreateWithoutInsuredInput>
+  where?: Prisma.PlanWhereInput
+}
+
+export type PlanUpdateToOneWithWhereWithoutInsuredInput = {
+  where?: Prisma.PlanWhereInput
+  data: Prisma.XOR<Prisma.PlanUpdateWithoutInsuredInput, Prisma.PlanUncheckedUpdateWithoutInsuredInput>
+}
+
+export type PlanUpdateWithoutInsuredInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
+  coverageType?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  insurer?: Prisma.InsurerUpdateOneRequiredWithoutPlansNestedInput
+  quotes?: Prisma.QuoteUpdateManyWithoutPlanNestedInput
+  medicalCenters?: Prisma.PlanMedicalCenterUpdateManyWithoutPlanNestedInput
+}
+
+export type PlanUncheckedUpdateWithoutInsuredInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  insurerId?: Prisma.StringFieldUpdateOperationsInput | string
+  insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
+  coverageType?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  quotes?: Prisma.QuoteUncheckedUpdateManyWithoutPlanNestedInput
+  medicalCenters?: Prisma.PlanMedicalCenterUncheckedUpdateManyWithoutPlanNestedInput
+}
+
 export type PlanCreateWithoutQuotesInput = {
   id?: string
   name: string
@@ -637,6 +842,8 @@ export type PlanCreateWithoutQuotesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   insurer: Prisma.InsurerCreateNestedOneWithoutPlansInput
+  insured?: Prisma.InsuredCreateNestedManyWithoutPlanInput
+  medicalCenters?: Prisma.PlanMedicalCenterCreateNestedManyWithoutPlanInput
 }
 
 export type PlanUncheckedCreateWithoutQuotesInput = {
@@ -650,6 +857,8 @@ export type PlanUncheckedCreateWithoutQuotesInput = {
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  insured?: Prisma.InsuredUncheckedCreateNestedManyWithoutPlanInput
+  medicalCenters?: Prisma.PlanMedicalCenterUncheckedCreateNestedManyWithoutPlanInput
 }
 
 export type PlanCreateOrConnectWithoutQuotesInput = {
@@ -679,6 +888,8 @@ export type PlanUpdateWithoutQuotesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   insurer?: Prisma.InsurerUpdateOneRequiredWithoutPlansNestedInput
+  insured?: Prisma.InsuredUpdateManyWithoutPlanNestedInput
+  medicalCenters?: Prisma.PlanMedicalCenterUpdateManyWithoutPlanNestedInput
 }
 
 export type PlanUncheckedUpdateWithoutQuotesInput = {
@@ -692,6 +903,8 @@ export type PlanUncheckedUpdateWithoutQuotesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  insured?: Prisma.InsuredUncheckedUpdateManyWithoutPlanNestedInput
+  medicalCenters?: Prisma.PlanMedicalCenterUncheckedUpdateManyWithoutPlanNestedInput
 }
 
 export type PlanCreateManyInsurerInput = {
@@ -717,6 +930,8 @@ export type PlanUpdateWithoutInsurerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   quotes?: Prisma.QuoteUpdateManyWithoutPlanNestedInput
+  insured?: Prisma.InsuredUpdateManyWithoutPlanNestedInput
+  medicalCenters?: Prisma.PlanMedicalCenterUpdateManyWithoutPlanNestedInput
 }
 
 export type PlanUncheckedUpdateWithoutInsurerInput = {
@@ -730,6 +945,8 @@ export type PlanUncheckedUpdateWithoutInsurerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutPlanNestedInput
+  insured?: Prisma.InsuredUncheckedUpdateManyWithoutPlanNestedInput
+  medicalCenters?: Prisma.PlanMedicalCenterUncheckedUpdateManyWithoutPlanNestedInput
 }
 
 export type PlanUncheckedUpdateManyWithoutInsurerInput = {
@@ -751,10 +968,14 @@ export type PlanUncheckedUpdateManyWithoutInsurerInput = {
 
 export type PlanCountOutputType = {
   quotes: number
+  insured: number
+  medicalCenters: number
 }
 
 export type PlanCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   quotes?: boolean | PlanCountOutputTypeCountQuotesArgs
+  insured?: boolean | PlanCountOutputTypeCountInsuredArgs
+  medicalCenters?: boolean | PlanCountOutputTypeCountMedicalCentersArgs
 }
 
 /**
@@ -774,6 +995,20 @@ export type PlanCountOutputTypeCountQuotesArgs<ExtArgs extends runtime.Types.Ext
   where?: Prisma.QuoteWhereInput
 }
 
+/**
+ * PlanCountOutputType without action
+ */
+export type PlanCountOutputTypeCountInsuredArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InsuredWhereInput
+}
+
+/**
+ * PlanCountOutputType without action
+ */
+export type PlanCountOutputTypeCountMedicalCentersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlanMedicalCenterWhereInput
+}
+
 
 export type PlanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -788,6 +1023,8 @@ export type PlanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   insurer?: boolean | Prisma.InsurerDefaultArgs<ExtArgs>
   quotes?: boolean | Prisma.Plan$quotesArgs<ExtArgs>
+  insured?: boolean | Prisma.Plan$insuredArgs<ExtArgs>
+  medicalCenters?: boolean | Prisma.Plan$medicalCentersArgs<ExtArgs>
   _count?: boolean | Prisma.PlanCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["plan"]>
 
@@ -836,6 +1073,8 @@ export type PlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type PlanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   insurer?: boolean | Prisma.InsurerDefaultArgs<ExtArgs>
   quotes?: boolean | Prisma.Plan$quotesArgs<ExtArgs>
+  insured?: boolean | Prisma.Plan$insuredArgs<ExtArgs>
+  medicalCenters?: boolean | Prisma.Plan$medicalCentersArgs<ExtArgs>
   _count?: boolean | Prisma.PlanCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PlanIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -850,6 +1089,8 @@ export type $PlanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     insurer: Prisma.$InsurerPayload<ExtArgs>
     quotes: Prisma.$QuotePayload<ExtArgs>[]
+    insured: Prisma.$InsuredPayload<ExtArgs>[]
+    medicalCenters: Prisma.$PlanMedicalCenterPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1258,6 +1499,8 @@ export interface Prisma__PlanClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   insurer<T extends Prisma.InsurerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InsurerDefaultArgs<ExtArgs>>): Prisma.Prisma__InsurerClient<runtime.Types.Result.GetResult<Prisma.$InsurerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   quotes<T extends Prisma.Plan$quotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Plan$quotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  insured<T extends Prisma.Plan$insuredArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Plan$insuredArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InsuredPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  medicalCenters<T extends Prisma.Plan$medicalCentersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Plan$medicalCentersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlanMedicalCenterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1712,6 +1955,54 @@ export type Plan$quotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.QuoteScalarFieldEnum | Prisma.QuoteScalarFieldEnum[]
+}
+
+/**
+ * Plan.insured
+ */
+export type Plan$insuredArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Insured
+   */
+  select?: Prisma.InsuredSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Insured
+   */
+  omit?: Prisma.InsuredOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InsuredInclude<ExtArgs> | null
+  where?: Prisma.InsuredWhereInput
+  orderBy?: Prisma.InsuredOrderByWithRelationInput | Prisma.InsuredOrderByWithRelationInput[]
+  cursor?: Prisma.InsuredWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InsuredScalarFieldEnum | Prisma.InsuredScalarFieldEnum[]
+}
+
+/**
+ * Plan.medicalCenters
+ */
+export type Plan$medicalCentersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PlanMedicalCenter
+   */
+  select?: Prisma.PlanMedicalCenterSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PlanMedicalCenter
+   */
+  omit?: Prisma.PlanMedicalCenterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlanMedicalCenterInclude<ExtArgs> | null
+  where?: Prisma.PlanMedicalCenterWhereInput
+  orderBy?: Prisma.PlanMedicalCenterOrderByWithRelationInput | Prisma.PlanMedicalCenterOrderByWithRelationInput[]
+  cursor?: Prisma.PlanMedicalCenterWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlanMedicalCenterScalarFieldEnum | Prisma.PlanMedicalCenterScalarFieldEnum[]
 }
 
 /**

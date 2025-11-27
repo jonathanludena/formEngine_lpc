@@ -4,18 +4,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../components/ui/accordion';
 import { Button } from '../components/ui/button';
-import { FormField, FormSelect, FormTextarea, FormCheckbox, SelectOption } from '../components/atoms';
+import { FormField, FormSelect, FormTextarea, FormCheckbox, FormFileUpload, SelectOption } from '../components/atoms';
 import { healthClaimSchema, vehicleClaimSchema } from '../lib/schemas';
 import { HealthClaimData, VehicleClaimData, BrandId } from '../types';
 import { getBrandCopies } from '../data';
-import { Loader2 } from 'lucide-react';
+import { Loader2, AlertCircle } from 'lucide-react';
 import { FORM_EVENTS } from '../events/constants';
 import {
   FormStartDetail,
   FormSubmitDataDetail,
   FormSubmitLoadingDetail,
   FormResultDetail,
-  isFormSubmitData,
   isFormSubmitLoading,
 } from '../events/types';
 
@@ -33,6 +32,15 @@ export const ClaimForm = forwardRef<HTMLDivElement, ClaimFormProps>(({ className
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<FormResultDetail | null>(null);
   const [activeSection, setActiveSection] = useState<string>('policy-info');
+  const [hasThirdParty, setHasThirdParty] = useState(false);
+  const [availablePolicies, setAvailablePolicies] = useState<SelectOption[]>([]);
+  const [dependents, setDependents] = useState<SelectOption[]>([]);
+  const [medicalCenters, setMedicalCenters] = useState<SelectOption[]>([]);
+  const [contactFieldsReadonly, setContactFieldsReadonly] = useState(false);
+  const [contactDataModified, setContactDataModified] = useState(false);
+  const [originalContactData, setOriginalContactData] = useState<any>(null);
+  const [insuredName, setInsuredName] = useState<string>('');
+  const [policyInfo, setPolicyInfo] = useState<{ planName?: string; insurer?: string }>({});
   
   // Expose the root element ref
   useImperativeHandle(ref, () => rootRef.current as HTMLDivElement);
@@ -49,6 +57,7 @@ export const ClaimForm = forwardRef<HTMLDivElement, ClaimFormProps>(({ className
     control,
     watch,
     reset,
+    setValue,
     formState: { errors, isSubmitting, isValid },
   } = useForm<ClaimFormData>({
     resolver: zodResolver(getSchema()),
@@ -59,6 +68,33 @@ export const ClaimForm = forwardRef<HTMLDivElement, ClaimFormProps>(({ className
   });
 
   const policeReport = insuranceType === 'vehicle' ? watch('policeReport' as keyof VehicleClaimData) : false;
+  
+  const handleRequestDataUpdate = () => {
+    // Habilitar edición de campos de contacto
+    setContactFieldsReadonly(false);
+    setContactDataModified(true);
+  };
+  
+  const handleFormSubmit = async (data: ClaimFormData) => {
+    // TODO: Si contactDataModified es true, enviar datos modificados a servicio de notificaciones
+    // Este servicio enviará una notificación al admin del broker
+    if (contactDataModified && originalContactData) {
+      console.log('Datos de contacto modificados - pendiente implementar servicio de notificación:', {
+        original: originalContactData,
+        modified: data.personalInfo
+      });
+      // TODO: await fetch('/api/notifications/contact-update', { method: 'POST', body: JSON.stringify(...) })
+    }
+    
+    // Emit form:submit event with data to host
+    if (rootRef.current) {
+      const event = new CustomEvent<FormSubmitDataDetail<ClaimFormData>>(FORM_EVENTS.SUBMIT, {
+        detail: { data },
+        bubbles: true,
+      });
+      rootRef.current.dispatchEvent(event);
+    }
+  };
 
   const getError = (path: string): string | undefined => {
     const parts = path.split('.');
@@ -87,17 +123,6 @@ export const ClaimForm = forwardRef<HTMLDivElement, ClaimFormProps>(({ className
     { value: 'total_loss', label: 'Pérdida Total' },
   ];
 
-  const handleFormSubmit = async (data: ClaimFormData) => {
-    // Emit form:submit event with data to host
-    if (rootRef.current) {
-      const event = new CustomEvent<FormSubmitDataDetail<ClaimFormData>>(FORM_EVENTS.SUBMIT, {
-        detail: { data },
-        bubbles: true,
-      });
-      rootRef.current.dispatchEvent(event);
-    }
-  };
-
   // Listen for form:start event from host
   useEffect(() => {
     const handleStart = (e: Event) => {
@@ -110,6 +135,55 @@ export const ClaimForm = forwardRef<HTMLDivElement, ClaimFormProps>(({ className
       }
       
       if (initialData) {
+        // Process available policies
+        if ((initialData as any).availablePolicies) {
+          setAvailablePolicies((initialData as any).availablePolicies);
+        }
+        
+        // Process dependents for health insurance
+        if ((initialData as any).dependents && insurance === 'health') {
+          const dependentOptions: SelectOption[] = [
+            { value: 'titular', label: 'Titular (Yo)' }
+          ];
+          ((initialData as any).dependents as any[]).forEach((dep: any, index: number) => {
+            dependentOptions.push({
+              value: dep.id || `dependent-${index}`,
+              label: `${dep.firstName} ${dep.lastName} (${dep.relationship})`
+            });
+          });
+          setDependents(dependentOptions);
+        }
+        
+        // Process medical centers for health insurance
+        if ((initialData as any).medicalCenters && insurance === 'health') {
+          setMedicalCenters((initialData as any).medicalCenters);
+        }
+        
+        // Set contact fields as readonly if data is provided
+        if ((initialData as any).firstName || (initialData as any).personalInfo?.firstName) {
+          setContactFieldsReadonly(true);
+          // Guardar datos originales para comparación posterior
+          setOriginalContactData((initialData as any).personalInfo || {
+            firstName: (initialData as any).firstName,
+            lastName: (initialData as any).lastName,
+            email: (initialData as any).email,
+            phone: (initialData as any).phone,
+          });
+          
+          // Guardar nombre del asegurado para el saludo
+          const firstName = (initialData as any).personalInfo?.firstName || (initialData as any).firstName;
+          const lastName = (initialData as any).personalInfo?.lastName || (initialData as any).lastName;
+          setInsuredName(`${firstName} ${lastName}`);
+        }
+        
+        // Guardar información de la póliza para el saludo
+        if ((initialData as any).planName || (initialData as any).insurer) {
+          setPolicyInfo({
+            planName: (initialData as any).planName,
+            insurer: (initialData as any).insurer,
+          });
+        }
+        
         reset({
           insuranceType: insurance === 'vehicule' ? 'vehicle' : insurance as 'health' | 'vehicle',
           ...initialData,
@@ -180,6 +254,23 @@ export const ClaimForm = forwardRef<HTMLDivElement, ClaimFormProps>(({ className
         <CardHeader>
           <CardTitle className="text-3xl">{copies.title}</CardTitle>
           <CardDescription>{copies.subtitle}</CardDescription>
+          
+          {insuredName && (
+            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-lg font-semibold text-blue-900">
+                ¡Hola, {insuredName}!
+              </p>
+              {policyInfo.planName && (
+                <p className="text-sm text-blue-700 mt-1">
+                  {policyInfo.planName}
+                  {policyInfo.insurer && ` - ${policyInfo.insurer}`}
+                </p>
+              )}
+              <p className="text-sm text-blue-600 mt-2">
+                Estamos aquí para ayudarte. Completa el formulario a continuación para registrar tu {insuranceType === 'health' ? 'reclamo de salud' : 'siniestro vehicular'}.
+              </p>
+            </div>
+          )}
         </CardHeader>
         <CardContent>
           {result && result.ok && (
@@ -207,12 +298,46 @@ export const ClaimForm = forwardRef<HTMLDivElement, ClaimFormProps>(({ className
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-4 pt-4">
-                    <FormField
-                      label={copies.fields.policyNumber.label}
-                      placeholder={copies.fields.policyNumber.placeholder}
-                      error={getError('policyNumber')}
-                      {...register('policyNumber')}
-                    />
+                    {availablePolicies.length > 0 ? (
+                      <Controller
+                        name="policyNumber"
+                        control={control}
+                        render={({ field }) => (
+                          <FormSelect
+                            label={copies.fields.policyNumber.label}
+                            placeholder="Selecciona tu póliza"
+                            options={availablePolicies}
+                            value={typeof field.value === 'string' ? field.value : undefined}
+                            onValueChange={field.onChange}
+                            error={getError('policyNumber')}
+                          />
+                        )}
+                      />
+                    ) : (
+                      <FormField
+                        label={copies.fields.policyNumber.label}
+                        placeholder={copies.fields.policyNumber.placeholder}
+                        error={getError('policyNumber')}
+                        {...register('policyNumber')}
+                      />
+                    )}
+
+                    {dependents.length > 0 && insuranceType === 'health' && (
+                      <Controller
+                        name={"dependentId" as any}
+                        control={control}
+                        render={({ field }) => (
+                          <FormSelect
+                            label="¿Para quién es el reclamo?"
+                            placeholder="Selecciona el beneficiario"
+                            options={dependents}
+                            value={typeof field.value === 'string' ? field.value : undefined}
+                            onValueChange={field.onChange}
+                            error={getError('dependentId')}
+                          />
+                        )}
+                      />
+                    )}
 
                     <Controller
                       name="claimType"
@@ -239,11 +364,27 @@ export const ClaimForm = forwardRef<HTMLDivElement, ClaimFormProps>(({ className
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-4 pt-4">
+                    {contactFieldsReadonly && !contactDataModified && (
+                      <div className="flex items-start gap-2 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-blue-800">
+                        <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                        <p>Los datos de contacto no pueden ser editados. Si necesitas actualizarlos, usa el botón al final de esta sección.</p>
+                      </div>
+                    )}
+                    
+                    {contactDataModified && (
+                      <div className="flex items-start gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded-md text-sm text-yellow-800">
+                        <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                        <p>Has solicitado modificar tus datos de contacto. Los cambios se enviarán al administrador para su revisión al enviar el formulario.</p>
+                      </div>
+                    )}
+                    
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <FormField
                         label="Nombre"
                         placeholder="Tu nombre"
                         error={getError('personalInfo.firstName')}
+                        disabled={contactFieldsReadonly}
+                        className={contactFieldsReadonly ? 'bg-gray-50' : ''}
                         {...register('personalInfo.firstName')}
                       />
 
@@ -251,6 +392,8 @@ export const ClaimForm = forwardRef<HTMLDivElement, ClaimFormProps>(({ className
                         label="Apellido"
                         placeholder="Tu apellido"
                         error={getError('personalInfo.lastName')}
+                        disabled={contactFieldsReadonly}
+                        className={contactFieldsReadonly ? 'bg-gray-50' : ''}
                         {...register('personalInfo.lastName')}
                       />
                     </div>
@@ -261,6 +404,8 @@ export const ClaimForm = forwardRef<HTMLDivElement, ClaimFormProps>(({ className
                         type="email"
                         placeholder="tu@email.com"
                         error={getError('personalInfo.email')}
+                        disabled={contactFieldsReadonly}
+                        className={contactFieldsReadonly ? 'bg-gray-50' : ''}
                         {...register('personalInfo.email')}
                       />
 
@@ -278,10 +423,25 @@ export const ClaimForm = forwardRef<HTMLDivElement, ClaimFormProps>(({ className
                             error={getError('personalInfo.phone')}
                             inputMode="numeric"
                             maxLength={10}
+                            disabled={contactFieldsReadonly}
+                            className={contactFieldsReadonly ? 'bg-gray-50' : ''}
                           />
                         )}
                       />
                     </div>
+
+                    {contactFieldsReadonly && !contactDataModified && (
+                      <div className="pt-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={handleRequestDataUpdate}
+                        >
+                          Solicitar actualización de datos
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </AccordionContent>
               </AccordionItem>
@@ -308,99 +468,270 @@ export const ClaimForm = forwardRef<HTMLDivElement, ClaimFormProps>(({ className
                       {...register('description')}
                       maxLength={1000}
                     />
+
+                    <FormFileUpload
+                      label="Formulario de Aseguradora"
+                      description="Subir el formulario oficial de la aseguradora (PDF o imagen)"
+                      accept=".pdf,image/*"
+                      onChange={(file) => setValue('insurerForm' as any, file as any)}
+                    />
                   </div>
                 </AccordionContent>
               </AccordionItem>
 
               {/* Health-specific fields */}
               {insuranceType === 'health' && (
-                <AccordionItem value="medical-info">
-                  <AccordionTrigger>
-                    <span className="text-lg font-semibold">Información Médica</span>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-4 pt-4">
-                      <FormField
-                        label="Centro Médico"
-                        placeholder="Hospital o clínica donde fue atendido"
-                        error={getError('medicalCenter')}
-                        {...register('medicalCenter')}
-                      />
+                <>
+                  <AccordionItem value="medical-info">
+                    <AccordionTrigger>
+                      <span className="text-lg font-semibold">Información Médica</span>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="space-y-4 pt-4">
+                        {medicalCenters.length > 0 ? (
+                          <Controller
+                            name={"medicalCenterId" as any}
+                            control={control}
+                            render={({ field }) => (
+                              <FormSelect
+                                label="Centro Médico"
+                                placeholder="Selecciona el centro médico de la red"
+                                options={medicalCenters}
+                                value={field.value as string | undefined}
+                                onValueChange={field.onChange}
+                                error={getError('medicalCenterId')}
+                              />
+                            )}
+                          />
+                        ) : (
+                          <FormField
+                            label="Centro Médico"
+                            placeholder="Hospital o clínica donde fue atendido"
+                            error={getError('medicalCenterId')}
+                            {...register('medicalCenterId' as any)}
+                          />
+                        )}
 
-                      <FormField
-                        label="Diagnóstico (opcional)"
-                        placeholder="Diagnóstico médico"
-                        error={getError('diagnosis')}
-                        {...register('diagnosis')}
-                      />
+                        <FormField
+                          label="Diagnóstico (opcional)"
+                          placeholder="Diagnóstico médico"
+                          error={getError('diagnosis')}
+                          {...register('diagnosis')}
+                        />
 
-                      <FormField
-                        label="Monto Total"
-                        type="number"
-                        step="0.01"
-                        placeholder="0.00"
-                        error={getError('totalAmount')}
-                        {...register('totalAmount', { valueAsNumber: true })}
-                      />
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
+                        <FormField
+                          label="Monto Total"
+                          type="number"
+                          step="0.01"
+                          placeholder="0.00"
+                          error={getError('totalAmount')}
+                          {...register('totalAmount', { valueAsNumber: true })}
+                        />
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="medical-documents">
+                    <AccordionTrigger>
+                      <span className="text-lg font-semibold">Documentos Médicos</span>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="space-y-4 pt-4">
+                        <FormFileUpload
+                          label="Receta Médica"
+                          description="Prescripción médica (PDF o imagen)"
+                          accept=".pdf,image/*"
+                          onChange={(file) => setValue('medicalPrescription' as any, file as any)}
+                        />
+
+                        <FormFileUpload
+                          label="Diagnóstico del Médico"
+                          description="Informe médico con el diagnóstico"
+                          accept=".pdf,image/*"
+                          onChange={(file) => setValue('medicalDiagnosis' as any, file as any)}
+                        />
+
+                        <FormFileUpload
+                          label="Exámenes de Salud"
+                          description="Resultados de laboratorio, rayos X, etc. (múltiples archivos)"
+                          accept=".pdf,image/*"
+                          multiple={true}
+                          onChange={(files) => setValue('medicalExams' as any, files as any)}
+                        />
+
+                        <FormFileUpload
+                          label="Factura de Medicinas"
+                          description="Factura de la farmacia"
+                          accept=".pdf,image/*"
+                          onChange={(file) => setValue('medicineInvoice' as any, file as any)}
+                        />
+
+                        <FormFileUpload
+                          label="Factura de Cita Médica"
+                          description="Factura de la consulta o procedimiento"
+                          accept=".pdf,image/*"
+                          onChange={(file) => setValue('medicalAppointmentInvoice' as any, file as any)}
+                        />
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </>
               )}
 
               {/* Vehicle-specific fields */}
               {insuranceType === 'vehicle' && (
-                <AccordionItem value="vehicle-info">
-                  <AccordionTrigger>
-                    <span className="text-lg font-semibold">Información del Vehículo</span>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-4 pt-4">
-                      <FormField
-                        label="Placa del Vehículo"
-                        placeholder="ABC-1234"
-                        error={getError('vehiclePlate')}
-                        {...register('vehiclePlate')}
-                      />
+                <>
+                  <AccordionItem value="vehicle-info">
+                    <AccordionTrigger>
+                      <span className="text-lg font-semibold">Información del Vehículo</span>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="space-y-4 pt-4">
+                        <FormField
+                          label="Placa del Vehículo Asegurado"
+                          placeholder="ABC-1234"
+                          error={getError('vehiclePlate')}
+                          disabled={Boolean(watch('vehiclePlate'))}
+                          className={watch('vehiclePlate') ? 'bg-gray-50' : ''}
+                          {...register('vehiclePlate')}
+                        />
 
-                      <FormField
-                        label="Ubicación del Incidente"
-                        placeholder="Dirección donde ocurrió el incidente"
-                        error={getError('location')}
-                        {...register('location')}
-                      />
+                        <FormField
+                          label="Ubicación del Incidente"
+                          placeholder="Dirección donde ocurrió el incidente"
+                          error={getError('location')}
+                          {...register('location')}
+                        />
 
-                      <Controller
-                        name="policeReport"
-                        control={control}
-                        render={({ field }) => (
-                          <FormCheckbox
-                            label="¿Se generó reporte policial?"
-                            checked={Boolean(field.value)}
-                            onCheckedChange={field.onChange}
+                        <Controller
+                          name="policeReport"
+                          control={control}
+                          render={({ field }) => (
+                            <FormCheckbox
+                              label="¿Se generó reporte policial?"
+                              checked={Boolean(field.value)}
+                              onCheckedChange={field.onChange}
+                            />
+                          )}
+                        />
+
+                        {policeReport && (
+                          <FormField
+                            label="Número de Reporte Policial"
+                            placeholder="REP-123456"
+                            error={getError('policeReportNumber')}
+                            {...register('policeReportNumber')}
                           />
                         )}
-                      />
 
-                      {policeReport && (
                         <FormField
-                          label="Número de Reporte Policial"
-                          placeholder="REP-123456"
-                          error={getError('policeReportNumber')}
-                          {...register('policeReportNumber')}
+                          label="Daño Estimado (USD)"
+                          type="number"
+                          step="0.01"
+                          placeholder="0.00"
+                          error={getError('estimatedDamage')}
+                          {...register('estimatedDamage', { valueAsNumber: true })}
                         />
-                      )}
 
-                      <FormField
-                        label="Daño Estimado (USD)"
-                        type="number"
-                        step="0.01"
-                        placeholder="0.00"
-                        error={getError('estimatedDamage')}
-                        {...register('estimatedDamage', { valueAsNumber: true })}
-                      />
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
+                        <div className="pt-4 border-t">
+                          <FormCheckbox
+                            label="¿Hubo terceros afectados?"
+                            checked={hasThirdParty}
+                            onCheckedChange={setHasThirdParty}
+                          />
+                        </div>
+
+                        {hasThirdParty && (
+                          <div className="space-y-4 border-l-4 border-yellow-400 pl-4 mt-4">
+                            <h4 className="font-medium text-gray-900">Información del Tercero Afectado</h4>
+                            
+                            <FormField
+                              label="Placa del Vehículo del Tercero (si aplica)"
+                              placeholder="XYZ-5678"
+                              error={getError('thirdPartyPlate')}
+                              {...register('thirdPartyPlate' as any)}
+                            />
+                            
+                            <FormField
+                              label="Nombre del Tercero Afectado"
+                              placeholder="Nombre completo de la persona afectada"
+                              error={getError('thirdPartyName')}
+                              {...register('thirdPartyName' as any)}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="vehicle-documents">
+                    <AccordionTrigger>
+                      <span className="text-lg font-semibold">Documentos del Siniestro</span>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="space-y-4 pt-4">
+                        <FormFileUpload
+                          label="Fotos del Vehículo Asegurado"
+                          description="Fotos donde se muestren los daños del vehículo (múltiples fotos)"
+                          accept="image/*"
+                          multiple={true}
+                          onChange={(files) => setValue('insuredVehiclePhotos' as any, files as any)}
+                        />
+
+                        <FormFileUpload
+                          label="Foto de Licencia del Asegurado"
+                          description="Licencia de conducir del titular"
+                          accept="image/*"
+                          onChange={(file) => setValue('insuredLicensePhoto' as any, file as any)}
+                        />
+
+                        {hasThirdParty && (
+                          <>
+                            <div className="pt-4 border-t">
+                              <h4 className="font-medium text-gray-900 mb-4">Documentos del Tercero Afectado</h4>
+                            </div>
+
+                            <FormFileUpload
+                              label="Fotos del Bien de Terceros Afectado"
+                              description="Fotos del vehículo o propiedad del tercero (múltiples fotos)"
+                              accept="image/*"
+                              multiple={true}
+                              onChange={(files) => setValue('thirdPartyPropertyPhotos' as any, files as any)}
+                            />
+
+                            <FormFileUpload
+                              label="Foto de la Persona Afectada"
+                              description="Foto de la persona involucrada en el incidente (si aplica)"
+                              accept="image/*"
+                              onChange={(file) => setValue('affectedPersonPhoto' as any, file as any)}
+                            />
+
+                            <FormFileUpload
+                              label="Foto de Licencia del Tercero"
+                              description="Licencia de conducir del tercero (si aplica)"
+                              accept="image/*"
+                              onChange={(file) => setValue('thirdPartyLicensePhoto' as any, file as any)}
+                            />
+
+                            <FormFileUpload
+                              label="Foto de Matrícula del Vehículo del Tercero"
+                              description="Matrícula o documento de propiedad del vehículo del tercero"
+                              accept="image/*"
+                              onChange={(file) => setValue('thirdPartyRegistrationPhoto' as any, file as any)}
+                            />
+
+                            <FormFileUpload
+                              label="Foto de Identificación del Tercero"
+                              description="Cédula o identificación de la persona afectada"
+                              accept="image/*"
+                              onChange={(file) => setValue('thirdPartyIdPhoto' as any, file as any)}
+                            />
+                          </>
+                        )}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </>
               )}
             </Accordion>
 

@@ -54,6 +54,8 @@ export const ModelName = {
   Broker: 'Broker',
   Insurer: 'Insurer',
   Plan: 'Plan',
+  MedicalCenter: 'MedicalCenter',
+  PlanMedicalCenter: 'PlanMedicalCenter',
   VehicleMake: 'VehicleMake',
   VehicleModel: 'VehicleModel',
   VehicleType: 'VehicleType',
@@ -64,6 +66,7 @@ export const ModelName = {
   IdDocumentType: 'IdDocumentType',
   Customer: 'Customer',
   Insured: 'Insured',
+  Dependent: 'Dependent',
   Prospect: 'Prospect',
   Quote: 'Quote',
   Claim: 'Claim'
@@ -121,6 +124,34 @@ export const PlanScalarFieldEnum = {
 } as const
 
 export type PlanScalarFieldEnum = (typeof PlanScalarFieldEnum)[keyof typeof PlanScalarFieldEnum]
+
+
+export const MedicalCenterScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  address: 'address',
+  city: 'city',
+  province: 'province',
+  phone: 'phone',
+  email: 'email',
+  type: 'type',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MedicalCenterScalarFieldEnum = (typeof MedicalCenterScalarFieldEnum)[keyof typeof MedicalCenterScalarFieldEnum]
+
+
+export const PlanMedicalCenterScalarFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  medicalCenterId: 'medicalCenterId',
+  createdAt: 'createdAt'
+} as const
+
+export type PlanMedicalCenterScalarFieldEnum = (typeof PlanMedicalCenterScalarFieldEnum)[keyof typeof PlanMedicalCenterScalarFieldEnum]
 
 
 export const VehicleMakeScalarFieldEnum = {
@@ -237,15 +268,38 @@ export const InsuredScalarFieldEnum = {
   customerId: 'customerId',
   policyNumber: 'policyNumber',
   insuranceType: 'insuranceType',
+  planId: 'planId',
   startDate: 'startDate',
   endDate: 'endDate',
   status: 'status',
+  premium: 'premium',
   coverageDetails: 'coverageDetails',
+  vehicleDetails: 'vehicleDetails',
+  healthDetails: 'healthDetails',
+  lifeDetails: 'lifeDetails',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type InsuredScalarFieldEnum = (typeof InsuredScalarFieldEnum)[keyof typeof InsuredScalarFieldEnum]
+
+
+export const DependentScalarFieldEnum = {
+  id: 'id',
+  insuredId: 'insuredId',
+  relationship: 'relationship',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  birthDate: 'birthDate',
+  gender: 'gender',
+  identificationType: 'identificationType',
+  identificationNumber: 'identificationNumber',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DependentScalarFieldEnum = (typeof DependentScalarFieldEnum)[keyof typeof DependentScalarFieldEnum]
 
 
 export const ProspectScalarFieldEnum = {

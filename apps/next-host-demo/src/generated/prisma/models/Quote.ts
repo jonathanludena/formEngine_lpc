@@ -689,14 +689,6 @@ export type QuoteUncheckedUpdateManyWithoutPlanNestedInput = {
   deleteMany?: Prisma.QuoteScalarWhereInput | Prisma.QuoteScalarWhereInput[]
 }
 
-export type NullableFloatFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type QuoteCreateWithoutBrokerInput = {
   id?: string
   firstName: string

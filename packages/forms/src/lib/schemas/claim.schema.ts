@@ -1,8 +1,13 @@
 import { z } from 'zod';
 
+// File upload schema (for client-side validation, files handled separately)
+const fileSchema = z.instanceof(File).or(z.string()).optional();
+const fileArraySchema = z.array(z.instanceof(File).or(z.string())).optional();
+
 // Base Claim Schema
 const baseClaimSchema = z.object({
   policyNumber: z.string().min(5, 'Número de póliza inválido'),
+  dependentId: z.string().optional(), // ID of dependent for the claim
   personalInfo: z.object({
     firstName: z
       .string()
@@ -27,6 +32,8 @@ const baseClaimSchema = z.object({
     .min(20, 'La descripción debe tener al menos 20 caracteres')
     .max(1000, 'La descripción no puede exceder 1000 caracteres')
     .regex(/^[A-Za-zÀ-ÖØ-öø-ÿ0-9\s,.\-'"]+$/, 'La descripción contiene caracteres inválidos'),
+  // Common file uploads
+  insurerForm: fileSchema, // Formulario de Aseguradora
 });
 
 // Health Claim Schema
@@ -34,9 +41,15 @@ export const healthClaimSchema = baseClaimSchema
   .extend({
     insuranceType: z.literal('health'),
     claimType: z.enum(['consultation', 'hospitalization', 'surgery', 'medication']),
-    medicalCenter: z.string().min(2, 'El centro médico es requerido'),
+    medicalCenterId: z.string().min(1, 'El centro médico es requerido'),
     diagnosis: z.string().optional(),
     totalAmount: z.number().min(1, 'El monto debe ser mayor a 0'),
+    // Health-specific file uploads
+    medicalPrescription: fileSchema, // Receta médica
+    medicalDiagnosis: fileSchema, // Diagnóstico del médico
+    medicalExams: fileArraySchema, // Exámenes de salud
+    medicineInvoice: fileSchema, // Factura medicinas
+    medicalAppointmentInvoice: fileSchema, // Factura cita médica
   });
 
 // Vehicle Claim Schema
@@ -48,6 +61,17 @@ const vehicleClaimBaseSchema = baseClaimSchema.extend({
   policeReport: z.boolean(),
   policeReportNumber: z.string().optional(),
   estimatedDamage: z.number().min(0),
+  // Third party information
+  thirdPartyPlate: z.string().optional(), // Placa del tercero afectado
+  thirdPartyName: z.string().optional(), // Nombre del tercero afectado
+  // Vehicle-specific file uploads
+  insuredVehiclePhotos: fileArraySchema, // Fotos del vehículo asegurado
+  thirdPartyPropertyPhotos: fileArraySchema, // Foto del bien de terceros afectado
+  affectedPersonPhoto: fileSchema, // Foto de la persona afectada
+  insuredLicensePhoto: fileSchema, // Foto de la licencia de asegurado
+  thirdPartyLicensePhoto: fileSchema, // Foto de la licencia de afectado
+  thirdPartyRegistrationPhoto: fileSchema, // Foto de la matrícula del tercero
+  thirdPartyIdPhoto: fileSchema, // Foto de la identificación de tercero
 });
 
 export const vehicleClaimSchema = vehicleClaimBaseSchema.refine(
