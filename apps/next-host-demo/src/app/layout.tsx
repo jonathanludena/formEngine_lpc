@@ -1,4 +1,4 @@
-import '@jonathanludena/forms/styles.css';
+import '@jonathanludena/form-engine/styles.css';
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';

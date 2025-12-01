@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { FormHostShell } from '@/components/organisms/FormHostShell';
-import type { FormStartDetail } from '@jonathanludena/forms';
+import type { FormStartDetail } from '@jonathanludena/form-engine';
 
 export default function ClaimVehiclePage() {
   const [config, setConfig] = useState<FormStartDetail | null>(null);
@@ -14,14 +14,14 @@ export default function ClaimVehiclePage() {
         // En un caso real, obtendríamos el customerId del usuario autenticado
         // Por ahora, usamos el customer del seed (María Rodríguez tiene POL-VEHICLE-001)
         const policyResponse = await fetch('/api/insured/POL-VEHICLE-001');
-        
+
         if (policyResponse.ok) {
           const { data } = await policyResponse.json();
-          
+
           // Obtener todas las pólizas de vehículo del cliente
           const policiesResponse = await fetch(`/api/customers/${data.customerId}/policies?insuranceType=vehicle`);
           let availablePolicies: any[] = [];
-          
+
           if (policiesResponse.ok) {
             const { data: policies } = await policiesResponse.json();
             availablePolicies = policies.map((policy: any) => ({
@@ -29,7 +29,7 @@ export default function ClaimVehiclePage() {
               label: `${policy.policyNumber} - ${policy.parsedDetails?.plate || policy.plan?.name} (${policy.plan?.insurer?.name})`,
             }));
           }
-          
+
           setConfig({
             brand: 'LPC001',
             feature: 'claim',
@@ -42,15 +42,15 @@ export default function ClaimVehiclePage() {
                 email: data.customer.email,
                 phone: data.customer.phone,
               },
-              
+
               // Pólizas disponibles
               availablePolicies,
-              
+
               // Datos de la póliza actual (pre-seleccionada)
               policyNumber: data.policyNumber,
               planName: data.plan?.name,
               insurer: data.plan?.insurer?.name,
-              
+
               // Datos del vehículo
               vehicleDetails: data.parsedDetails,
               vehiclePlate: data.parsedDetails?.plate,
@@ -130,7 +130,7 @@ export default function ClaimVehiclePage() {
           Completa el formulario para registrar el siniestro de tu vehículo
         </p>
       </div>
-      
+
       <FormHostShell formType="claim" config={config} onSubmit={handleSubmit} />
     </div>
   );

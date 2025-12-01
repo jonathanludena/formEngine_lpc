@@ -1,7 +1,7 @@
 'use client';
 
 import { FormHostShell } from '@/components/organisms/FormHostShell';
-import type { FormStartDetail } from '@jonathanludena/forms';
+import type { FormStartDetail } from '@jonathanludena/form-engine';
 
 export default function QuoteVehiclePage() {
   const config: FormStartDetail = {
@@ -58,7 +58,7 @@ export default function QuoteVehiclePage() {
           Protege tu vehículo con las mejores opciones del mercado
         </p>
       </div>
-      
+
       <FormHostShell formType="quote" config={config} onSubmit={handleSubmit} />
     </div>
   );

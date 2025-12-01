@@ -2,21 +2,21 @@
 
 import { useRef, useEffect, useState, type ReactNode } from 'react';
 import dynamic from 'next/dynamic';
-import { FORM_EVENTS } from '@jonathanludena/forms';
+import { FORM_EVENTS } from '@jonathanludena/form-engine';
 import type {
   FormStartDetail,
   FormSubmitDataDetail,
   FormResultDetail,
-} from '@jonathanludena/forms';
+} from '@jonathanludena/form-engine';
 
 // Dynamic imports with no SSR
 const ClaimForm = dynamic(
-  () => import('@jonathanludena/forms').then((mod) => ({ default: mod.ClaimForm })),
+  () => import('@jonathanludena/form-engine').then((mod) => ({ default: mod.ClaimForm })),
   { ssr: false, loading: () => <FormSkeleton /> }
 );
 
 const InsuranceQuoteForm = dynamic(
-  () => import('@jonathanludena/forms').then((mod) => ({ default: mod.InsuranceQuoteForm })),
+  () => import('@jonathanludena/form-engine').then((mod) => ({ default: mod.InsuranceQuoteForm })),
   { ssr: false, loading: () => <FormSkeleton /> }
 );
 
@@ -68,7 +68,7 @@ export function FormHostShell<T = unknown>({ formType, config, onSubmit }: FormH
   useEffect(() => {
     const handleFormSubmit = async (e: Event) => {
       const customEvent = e as CustomEvent<FormSubmitDataDetail<T>>;
-      
+
       // Check if this is data submission (from form)
       if ('data' in customEvent.detail) {
         // Set loading state

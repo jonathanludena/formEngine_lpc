@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { FormHostShell } from '@/components/organisms/FormHostShell';
-import type { FormStartDetail } from '@jonathanludena/forms';
+import type { FormStartDetail } from '@jonathanludena/form-engine';
 
 export default function ClaimHealthPage() {
   const [config, setConfig] = useState<FormStartDetail | null>(null);
@@ -14,14 +14,14 @@ export default function ClaimHealthPage() {
         // En un caso real, obtendríamos el customerId del usuario autenticado
         // Por ahora, usamos el customer del seed (Juan Pérez tiene POL-HEALTH-001)
         const policyResponse = await fetch('/api/insured/POL-HEALTH-001');
-        
+
         if (policyResponse.ok) {
           const { data } = await policyResponse.json();
-          
+
           // Obtener todas las pólizas de salud del cliente
           const policiesResponse = await fetch(`/api/customers/${data.customerId}/policies?insuranceType=health`);
           let availablePolicies: any[] = [];
-          
+
           if (policiesResponse.ok) {
             const { data: policies } = await policiesResponse.json();
             availablePolicies = policies.map((policy: any) => ({
@@ -29,7 +29,7 @@ export default function ClaimHealthPage() {
               label: `${policy.policyNumber} - ${policy.plan?.name} (${policy.plan?.insurer?.name})`,
             }));
           }
-          
+
           setConfig({
             brand: 'LPC001',
             feature: 'claim',
@@ -42,18 +42,18 @@ export default function ClaimHealthPage() {
                 email: data.customer.email,
                 phone: data.customer.phone,
               },
-              
+
               // Pólizas disponibles
               availablePolicies,
-              
+
               // Datos de la póliza actual (pre-seleccionada)
               policyNumber: data.policyNumber,
               planName: data.plan?.name,
               insurer: data.plan?.insurer?.name,
-              
+
               // Datos de cobertura
               healthCoverage: data.parsedDetails,
-              
+
               // Dependientes
               dependents: data.dependents?.map((d: any) => ({
                 id: d.id,
@@ -64,7 +64,7 @@ export default function ClaimHealthPage() {
                 identificationType: d.identificationType,
                 identificationNumber: d.identificationNumber,
               })),
-              
+
               // Centros Médicos de cobertura
               medicalCenters: data.medicalCenters?.map((mc: any) => ({
                 value: mc.id,
@@ -148,7 +148,7 @@ export default function ClaimHealthPage() {
           Completa el formulario para registrar tu siniestro y recibir asistencia
         </p>
       </div>
-      
+
       <FormHostShell formType="claim" config={config} onSubmit={handleSubmit} />
     </div>
   );

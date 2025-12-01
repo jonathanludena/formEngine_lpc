@@ -1,7 +1,7 @@
 'use client';
 
 import { FormHostShell } from '@/components/organisms/FormHostShell';
-import type { FormStartDetail } from '@jonathanludena/forms';
+import type { FormStartDetail } from '@jonathanludena/form-engine';
 
 export default function QuoteLifeSavingsPage() {
   const config: FormStartDetail = {
@@ -58,7 +58,7 @@ export default function QuoteLifeSavingsPage() {
           Protege a tu familia mientras ahorras para el futuro
         </p>
       </div>
-      
+
       <FormHostShell formType="quote" config={config} onSubmit={handleSubmit} />
     </div>
   );

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter next-host-demo dev",
-    "build:forms": "pnpm --filter @jonathanludena/forms build",
+    "build:forms": "pnpm --filter @jonathanludena/form-engine build",
     "build:next": "pnpm --filter next-host-demo build",
     "build": "pnpm build:forms && pnpm build:next",
     "start": "pnpm --filter next-host-demo start",

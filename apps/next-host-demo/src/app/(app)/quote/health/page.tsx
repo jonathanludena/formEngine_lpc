@@ -1,7 +1,7 @@
 'use client';
 
 import { FormHostShell } from '@/components/organisms/FormHostShell';
-import type { FormStartDetail } from '@jonathanludena/forms';
+import type { FormStartDetail } from '@jonathanludena/form-engine';
 
 export default function QuoteHealthPage() {
   const config: FormStartDetail = {
@@ -59,7 +59,7 @@ export default function QuoteHealthPage() {
           Completa el formulario y recibe las mejores opciones para tu seguro
         </p>
       </div>
-      
+
       <FormHostShell formType="quote" config={config} onSubmit={handleSubmit} />
     </div>
   );

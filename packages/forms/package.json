@@ -1,5 +1,5 @@
 {
-  "name": "@jonathanludena/forms",
+  "name": "@jonathanludena/form-engine",
   "version": "3.2.0",
   "description": "Insurance forms library with CustomEvents communication",
   "type": "module",
