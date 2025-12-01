@@ -5,6 +5,77 @@ All notable changes to the forms package will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0](///compare/2.3.1...forms-v3.1.0) (2025-12-01)
+
+### Features
+
+- Add demo app with its dependencies and update pnpm lockfile b187090
+- add file upload components and integrate into claim forms c9997c4
+- Add GitHub Actions workflow for publishing forms package be92957
+- add pre-push hook to run form build 5382ede
+- field phone fix validations maxlength and test 7c3b4df
+- Refactor code structure and remove redundant sections 1534f52
+
+### Bug Fixes
+
+- update favicon link in index.html and add favicon.ico file 0cf0de9
+
+## 2.3.1 (2025-11-25)
+
+### Bug Fixes
+
+- update dependencies in package-lock.json for improved compatibility 6e3c456
+- update navigation paths to remove base path for consistency b306d5e
+
+## 2.3.0 (2025-11-25)
+
+### Features
+
+- add predeploy script and update gh-pages dependency 33f86a3
+
+### Bug Fixes
+
+- update navigation paths to include base path for consistency 04c57da
+- update route paths to include base path for navigation 3ae6456
+
+## 2.2.1 (2025-11-25)
+
+### Bug Fixes
+
+- update dts plugin configuration to insert types entry 9ca1434
+
+## 2.2.0 (2025-11-25)
+
+### Features
+
+- add accessibility attributes to Select component for improved usability 09715c7
+- add dropdownRef to Select component for improved click outside handling dfc4b64
+- add pre-existing conditions handling in InsuranceQuoteForm and update schemas 18f46ad
+- create useClaimPage hook for improved state management in ClaimPage b2d3f32
+- define font family and apply styles to body in globals.css a7df66c
+- enhance ClaimForm and InsuranceQuoteForm with improved accessibility 375061f
+- enhance ClaimForm and pages with improved error handling and state management 6c3a245
+- enhance form behavior by disabling submit button until validation 6ba35f8
+- enhance routing and state management for insurance types in pages 686573c
+- extract useUnifiedQuotePage hook for improved state management 0b22614
+- implement Sidebar component for navigation and enhance HomePage layout 0787613
+- implement useHomePage hook for centralized feature and claim options management 0bebc67
+- improved validation and user experience 503269d
+- integrate DOMPurify and html-react-parser for enhanced content rendering in TermsModal 69fa418
+- refactor routing and state management in ClaimPage and UnifiedQuotePage 841cf78
+- remove unused parameter from handleSubmit in ClaimPage ed605fd
+- update FormCheckbox to support link text and improve label handling in InsuranceQuoteForm 76fbcea
+- update FormSelect component to use combobox role and add id prop for accessibility aac430c
+- update phone number handling in forms and schemas for improved validation and user experience 19981a6
+- update terms and conditions in brand-copies for clarity and compliance 0f04b0d
+
+### Bug Fixes
+
+- adjust layout and positioning of Sidebar and footer elements for improved responsiveness f247d22
+- refine type handling in InsuranceQuoteForm for improved type safety a4e12da
+- **release:** correct release-it configuration 489454a
+- update sidebar description and footer year for accuracy b544e63
+
 ## [Unreleased]
 
 ### ✨ Features
