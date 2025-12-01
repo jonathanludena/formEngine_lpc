@@ -424,12 +424,345 @@ import { InsuranceQuoteForm } from '@lpc/form-engine';
 5. **No incluye CSS automático**: Debes importar manualmente `styles.css` o configurar Tailwind
 6. **Versiones fijas**: Todas las dependencias usan versiones fijas (sin `^`)
 
-## 🔗 Links Útiles
+## 📖 Ejemplo Completo de Proyecto Consumidor
 
-- **Documentación completa**: [docs/API.md](./API.md)
-- **Migración v1→v2**: [docs/MIGRATION.md](./MIGRATION.md)
-- **Refactor v2**: [docs/REFACTOR_V2.md](./REFACTOR_V2.md)
-- **Changelog**: [CHANGELOG.md](../CHANGELOG.md)
+A continuación, un ejemplo completo de cómo integrar `@lpc/form-engine` en un proyecto React con Vite.
+
+### Estructura del Proyecto
+
+```
+my-insurance-app/
+├── package.json
+├── vite.config.ts
+├── tsconfig.json
+├── tailwind.config.js
+├── postcss.config.js
+├── index.html
+└── src/
+    ├── main.tsx
+    ├── App.tsx
+    ├── index.css
+    └── pages/
+        ├── QuotePage.tsx
+        └── ClaimPage.tsx
+```
+
+### package.json
+
+```json
+{
+  "name": "my-insurance-app",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-hook-form": "7.53.2",
+    "zod": "3.23.8",
+    "@hookform/resolvers": "3.9.1",
+    "@tanstack/react-query": "5.62.8",
+    "clsx": "2.1.1",
+    "tailwind-merge": "2.5.5",
+    "lucide-react": "0.454.0",
+    "@lpc/form-engine": "2.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.3.4",
+    "typescript": "5.7.2",
+    "vite": "6.4.1",
+    "tailwindcss": "3.4.15",
+    "autoprefixer": "10.4.20",
+    "postcss": "8.4.49"
+  }
+}
+```
+
+### vite.config.ts
+
+```typescript
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
+
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+    },
+  },
+});
+```
+
+### src/main.tsx
+
+```tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import App from './App';
+import './index.css';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
+  </React.StrictMode>
+);
+```
+
+### src/App.tsx
+
+```tsx
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import QuotePage from './pages/QuotePage';
+import ClaimPage from './pages/ClaimPage';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <div className="min-h-screen bg-background">
+        <nav className="border-b">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex gap-4">
+              <Link to="/" className="text-primary hover:underline">
+                Inicio
+              </Link>
+              <Link to="/quote" className="text-primary hover:underline">
+                Cotización
+              </Link>
+              <Link to="/claim" className="text-primary hover:underline">
+                Reclamo
+              </Link>
+            </div>
+          </div>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/quote" element={<QuotePage />} />
+          <Route path="/claim" element={<ClaimPage />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
+  );
+}
+
+function HomePage() {
+  return (
+    <div className="container mx-auto px-4 py-12">
+      <h1 className="text-4xl font-bold mb-4">Mi App de Seguros</h1>
+      <p className="text-muted-foreground">Usando @lpc/form-engine v2.0</p>
+    </div>
+  );
+}
+
+export default App;
+```
+
+### src/pages/QuotePage.tsx
+
+```tsx
+import { useState } from 'react';
+import { InsuranceQuoteForm } from '@lpc/form-engine';
+import type { InsuranceQuoteData, InsuranceType } from '@lpc/form-engine';
+
+export default function QuotePage() {
+  const [insuranceType, setInsuranceType] = useState<InsuranceType>('health');
+
+  const handleSubmit = async (data: InsuranceQuoteData) => {
+    console.log('Cotización enviada:', data);
+
+    try {
+      const response = await fetch('/api/quotes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        alert('Cotización enviada con éxito');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error al enviar cotización');
+    }
+  };
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-4">Solicitar Cotización</h1>
+        <div className="flex gap-4 mb-6">
+          <button
+            onClick={() => setInsuranceType('health')}
+            className={`px-4 py-2 rounded-md ${
+              insuranceType === 'health'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-secondary text-secondary-foreground'
+            }`}
+          >
+            Salud
+          </button>
+          <button
+            onClick={() => setInsuranceType('vehicle')}
+            className={`px-4 py-2 rounded-md ${
+              insuranceType === 'vehicle'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-secondary text-secondary-foreground'
+            }`}
+          >
+            Vehículo
+          </button>
+          <button
+            onClick={() => setInsuranceType('life')}
+            className={`px-4 py-2 rounded-md ${
+              insuranceType === 'life'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-secondary text-secondary-foreground'
+            }`}
+          >
+            Vida
+          </button>
+          <button
+            onClick={() => setInsuranceType('life_savings')}
+            className={`px-4 py-2 rounded-md ${
+              insuranceType === 'life_savings'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-secondary text-secondary-foreground'
+            }`}
+          >
+            Vida y Ahorro
+          </button>
+        </div>
+      </div>
+
+      <InsuranceQuoteForm
+        insuranceType={insuranceType}
+        brandId="lpc"
+        onSubmit={handleSubmit}
+        onCancel={() => window.history.back()}
+      />
+    </div>
+  );
+}
+```
+
+### src/pages/ClaimPage.tsx
+
+```tsx
+import { useState } from 'react';
+import { ClaimForm } from '@lpc/form-engine';
+import type { ClaimFormData } from '@lpc/form-engine';
+
+export default function ClaimPage() {
+  const [insuranceType, setInsuranceType] = useState<'health' | 'vehicle'>('health');
+
+  const handleSubmit = async (data: ClaimFormData) => {
+    console.log('Reclamo enviado:', data);
+
+    try {
+      const response = await fetch('/api/claims', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        alert('Reclamo enviado con éxito');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error al enviar reclamo');
+    }
+  };
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-4">Presentar Reclamo</h1>
+        <div className="flex gap-4 mb-6">
+          <button
+            onClick={() => setInsuranceType('health')}
+            className={`px-4 py-2 rounded-md ${
+              insuranceType === 'health'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-secondary text-secondary-foreground'
+            }`}
+          >
+            Reclamo Salud
+          </button>
+          <button
+            onClick={() => setInsuranceType('vehicle')}
+            className={`px-4 py-2 rounded-md ${
+              insuranceType === 'vehicle'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-secondary text-secondary-foreground'
+            }`}
+          >
+            Reclamo Vehículo
+          </button>
+        </div>
+      </div>
+
+      <ClaimForm
+        insuranceType={insuranceType}
+        brandId="lpc"
+        onSubmit={handleSubmit}
+        onCancel={() => window.history.back()}
+      />
+    </div>
+  );
+}
+```
+
+### Instalación y Ejecución
+
+```bash
+# 1. Crear proyecto
+npm create vite@latest my-insurance-app -- --template react-ts
+cd my-insurance-app
+
+# 2. Instalar dependencias
+npm install react react-dom react-hook-form zod @hookform/resolvers @tanstack/react-query clsx tailwind-merge lucide-react
+
+# 3. Instalar @lpc/form-engine
+npm install ../formEngine_lpc/lpc-form-engine-2.0.0.tgz
+
+# 4. Instalar Tailwind CSS
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+
+# 5. Copiar configuraciones (ver secciones anteriores)
+
+# 6. Ejecutar
+npm run dev
+```
+
+### Bundle Size Esperado
+
+Con tree-shaking optimizado:
+
+- **InsuranceQuoteForm solo**: ~45 kB (gzip: ~12 kB)
+- **ClaimForm solo**: ~38 kB (gzip: ~10 kB)
+- **Ambos formularios**: ~86 kB (gzip: ~25 kB)
 
 ## 📄 Licencia
 

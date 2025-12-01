@@ -177,9 +177,56 @@ function ClaimPage() {
 }
 ```
 
-**📚 Documentación completa**: Ver [docs/INSTALLATION.md](./docs/INSTALLATION.md) y [docs/CONSUMER_EXAMPLE.md](./docs/CONSUMER_EXAMPLE.md)
+**📚 Documentación completa**: Ver [docs/INSTALLATION.md](./docs/INSTALLATION.md)
 
-````
+## 📚 Documentación del Proyecto
+
+La documentación está organizada en la carpeta [`docs/`](./docs/) con las siguientes guías:
+
+### 📦 Instalación y Uso
+
+- **[INSTALLATION.md](./docs/INSTALLATION.md)** - Guía completa de instalación, configuración y uso de la librería como dependencia, incluyendo:
+  - Instalación desde diferentes fuentes (local, GitHub Packages, Git)
+  - Configuración de dependencias y peer dependencies
+  - Configuración de Tailwind CSS y estilos
+  - Ejemplos de uso básico y avanzado
+  - Proyecto consumidor completo con código fuente
+  - Troubleshooting y solución de problemas
+
+### 🏗️ Arquitectura
+
+- **[README_MONOREPO.md](./docs/README_MONOREPO.md)** - Guía completa de la arquitectura del monorepo:
+  - Estructura del proyecto
+  - CustomEvents y comunicación
+  - API Routes y endpoints
+  - Base de datos y modelos Prisma
+  - Seguridad y autenticación
+
+### 🚀 Guías Rápidas
+
+- **[QUICK_START.md](./docs/QUICK_START.md)** - Guía rápida de instalación y ejecución en 5 minutos
+
+### 🚀 Despliegue
+
+- **[DEPLOYMENT.md](./docs/DEPLOYMENT.md)** - Guía completa de despliegue que incluye:
+  - **GitHub Packages**: Publicación de la librería como paquete npm
+  - **GitHub Pages**: Despliegue de la landing page demo
+  - Configuración de tokens y autenticación
+  - Automatización con GitHub Actions
+  - Solución de problemas comunes
+
+### ✅ Verificación
+
+- **[VERIFICATION_CHECKLIST.md](./docs/VERIFICATION_CHECKLIST.md)** - Checklist de verificación post-refactor para asegurar que todo funciona correctamente:
+  - Verificación de componentes UI
+  - Pruebas funcionales
+  - Builds de producción
+  - Seguridad y dependencias
+
+### 📋 Archivos del Paquete
+
+- **[packages/forms/README.md](./packages/forms/README.md)** - Documentación específica del paquete de formularios
+- **[packages/forms/CHANGELOG.md](./packages/forms/CHANGELOG.md)** - Historial de cambios del paquete
 
 ## 🔧 Agregar Nuevos Formularios
 
@@ -208,14 +255,7 @@ Los textos se manejan mediante schemas JSON:
     }
   }
 }
-````
-
-## 🚢 Despliegue
-
-Ver documentación detallada:
-
-- [GitHub Packages](./docs/DEPLOY_GITHUB_PACKAGES.md)
-- [GitHub Pages](./docs/DEPLOY_GITHUB_PAGES.md)
+```
 
 ## 📄 Licencia
 

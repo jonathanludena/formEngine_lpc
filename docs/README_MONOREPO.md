@@ -116,7 +116,7 @@ cd packages/forms
 pnpm publish
 ```
 
-Ver [packages/forms/README.md](packages/forms/README.md) para más detalles.
+Ver [packages/forms/README.md](../packages/forms/README.md) para más detalles.
 
 ### next-host-demo
 
@@ -347,10 +347,10 @@ pnpm db:seed
 
 ## 📚 Documentación Adicional
 
-- [GETTING_STARTED.md](GETTING_STARTED.md) - Guía de inicio
-- [CONVENTIONAL_COMMITS.md](docs/CONVENTIONAL_COMMITS.md) - Commits convencionales
-- [DEPLOY_GITHUB_PACKAGES.md](docs/DEPLOY_GITHUB_PACKAGES.md) - Publicación a GitHub Packages
-- [packages/forms/README.md](packages/forms/README.md) - API de formularios
+- [QUICK_START.md](./QUICK_START.md) - Guía rápida de instalación
+- [INSTALLATION.md](./INSTALLATION.md) - Instalación y uso de la librería
+- [DEPLOYMENT.md](./DEPLOYMENT.md) - Guía de despliegue (Packages + Pages)
+- [packages/forms/README.md](../packages/forms/README.md) - API de formularios
 
 ## 🤝 Contribuir
 

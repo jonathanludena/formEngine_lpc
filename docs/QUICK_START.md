@@ -247,18 +247,12 @@ Después del seed, tendrás:
 
 ## 📚 Siguiente Paso
 
-Lee [README_MONOREPO.md](README_MONOREPO.md) para:
+Lee [README_MONOREPO.md](./README_MONOREPO.md) para:
 
 - Entender la arquitectura completa
 - Aprender sobre CustomEvents
 - Ver ejemplos de integración
 - Conocer todos los endpoints
-
-O lee [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) para:
-
-- Estado de implementación
-- Features completadas vs pendientes
-- Próximos pasos recomendados
 
 ## 💡 Tips de Desarrollo
 
