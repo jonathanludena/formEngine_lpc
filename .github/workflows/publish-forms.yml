@@ -32,9 +32,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build forms package
-        run: pnpm --filter @jonathanludena/forms build
+        run: pnpm --filter @jonathanludena/form-engine build
 
       - name: Publish forms package
-        run: pnpm --filter @jonathanludena/forms publish --no-git-checks
+        run: pnpm --filter @jonathanludena/form-engine publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
