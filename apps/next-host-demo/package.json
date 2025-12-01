@@ -18,7 +18,7 @@
     "audit:fix": "pnpm audit --fix"
   },
   "dependencies": {
-    "@jonathanludena/forms": "workspace:*",
+    "@jonathanludena/forms": "^3.0.0",
     "@prisma/client": "^7.0.1",
     "@tanstack/react-query": "^5.62.8",
     "clsx": "^2.1.1",
