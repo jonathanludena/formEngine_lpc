@@ -5,6 +5,19 @@ All notable changes to the forms package will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0](///compare/forms-v3.1.0...forms-v3.2.0) (2025-12-01)
+
+### Features
+
+- add new `@jonathanludena/forms` package configuration e3995f9
+
+# Changelog - @jonathanludena/forms
+
+All notable changes to the forms package will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [3.1.0](///compare/2.3.1...forms-v3.1.0) (2025-12-01)
 
 ### Features
