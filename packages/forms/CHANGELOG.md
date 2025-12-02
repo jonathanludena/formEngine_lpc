@@ -5,6 +5,26 @@ All notable changes to the form-engine package will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.0](///compare/forms-v3.3.0...forms-v3.4.0) (2025-12-02)
+
+### Features
+
+- Add GitHub Actions workflow to publish forms package 5d060e8
+- Add migration and seeding scripts for Turso database integration 23cb02a
+- Add Next.js TypeScript configuration and new Button and Card UI components 27903b7
+- Update package.json and vercel.json for improved Prisma setup and build commands 92d907a
+
+### Bug Fixes
+
+- correct form-engine package import path in globals.css e7a1b66
+
+# Changelog - @jonathanludena/form-engine
+
+All notable changes to the form-engine package will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [3.3.0](///compare/forms-v3.2.0...forms-v3.3.0) (2025-12-01)
 
 ### Features
