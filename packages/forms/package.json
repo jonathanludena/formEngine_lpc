@@ -1,6 +1,6 @@
 {
   "name": "@jonathanludena/form-engine",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "description": "Insurance forms library with CustomEvents communication",
   "type": "module",
   "main": "./dist/index.cjs",
