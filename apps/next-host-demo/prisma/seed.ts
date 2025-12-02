@@ -1,12 +1,31 @@
 import { config } from 'dotenv';
-config({ path: '.env.local' });
+import { resolve } from 'path';
+
+// Load .env from the app root directory
+config({ path: resolve(__dirname, '..', '.env') });
 
 import { PrismaClient } from '../src/generated/prisma/client';
 import { PrismaLibSql } from '@prisma/adapter-libsql';
 
+// Verify environment variables
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL is not set in .env file');
+}
+
+console.log('📍 DATABASE_URL:', process.env.DATABASE_URL);
+console.log('🔑 TURSO_AUTH_TOKEN:', process.env.TURSO_AUTH_TOKEN ? '✓ Present' : '✗ Missing');
+
+// Create adapter configuration for Turso
+const isTurso = process.env.DATABASE_URL?.startsWith('libsql://');
+
 const adapter = new PrismaLibSql({
-  url: process.env.DATABASE_URL || 'file:./prisma/dev.db',
+  url: process.env.DATABASE_URL,
+  // Add auth token for Turso
+  ...(isTurso && process.env.TURSO_AUTH_TOKEN
+    ? { authToken: process.env.TURSO_AUTH_TOKEN }
+    : {}),
 });
+
 const prisma = new PrismaClient({ adapter });
 
 async function main() {

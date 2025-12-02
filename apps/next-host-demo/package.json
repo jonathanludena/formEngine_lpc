@@ -13,7 +13,8 @@
     "prisma:studio": "prisma studio",
     "db:push": "prisma db push",
     "db:seed": "pnpm prisma:generate && pnpm prisma:seed",
-    "db:setup:turso": "prisma db push && tsx prisma/seed.ts",
+    "db:setup:turso": "tsx prisma/migrate-turso.ts && tsx prisma/seed.ts",
+    "db:migrate:turso": "tsx prisma/migrate-turso.ts",
     "audit": "pnpm audit --audit-level=moderate",
     "audit:fix": "pnpm audit --fix"
   },
