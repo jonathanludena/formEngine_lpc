@@ -2,6 +2,6 @@
   "git": {
     "ignoreCommand": "git diff --quiet HEAD^ HEAD ./"
   },
-  "buildCommand": "cd ../.. && pnpm install && cd packages/forms && pnpm build && cd ../../apps/next-host-demo && pnpm build",
+  "buildCommand": "cd ../.. && pnpm install && cd packages/forms && pnpm build && cd ../../apps/next-host-demo && rm -rf .next && pnpm build",
   "installCommand": "cd ../.. && pnpm install"
 }
