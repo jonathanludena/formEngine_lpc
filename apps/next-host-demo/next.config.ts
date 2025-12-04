@@ -50,6 +50,16 @@ const nextConfig: NextConfig = {
     return config;
   },
 
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true,
+      },
+    ];
+  },
+
   // Security headers
   async headers() {
     return [
