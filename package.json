@@ -26,14 +26,14 @@
   "author": "LPC",
   "license": "MIT",
   "devDependencies": {
-    "@commitlint/cli": "^20.1.0",
-    "@commitlint/config-conventional": "^20.0.0",
-    "@release-it/conventional-changelog": "^10.0.2",
-    "conventional-changelog-conventionalcommits": "^9.1.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
-    "prettier": "^3.6.2",
-    "release-it": "^19.0.6"
+    "@commitlint/cli": "20.1.0",
+    "@commitlint/config-conventional": "20.0.0",
+    "@release-it/conventional-changelog": "10.0.2",
+    "conventional-changelog-conventionalcommits": "9.1.0",
+    "husky": "9.1.7",
+    "lint-staged": "16.2.7",
+    "prettier": "3.6.2",
+    "release-it": "19.0.6"
   },
   "repository": {
     "type": "git",
