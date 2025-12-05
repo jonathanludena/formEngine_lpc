@@ -91,6 +91,41 @@ const Select: React.FC<SelectProps> = ({
 
   const selectedLabel = options.find(opt => opt.value === selectedValue)?.label || placeholder;
 
+  const dropdownPortal = (isOpen && dropdownStyle
+    ? createPortal(
+        <div
+          ref={dropdownRef}
+          style={{ position: 'absolute', top: dropdownStyle.top, left: dropdownStyle.left, width: dropdownStyle.width }}
+          className="z-50 mt-1 rounded-md border bg-popover text-popover-foreground shadow-md"
+        >
+          <div className="max-h-[300px] overflow-y-auto p-1">
+            {options.map((option) => (
+              <div
+                key={option.value}
+                onClick={() => handleSelect(option.value)}
+                className={clsx(
+                  'relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm',
+                  'outline-none transition-colors',
+                  'hover:bg-accent hover:text-accent-foreground',
+                  'focus:bg-accent focus:text-accent-foreground',
+                  selectedValue === option.value && 'bg-accent'
+                )}
+              >
+                <Check
+                  className={clsx(
+                    'mr-2 h-4 w-4',
+                    selectedValue === option.value ? 'opacity-100' : 'opacity-0'
+                  )}
+                />
+                <span>{option.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>,
+        document.body
+      )
+    : null) as React.ReactNode;
+
   return (
     <div ref={selectRef} className={clsx('relative', className)}>
       <button
@@ -114,39 +149,7 @@ const Select: React.FC<SelectProps> = ({
         <ChevronDown className={clsx('h-4 w-4 opacity-50 transition-transform', isOpen && 'rotate-180')} />
       </button>
 
-      {isOpen && dropdownStyle &&
-        createPortal(
-          <div
-            ref={dropdownRef}
-            style={{ position: 'absolute', top: dropdownStyle.top, left: dropdownStyle.left, width: dropdownStyle.width }}
-            className="z-50 mt-1 rounded-md border bg-popover text-popover-foreground shadow-md"
-          >
-            <div className="max-h-[300px] overflow-y-auto p-1">
-              {options.map((option) => (
-                <div
-                  key={option.value}
-                  onClick={() => handleSelect(option.value)}
-                  className={clsx(
-                    'relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm',
-                    'outline-none transition-colors',
-                    'hover:bg-accent hover:text-accent-foreground',
-                    'focus:bg-accent focus:text-accent-foreground',
-                    selectedValue === option.value && 'bg-accent'
-                  )}
-                >
-                  <Check
-                    className={clsx(
-                      'mr-2 h-4 w-4',
-                      selectedValue === option.value ? 'opacity-100' : 'opacity-0'
-                    )}
-                  />
-                  <span>{option.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>,
-          document.body
-        )}
+      {dropdownPortal}
     </div>
   );
 };
