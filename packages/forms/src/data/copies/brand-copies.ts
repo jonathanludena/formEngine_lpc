@@ -1,4 +1,4 @@
-import { BrandId } from '@/lib/types';
+import { BrandId } from '@/types';
 
 export interface BrandCopies {
   quoteForm: {

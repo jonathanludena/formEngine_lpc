@@ -5,7 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { FormField, FormSelect, FormCheckbox } from '../components/atoms';
+import { FormField, FormCheckbox } from '../components/atoms';
 import { Loader2 } from 'lucide-react';
 import { FORM_EVENTS } from '../events/constants';
 import {
@@ -15,7 +15,7 @@ import {
   FormResultDetail,
   isFormSubmitLoading,
 } from '../events/types';
-import { QuoteFormData, BrandId, InsuranceType } from '../types';
+import { QuoteFormData, BrandId } from '../types';
 import { getBrandCopies } from '../data';
 import { healthQuoteSchema } from '../lib/schemas';
 
@@ -27,7 +27,6 @@ export const InsuranceQuoteForm = forwardRef<HTMLDivElement, InsuranceQuoteFormP
   ({ className }, ref) => {
     const rootRef = useRef<HTMLDivElement>(null);
     const [brand, setBrand] = useState<BrandId>('LPC001');
-    const [insuranceType, setInsuranceType] = useState<InsuranceType>('health');
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState<FormResultDetail | null>(null);
 
@@ -67,11 +66,10 @@ export const InsuranceQuoteForm = forwardRef<HTMLDivElement, InsuranceQuoteFormP
         const { brand: newBrand, insurance, initialData } = customEvent.detail;
 
         if (newBrand) setBrand(newBrand as BrandId);
-        if (insurance) setInsuranceType(insurance as InsuranceType);
 
         if (initialData) {
           reset({
-            insuranceType: insurance as InsuranceType,
+            insuranceType: insurance,
             ...initialData,
           } as Partial<QuoteFormData>);
         }
