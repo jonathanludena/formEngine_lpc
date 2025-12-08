@@ -11,12 +11,12 @@ import type {
 
 // Dynamic imports with no SSR
 const ClaimForm = dynamic(
-  () => import('@jonathanludena/form-engine').then((mod) => ({ default: mod.ClaimForm })),
+  () => import('@jonathanludena/form-engine').then((mod) => mod.ClaimForm),
   { ssr: false, loading: () => <FormSkeleton /> }
 );
 
 const InsuranceQuoteForm = dynamic(
-  () => import('@jonathanludena/form-engine').then((mod) => ({ default: mod.InsuranceQuoteForm })),
+  () => import('@jonathanludena/form-engine').then((mod) => mod.InsuranceQuoteForm),
   { ssr: false, loading: () => <FormSkeleton /> }
 );
 
