@@ -25,16 +25,6 @@ function ErrorDisplay({ message }: { message: string }) {
   );
 }
 
-function PageHeader() {
-  return (
-    <div>
-      <h1 className="text-3xl font-bold text-gray-900">Registrar Siniestro de Salud</h1>
-      <p className="text-muted-foreground mt-2">
-        Completa el formulario para registrar tu siniestro y recibir asistencia.
-      </p>
-    </div>
-  );
-}
 
 // --- Main Handler ---
 
@@ -83,7 +73,6 @@ export default function ClaimHealthPage() {
   
   return (
     <div className="space-y-6">
-      <PageHeader />
       <FormHostShell formType="claim" config={config} onSubmit={handleSubmit} />
     </div>
   );
