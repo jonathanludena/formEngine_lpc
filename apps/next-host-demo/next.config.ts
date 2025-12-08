@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   // React 19 configuration
   reactStrictMode: true,
   
+  // Output configuration for optimal production build
+  output: 'standalone',
+  
   // Security: Allow dev origins (CVE-2025-48068 mitigation)
   allowedDevOrigins: ['localhost:3000', '127.0.0.1:3000'],
   
@@ -16,7 +19,7 @@ const nextConfig: NextConfig = {
   },
 
   // Webpack configuration to ignore problematic files from libsql
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, webpack }) => {
     if (!isServer) {
       // Client-side: ignore server-only packages
       config.resolve = config.resolve || {};
@@ -25,6 +28,7 @@ const nextConfig: NextConfig = {
         fs: false,
         net: false,
         tls: false,
+        crypto: false,
       };
     } else {
       // Server-side: externalize libsql packages to avoid bundling issues
@@ -46,6 +50,12 @@ const nextConfig: NextConfig = {
       test: /\.md$/,
       type: 'asset/source',
     });
+    
+    // Suppress specific warnings
+    config.ignoreWarnings = [
+      /Critical dependency: the request of a dependency is an expression/,
+      /Module not found: Can't resolve 'encoding'/,
+    ];
     
     return config;
   },

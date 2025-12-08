@@ -17,7 +17,8 @@
     "db:setup:turso": "tsx prisma/migrate-turso.ts && tsx prisma/seed.ts",
     "db:migrate:turso": "tsx prisma/migrate-turso.ts",
     "audit": "pnpm audit --audit-level=moderate",
-    "audit:fix": "pnpm audit --fix"
+    "audit:fix": "pnpm audit --fix",
+    "verify:deploy": "node scripts/verify-deploy.js"
   },
   "dependencies": {
     "@jonathanludena/form-engine": "workspace:*",

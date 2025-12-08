@@ -14,6 +14,8 @@
     "test": "pnpm --recursive test",
     "db:setup": "pnpm --filter next-host-demo db:push && pnpm --filter next-host-demo db:seed",
     "clean": "pnpm --recursive exec rm -rf node_modules dist .next",
+    "clean:install": "pnpm clean && pnpm install",
+    "clean:build": "pnpm clean:install && pnpm build",
     "prepare": "husky"
   },
   "keywords": [
