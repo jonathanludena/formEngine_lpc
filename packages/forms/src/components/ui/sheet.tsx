@@ -75,14 +75,15 @@ const SheetTrigger = React.forwardRef<
   };
 
   if (asChild && React.isValidElement(children)) {
-    const child = children as React.ReactElement;
+    const child = children as React.ReactElement<any>;
     return React.cloneElement(child, {
+      ...child.props,
       onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
         handleClick(e);
         const childOnClick = (child.props as Record<string, unknown>)['onClick'];
-        if (typeof childOnClick === 'function') (
-          childOnClick as (event: React.MouseEvent<HTMLButtonElement>) => void
-        )(e);
+        if (typeof childOnClick === 'function') {
+          (childOnClick as (event: React.MouseEvent<HTMLButtonElement>) => void)(e);
+        }
       },
     });
   }

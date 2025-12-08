@@ -43,11 +43,11 @@
     "@hookform/resolvers": "3.9.0",
     "clsx": "2.1.0",
     "lucide-react": "0.454.0",
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0",
+    "react": ">=18.0.0 <20.0.0",
+    "react-dom": ">=18.0.0 <20.0.0",
     "react-hook-form": "7.53.0",
     "tailwind-merge": "2.5.0",
-    "zod": "3.23.0"
+    "zod": "3.24.1"
   },
   "devDependencies": {
     "@commitlint/cli": "20.1.0",
@@ -59,8 +59,8 @@
     "@rollup/plugin-terser": "0.4.4",
     "@rollup/plugin-typescript": "12.1.1",
     "@types/node": "24.10.1",
-    "@types/react": "18.3.12",
-    "@types/react-dom": "18.3.1",
+    "@types/react": "19.0.2",
+    "@types/react-dom": "19.0.2",
     "@typescript-eslint/eslint-plugin": "8.15.0",
     "@typescript-eslint/parser": "8.15.0",
     "autoprefixer": "10.4.20",
@@ -71,8 +71,8 @@
     "html-react-parser": "5.2.10",
     "lucide-react": "0.454.0",
     "postcss": "8.4.49",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "19.2.1",
+    "react-dom": "19.2.1",
     "react-hook-form": "7.53.2",
     "release-it": "19.0.6",
     "rollup": "4.28.1",
@@ -83,7 +83,7 @@
     "tailwindcss": "3.4.15",
     "typescript": "5.7.2",
     "vitest": "4.0.13",
-    "zod": "3.23.8"
+    "zod": "3.24.1"
   },
   "repository": {
     "type": "git",
