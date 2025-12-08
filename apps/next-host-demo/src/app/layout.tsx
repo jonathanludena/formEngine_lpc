@@ -9,6 +9,9 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Insurance Demo - LPC Broker',
   description: 'Sistema de gestión de seguros y cotizaciones',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
