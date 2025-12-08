@@ -5,6 +5,32 @@ All notable changes to the form-engine package will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.0](///compare/forms-v3.5.0...forms-v3.6.0) (2025-12-08)
+
+### Features
+
+- add CSS module declaration and update tsconfig for type exclusions b10ce5d
+- implement health claim loading and configuration logic 07682ee
+- refactor dropdown rendering logic in Select component for improved readability 77af35f
+
+### Bug Fixes
+
+- add redirects from /home to / for improved navigation f07c156
+- convert (app) layout to Server Component to resolve client-reference-manifest error e9bc3c6
+- eliminar route group (app) para resolver error de manifest en Vercel 914873f
+- forzar limpieza completa de cache en Vercel 80fb204
+- remove outdated deployment and security documentation for Vercel and Turso 607bd56
+- remove standalone output mode to fix client-reference-manifest error in Vercel 87b8bfc
+- update dependency versions to remove caret (^) for consistency 09f4930
+- update import paths and remove unused insurance type state in InsuranceQuoteForm 591f120
+
+# Changelog - @jonathanludena/form-engine
+
+All notable changes to the form-engine package will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [3.5.0](///compare/forms-v3.4.0...forms-v3.5.0) (2025-12-02)
 
 ### Bug Fixes
