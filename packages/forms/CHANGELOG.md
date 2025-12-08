@@ -5,6 +5,24 @@ All notable changes to the form-engine package will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.0](///compare/forms-v3.6.0...forms-v3.7.0) (2025-12-08)
+
+### Features
+
+- optimize Vercel build process and add pre-deploy verification script 055cdea
+
+### Bug Fixes
+
+- simplify dynamic imports for ClaimForm and InsuranceQuoteForm 372747f
+- update React and zod dependencies, improve type safety in SheetTrigger component ac30bb9
+
+# Changelog - @jonathanludena/form-engine
+
+All notable changes to the form-engine package will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [3.6.0](///compare/forms-v3.5.0...forms-v3.6.0) (2025-12-08)
 
 ### Features
