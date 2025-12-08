@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Heart, Car, DollarSign, AlertCircle, ArrowRight } from 'lucide-react';
+import { AlertCircle, ArrowRight, Heart } from 'lucide-react';
+import Link from 'next/link';
 
 export default function HomePage() {
   return (
