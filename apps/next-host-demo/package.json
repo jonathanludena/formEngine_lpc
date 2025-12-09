@@ -23,6 +23,7 @@
   "dependencies": {
     "@jonathanludena/form-engine": "workspace:*",
     "@prisma/client": "7.0.1",
+    "@upstash/redis": "1.34.3",
     "@tanstack/react-query": "5.62.8",
     "clsx": "2.1.1",
     "jose": "5.10.0",
