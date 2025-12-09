@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { getClaimStartConfigByToken } from '@/lib/redisClaimStart';
 
 const claimSchema = z.object({
   customerId: z.string().optional(),
@@ -81,8 +82,28 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
+    const token = searchParams.get('tk');
+    const insuranceTypeParam = searchParams.get('insuranceType');
     const customerId = searchParams.get('customerId');
     const policyNumber = searchParams.get('policyNumber');
+
+    if (token) {
+      try {
+        const insuranceType = insuranceTypeParam === 'vehicle' || insuranceTypeParam === 'vehicule'
+          ? 'vehicule'
+          : 'health';
+        const config = await getClaimStartConfigByToken(token, insuranceType);
+
+        if (!config) {
+          return NextResponse.json({ error: 'No claim start data for token' }, { status: 404 });
+        }
+
+        return NextResponse.json({ success: true, data: config });
+      } catch (error) {
+        console.error('Error fetching claim start data from Redis:', error);
+        return NextResponse.json({ error: 'Failed to load claim start data' }, { status: 500 });
+      }
+    }
 
     const where: Record<string, unknown> = {};
     if (customerId) where.customerId = customerId;

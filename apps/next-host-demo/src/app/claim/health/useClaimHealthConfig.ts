@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import type { FormStartDetail } from '@jonathanludena/form-engine';
 import type { Policy, PolicyListItem, Dependent, MedicalCenter, SelectOption } from './types';
+import { useClaimToken } from '@/hooks/useClaimToken';
 
 const API_BASE_URL = '/api';
 
@@ -105,6 +106,7 @@ interface UseClaimHealthConfigReturn {
  * @param policyId - The ID of the policy to load.
  */
 export function useClaimHealthConfig(policyId: string): UseClaimHealthConfigReturn {
+  const { token } = useClaimToken();
   const [config, setConfig] = useState<FormStartDetail | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -115,19 +117,25 @@ export function useClaimHealthConfig(policyId: string): UseClaimHealthConfigRetu
       setError(null);
 
       try {
-        const policyData = await fetchData<Policy>(
-          `${API_BASE_URL}/insured/${policyId}`,
-          'Failed to fetch policy data'
-        );
+        if (token) {
+          const tokenConfig = await fetchData<FormStartDetail>(
+            `${API_BASE_URL}/claims?tk=${token}&insuranceType=health`,
+            'Failed to fetch claim start data from Redis'
+          );
+          setConfig(tokenConfig);
+          return;
+        }
+
+        const policyData = await fetchData<Policy>(`${API_BASE_URL}/insured/${policyId}`, 'Failed to fetch policy data');
 
         const customerPolicies = await fetchData<PolicyListItem[]>(
           `${API_BASE_URL}/customers/${policyData.customerId}/policies?insuranceType=health`,
           'Failed to fetch customer policies'
         );
-        
+
         const availablePolicies = transformPoliciesToOptions(customerPolicies);
         const formConfig = buildFormConfig(policyData, availablePolicies);
-        
+
         setConfig(formConfig);
 
       } catch (err) {
@@ -140,10 +148,10 @@ export function useClaimHealthConfig(policyId: string): UseClaimHealthConfigRetu
       }
     }
 
-    if (policyId) {
+    if (token || policyId) {
       loadInitialData();
     }
-  }, [policyId]);
+  }, [policyId, token]);
 
   return { config, isLoading, error };
 }

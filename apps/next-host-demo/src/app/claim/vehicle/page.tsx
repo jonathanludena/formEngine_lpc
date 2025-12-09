@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { FormHostShell } from '@/components/organisms/FormHostShell';
 import { useClaimVehicleConfig } from './useClaimVehicleConfig';
 import { ClaimVehicleLoading } from './ClaimVehicleLoading';
@@ -59,7 +60,7 @@ async function handleSubmit(data: unknown) {
 
 // --- Main Component ---
 
-export default function ClaimVehiclePage() {
+function ClaimVehicleContent() {
   const { config, isLoading, error } = useClaimVehicleConfig(POLICY_ID_TO_LOAD);
 
   if (isLoading) {
@@ -78,5 +79,13 @@ export default function ClaimVehiclePage() {
     <div className="space-y-6">
       <FormHostShell formType="claim" config={config} onSubmit={handleSubmit} />
     </div>
+  );
+}
+
+export default function ClaimVehiclePage() {
+  return (
+    <Suspense fallback={<ClaimVehicleLoading />}>
+      <ClaimVehicleContent />
+    </Suspense>
   );
 }

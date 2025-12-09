@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import type { FormStartDetail } from '@jonathanludena/form-engine';
 import type { Policy, PolicyListItem, SelectOption } from './types';
+import { useClaimToken } from '@/hooks/useClaimToken';
 
 const API_BASE_URL = '/api';
 
@@ -79,6 +80,7 @@ interface UseClaimVehicleConfigReturn {
  * @param policyNumber - The policy number to load data for.
  */
 export function useClaimVehicleConfig(policyNumber: string): UseClaimVehicleConfigReturn {
+  const { token } = useClaimToken();
   const [config, setConfig] = useState<FormStartDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -89,6 +91,15 @@ export function useClaimVehicleConfig(policyNumber: string): UseClaimVehicleConf
       setError(null);
 
       try {
+        if (token) {
+          const tokenConfig = await fetchData<FormStartDetail>(
+            `${API_BASE_URL}/claims?tk=${token}&insuranceType=vehicle`,
+            'No se pudieron cargar datos de inicio desde Redis'
+          );
+          setConfig(tokenConfig);
+          return;
+        }
+
         // 1. Load main policy data
         const policyData = await fetchData<Policy>(
           `${API_BASE_URL}/insured/${policyNumber}`,
@@ -122,8 +133,10 @@ export function useClaimVehicleConfig(policyNumber: string): UseClaimVehicleConf
       }
     }
 
-    loadClaimVehicleData();
-  }, [policyNumber]);
+    if (token || policyNumber) {
+      loadClaimVehicleData();
+    }
+  }, [policyNumber, token]);
 
   return { config, isLoading, error };
 }

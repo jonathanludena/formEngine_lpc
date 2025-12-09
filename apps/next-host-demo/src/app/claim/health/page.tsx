@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { FormHostShell } from '@/components/organisms/FormHostShell';
 import { useClaimHealthConfig } from './useClaimHealthConfig';
 import { ClaimHealthLoading } from './ClaimHealthLoading';
@@ -60,7 +61,7 @@ async function handleSubmit(data: unknown) {
 
 // --- Main Page Component ---
 
-export default function ClaimHealthPage() {
+function ClaimHealthContent() {
   const { config, isLoading, error } = useClaimHealthConfig(POLICY_ID_TO_LOAD);
 
   if (isLoading) {
@@ -77,3 +78,11 @@ export default function ClaimHealthPage() {
     </div>
   );
 }
+
+  export default function ClaimHealthPage() {
+    return (
+      <Suspense fallback={<ClaimHealthLoading />}>
+        <ClaimHealthContent />
+      </Suspense>
+    );
+  }
