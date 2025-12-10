@@ -402,7 +402,8 @@ export const ModelName = {
   Dependent: 'Dependent',
   Prospect: 'Prospect',
   Quote: 'Quote',
-  Claim: 'Claim'
+  Claim: 'Claim',
+  ClaimDocument: 'ClaimDocument'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -418,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "broker" | "insurer" | "plan" | "medicalCenter" | "planMedicalCenter" | "vehicleMake" | "vehicleModel" | "vehicleType" | "province" | "canton" | "occupation" | "maritalStatus" | "idDocumentType" | "customer" | "insured" | "dependent" | "prospect" | "quote" | "claim"
+    modelProps: "broker" | "insurer" | "plan" | "medicalCenter" | "planMedicalCenter" | "vehicleMake" | "vehicleModel" | "vehicleType" | "province" | "canton" | "occupation" | "maritalStatus" | "idDocumentType" | "customer" | "insured" | "dependent" | "prospect" | "quote" | "claim" | "claimDocument"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1828,6 +1829,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ClaimDocument: {
+      payload: Prisma.$ClaimDocumentPayload<ExtArgs>
+      fields: Prisma.ClaimDocumentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ClaimDocumentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClaimDocumentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ClaimDocumentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClaimDocumentPayload>
+        }
+        findFirst: {
+          args: Prisma.ClaimDocumentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClaimDocumentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ClaimDocumentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClaimDocumentPayload>
+        }
+        findMany: {
+          args: Prisma.ClaimDocumentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClaimDocumentPayload>[]
+        }
+        create: {
+          args: Prisma.ClaimDocumentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClaimDocumentPayload>
+        }
+        createMany: {
+          args: Prisma.ClaimDocumentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ClaimDocumentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClaimDocumentPayload>[]
+        }
+        delete: {
+          args: Prisma.ClaimDocumentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClaimDocumentPayload>
+        }
+        update: {
+          args: Prisma.ClaimDocumentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClaimDocumentPayload>
+        }
+        deleteMany: {
+          args: Prisma.ClaimDocumentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ClaimDocumentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ClaimDocumentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClaimDocumentPayload>[]
+        }
+        upsert: {
+          args: Prisma.ClaimDocumentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClaimDocumentPayload>
+        }
+        aggregate: {
+          args: Prisma.ClaimDocumentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateClaimDocument>
+        }
+        groupBy: {
+          args: Prisma.ClaimDocumentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClaimDocumentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ClaimDocumentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClaimDocumentCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2125,6 +2200,7 @@ export const ClaimScalarFieldEnum = {
   id: 'id',
   customerId: 'customerId',
   insurerId: 'insurerId',
+  dependentId: 'dependentId',
   policyNumber: 'policyNumber',
   claimType: 'claimType',
   insuranceType: 'insuranceType',
@@ -2134,11 +2210,32 @@ export const ClaimScalarFieldEnum = {
   status: 'status',
   estimatedAmount: 'estimatedAmount',
   approvedAmount: 'approvedAmount',
+  medicalCenterId: 'medicalCenterId',
+  diagnosis: 'diagnosis',
+  vehiclePlate: 'vehiclePlate',
+  location: 'location',
+  policeReportNumber: 'policeReportNumber',
+  hasThirdParty: 'hasThirdParty',
+  thirdPartyName: 'thirdPartyName',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type ClaimScalarFieldEnum = (typeof ClaimScalarFieldEnum)[keyof typeof ClaimScalarFieldEnum]
+
+
+export const ClaimDocumentScalarFieldEnum = {
+  id: 'id',
+  claimId: 'claimId',
+  documentType: 'documentType',
+  fileName: 'fileName',
+  fileUrl: 'fileUrl',
+  fileSize: 'fileSize',
+  mimeType: 'mimeType',
+  uploadedAt: 'uploadedAt'
+} as const
+
+export type ClaimDocumentScalarFieldEnum = (typeof ClaimDocumentScalarFieldEnum)[keyof typeof ClaimDocumentScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2295,6 +2392,7 @@ export type GlobalOmitConfig = {
   prospect?: Prisma.ProspectOmit
   quote?: Prisma.QuoteOmit
   claim?: Prisma.ClaimOmit
+  claimDocument?: Prisma.ClaimDocumentOmit
 }
 
 /* Types for Logging */

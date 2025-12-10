@@ -264,20 +264,55 @@ model Quote {
 
 // Claim (Reclamo)
 model Claim {
-  id                     String   @id @default(uuid())
+  id                     String          @id @default(uuid())
   customerId             String
-  customer               Customer @relation(fields: [customerId], references: [id])
+  customer               Customer        @relation(fields: [customerId], references: [id])
   insurerId              String?
-  insurer                Insurer? @relation(fields: [insurerId], references: [id])
+  insurer                Insurer?        @relation(fields: [insurerId], references: [id])
+  dependentId            String?         // Optional: if claim is for a dependent
   policyNumber           String
   claimType              String
-  insuranceType          String   // health, vehicle
+  insuranceType          String          // health, vehicle
   incidentDate           DateTime
   description            String
-  claimData              String   // JSON string with claim-specific details
-  status                 String   @default("submitted") // submitted, under_review, approved, rejected, paid
+  claimData              String          // JSON string with claim-specific details
+  status                 String          @default("submitted") // submitted, under_review, approved, rejected, paid
   estimatedAmount        Float?
   approvedAmount         Float?
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
+  // Health-specific fields (for better querying)
+  medicalCenterId        String?
+  diagnosis              String?
+  // Vehicle-specific fields (for better querying)
+  vehiclePlate           String?
+  location               String?
+  policeReportNumber     String?
+  // Third party information
+  hasThirdParty          Boolean?
+  thirdPartyName         String?
+  createdAt              DateTime        @default(now())
+  updatedAt              DateTime        @updatedAt
+  documents              ClaimDocument[]
+
+  @@index([policyNumber])
+  @@index([customerId])
+  @@index([insurerId])
+  @@index([status])
+  @@index([claimType])
+  @@index([incidentDate])
+}
+
+// Claim Document (Documentos adjuntos al reclamo)
+model ClaimDocument {
+  id                     String   @id @default(uuid())
+  claimId                String
+  claim                  Claim    @relation(fields: [claimId], references: [id], onDelete: Cascade)
+  documentType           String   // insurerForm, medicalPrescription, insuredVehiclePhotos, etc.
+  fileName               String
+  fileUrl                String   // URL or path to the stored file
+  fileSize               Int?     // File size in bytes
+  mimeType               String?  // image/jpeg, application/pdf, etc.
+  uploadedAt             DateTime @default(now())
+
+  @@index([claimId])
+  @@index([documentType])
 }

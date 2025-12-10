@@ -69,7 +69,8 @@ export const ModelName = {
   Dependent: 'Dependent',
   Prospect: 'Prospect',
   Quote: 'Quote',
-  Claim: 'Claim'
+  Claim: 'Claim',
+  ClaimDocument: 'ClaimDocument'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -346,6 +347,7 @@ export const ClaimScalarFieldEnum = {
   id: 'id',
   customerId: 'customerId',
   insurerId: 'insurerId',
+  dependentId: 'dependentId',
   policyNumber: 'policyNumber',
   claimType: 'claimType',
   insuranceType: 'insuranceType',
@@ -355,11 +357,32 @@ export const ClaimScalarFieldEnum = {
   status: 'status',
   estimatedAmount: 'estimatedAmount',
   approvedAmount: 'approvedAmount',
+  medicalCenterId: 'medicalCenterId',
+  diagnosis: 'diagnosis',
+  vehiclePlate: 'vehiclePlate',
+  location: 'location',
+  policeReportNumber: 'policeReportNumber',
+  hasThirdParty: 'hasThirdParty',
+  thirdPartyName: 'thirdPartyName',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type ClaimScalarFieldEnum = (typeof ClaimScalarFieldEnum)[keyof typeof ClaimScalarFieldEnum]
+
+
+export const ClaimDocumentScalarFieldEnum = {
+  id: 'id',
+  claimId: 'claimId',
+  documentType: 'documentType',
+  fileName: 'fileName',
+  fileUrl: 'fileUrl',
+  fileSize: 'fileSize',
+  mimeType: 'mimeType',
+  uploadedAt: 'uploadedAt'
+} as const
+
+export type ClaimDocumentScalarFieldEnum = (typeof ClaimDocumentScalarFieldEnum)[keyof typeof ClaimDocumentScalarFieldEnum]
 
 
 export const SortOrder = {

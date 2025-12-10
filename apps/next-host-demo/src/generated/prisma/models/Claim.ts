@@ -40,6 +40,7 @@ export type ClaimMinAggregateOutputType = {
   id: string | null
   customerId: string | null
   insurerId: string | null
+  dependentId: string | null
   policyNumber: string | null
   claimType: string | null
   insuranceType: string | null
@@ -49,6 +50,13 @@ export type ClaimMinAggregateOutputType = {
   status: string | null
   estimatedAmount: number | null
   approvedAmount: number | null
+  medicalCenterId: string | null
+  diagnosis: string | null
+  vehiclePlate: string | null
+  location: string | null
+  policeReportNumber: string | null
+  hasThirdParty: boolean | null
+  thirdPartyName: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -57,6 +65,7 @@ export type ClaimMaxAggregateOutputType = {
   id: string | null
   customerId: string | null
   insurerId: string | null
+  dependentId: string | null
   policyNumber: string | null
   claimType: string | null
   insuranceType: string | null
@@ -66,6 +75,13 @@ export type ClaimMaxAggregateOutputType = {
   status: string | null
   estimatedAmount: number | null
   approvedAmount: number | null
+  medicalCenterId: string | null
+  diagnosis: string | null
+  vehiclePlate: string | null
+  location: string | null
+  policeReportNumber: string | null
+  hasThirdParty: boolean | null
+  thirdPartyName: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -74,6 +90,7 @@ export type ClaimCountAggregateOutputType = {
   id: number
   customerId: number
   insurerId: number
+  dependentId: number
   policyNumber: number
   claimType: number
   insuranceType: number
@@ -83,6 +100,13 @@ export type ClaimCountAggregateOutputType = {
   status: number
   estimatedAmount: number
   approvedAmount: number
+  medicalCenterId: number
+  diagnosis: number
+  vehiclePlate: number
+  location: number
+  policeReportNumber: number
+  hasThirdParty: number
+  thirdPartyName: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -103,6 +127,7 @@ export type ClaimMinAggregateInputType = {
   id?: true
   customerId?: true
   insurerId?: true
+  dependentId?: true
   policyNumber?: true
   claimType?: true
   insuranceType?: true
@@ -112,6 +137,13 @@ export type ClaimMinAggregateInputType = {
   status?: true
   estimatedAmount?: true
   approvedAmount?: true
+  medicalCenterId?: true
+  diagnosis?: true
+  vehiclePlate?: true
+  location?: true
+  policeReportNumber?: true
+  hasThirdParty?: true
+  thirdPartyName?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -120,6 +152,7 @@ export type ClaimMaxAggregateInputType = {
   id?: true
   customerId?: true
   insurerId?: true
+  dependentId?: true
   policyNumber?: true
   claimType?: true
   insuranceType?: true
@@ -129,6 +162,13 @@ export type ClaimMaxAggregateInputType = {
   status?: true
   estimatedAmount?: true
   approvedAmount?: true
+  medicalCenterId?: true
+  diagnosis?: true
+  vehiclePlate?: true
+  location?: true
+  policeReportNumber?: true
+  hasThirdParty?: true
+  thirdPartyName?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -137,6 +177,7 @@ export type ClaimCountAggregateInputType = {
   id?: true
   customerId?: true
   insurerId?: true
+  dependentId?: true
   policyNumber?: true
   claimType?: true
   insuranceType?: true
@@ -146,6 +187,13 @@ export type ClaimCountAggregateInputType = {
   status?: true
   estimatedAmount?: true
   approvedAmount?: true
+  medicalCenterId?: true
+  diagnosis?: true
+  vehiclePlate?: true
+  location?: true
+  policeReportNumber?: true
+  hasThirdParty?: true
+  thirdPartyName?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -241,6 +289,7 @@ export type ClaimGroupByOutputType = {
   id: string
   customerId: string
   insurerId: string | null
+  dependentId: string | null
   policyNumber: string
   claimType: string
   insuranceType: string
@@ -250,6 +299,13 @@ export type ClaimGroupByOutputType = {
   status: string
   estimatedAmount: number | null
   approvedAmount: number | null
+  medicalCenterId: string | null
+  diagnosis: string | null
+  vehiclePlate: string | null
+  location: string | null
+  policeReportNumber: string | null
+  hasThirdParty: boolean | null
+  thirdPartyName: string | null
   createdAt: Date
   updatedAt: Date
   _count: ClaimCountAggregateOutputType | null
@@ -281,6 +337,7 @@ export type ClaimWhereInput = {
   id?: Prisma.StringFilter<"Claim"> | string
   customerId?: Prisma.StringFilter<"Claim"> | string
   insurerId?: Prisma.StringNullableFilter<"Claim"> | string | null
+  dependentId?: Prisma.StringNullableFilter<"Claim"> | string | null
   policyNumber?: Prisma.StringFilter<"Claim"> | string
   claimType?: Prisma.StringFilter<"Claim"> | string
   insuranceType?: Prisma.StringFilter<"Claim"> | string
@@ -290,16 +347,25 @@ export type ClaimWhereInput = {
   status?: Prisma.StringFilter<"Claim"> | string
   estimatedAmount?: Prisma.FloatNullableFilter<"Claim"> | number | null
   approvedAmount?: Prisma.FloatNullableFilter<"Claim"> | number | null
+  medicalCenterId?: Prisma.StringNullableFilter<"Claim"> | string | null
+  diagnosis?: Prisma.StringNullableFilter<"Claim"> | string | null
+  vehiclePlate?: Prisma.StringNullableFilter<"Claim"> | string | null
+  location?: Prisma.StringNullableFilter<"Claim"> | string | null
+  policeReportNumber?: Prisma.StringNullableFilter<"Claim"> | string | null
+  hasThirdParty?: Prisma.BoolNullableFilter<"Claim"> | boolean | null
+  thirdPartyName?: Prisma.StringNullableFilter<"Claim"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Claim"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Claim"> | Date | string
   customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
   insurer?: Prisma.XOR<Prisma.InsurerNullableScalarRelationFilter, Prisma.InsurerWhereInput> | null
+  documents?: Prisma.ClaimDocumentListRelationFilter
 }
 
 export type ClaimOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   customerId?: Prisma.SortOrder
   insurerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  dependentId?: Prisma.SortOrderInput | Prisma.SortOrder
   policyNumber?: Prisma.SortOrder
   claimType?: Prisma.SortOrder
   insuranceType?: Prisma.SortOrder
@@ -309,10 +375,18 @@ export type ClaimOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   estimatedAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedAmount?: Prisma.SortOrderInput | Prisma.SortOrder
+  medicalCenterId?: Prisma.SortOrderInput | Prisma.SortOrder
+  diagnosis?: Prisma.SortOrderInput | Prisma.SortOrder
+  vehiclePlate?: Prisma.SortOrderInput | Prisma.SortOrder
+  location?: Prisma.SortOrderInput | Prisma.SortOrder
+  policeReportNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  hasThirdParty?: Prisma.SortOrderInput | Prisma.SortOrder
+  thirdPartyName?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   customer?: Prisma.CustomerOrderByWithRelationInput
   insurer?: Prisma.InsurerOrderByWithRelationInput
+  documents?: Prisma.ClaimDocumentOrderByRelationAggregateInput
 }
 
 export type ClaimWhereUniqueInput = Prisma.AtLeast<{
@@ -322,6 +396,7 @@ export type ClaimWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ClaimWhereInput | Prisma.ClaimWhereInput[]
   customerId?: Prisma.StringFilter<"Claim"> | string
   insurerId?: Prisma.StringNullableFilter<"Claim"> | string | null
+  dependentId?: Prisma.StringNullableFilter<"Claim"> | string | null
   policyNumber?: Prisma.StringFilter<"Claim"> | string
   claimType?: Prisma.StringFilter<"Claim"> | string
   insuranceType?: Prisma.StringFilter<"Claim"> | string
@@ -331,16 +406,25 @@ export type ClaimWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.StringFilter<"Claim"> | string
   estimatedAmount?: Prisma.FloatNullableFilter<"Claim"> | number | null
   approvedAmount?: Prisma.FloatNullableFilter<"Claim"> | number | null
+  medicalCenterId?: Prisma.StringNullableFilter<"Claim"> | string | null
+  diagnosis?: Prisma.StringNullableFilter<"Claim"> | string | null
+  vehiclePlate?: Prisma.StringNullableFilter<"Claim"> | string | null
+  location?: Prisma.StringNullableFilter<"Claim"> | string | null
+  policeReportNumber?: Prisma.StringNullableFilter<"Claim"> | string | null
+  hasThirdParty?: Prisma.BoolNullableFilter<"Claim"> | boolean | null
+  thirdPartyName?: Prisma.StringNullableFilter<"Claim"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Claim"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Claim"> | Date | string
   customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
   insurer?: Prisma.XOR<Prisma.InsurerNullableScalarRelationFilter, Prisma.InsurerWhereInput> | null
+  documents?: Prisma.ClaimDocumentListRelationFilter
 }, "id">
 
 export type ClaimOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   customerId?: Prisma.SortOrder
   insurerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  dependentId?: Prisma.SortOrderInput | Prisma.SortOrder
   policyNumber?: Prisma.SortOrder
   claimType?: Prisma.SortOrder
   insuranceType?: Prisma.SortOrder
@@ -350,6 +434,13 @@ export type ClaimOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   estimatedAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedAmount?: Prisma.SortOrderInput | Prisma.SortOrder
+  medicalCenterId?: Prisma.SortOrderInput | Prisma.SortOrder
+  diagnosis?: Prisma.SortOrderInput | Prisma.SortOrder
+  vehiclePlate?: Prisma.SortOrderInput | Prisma.SortOrder
+  location?: Prisma.SortOrderInput | Prisma.SortOrder
+  policeReportNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  hasThirdParty?: Prisma.SortOrderInput | Prisma.SortOrder
+  thirdPartyName?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ClaimCountOrderByAggregateInput
@@ -366,6 +457,7 @@ export type ClaimScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Claim"> | string
   customerId?: Prisma.StringWithAggregatesFilter<"Claim"> | string
   insurerId?: Prisma.StringNullableWithAggregatesFilter<"Claim"> | string | null
+  dependentId?: Prisma.StringNullableWithAggregatesFilter<"Claim"> | string | null
   policyNumber?: Prisma.StringWithAggregatesFilter<"Claim"> | string
   claimType?: Prisma.StringWithAggregatesFilter<"Claim"> | string
   insuranceType?: Prisma.StringWithAggregatesFilter<"Claim"> | string
@@ -375,12 +467,20 @@ export type ClaimScalarWhereWithAggregatesInput = {
   status?: Prisma.StringWithAggregatesFilter<"Claim"> | string
   estimatedAmount?: Prisma.FloatNullableWithAggregatesFilter<"Claim"> | number | null
   approvedAmount?: Prisma.FloatNullableWithAggregatesFilter<"Claim"> | number | null
+  medicalCenterId?: Prisma.StringNullableWithAggregatesFilter<"Claim"> | string | null
+  diagnosis?: Prisma.StringNullableWithAggregatesFilter<"Claim"> | string | null
+  vehiclePlate?: Prisma.StringNullableWithAggregatesFilter<"Claim"> | string | null
+  location?: Prisma.StringNullableWithAggregatesFilter<"Claim"> | string | null
+  policeReportNumber?: Prisma.StringNullableWithAggregatesFilter<"Claim"> | string | null
+  hasThirdParty?: Prisma.BoolNullableWithAggregatesFilter<"Claim"> | boolean | null
+  thirdPartyName?: Prisma.StringNullableWithAggregatesFilter<"Claim"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Claim"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Claim"> | Date | string
 }
 
 export type ClaimCreateInput = {
   id?: string
+  dependentId?: string | null
   policyNumber: string
   claimType: string
   insuranceType: string
@@ -390,16 +490,25 @@ export type ClaimCreateInput = {
   status?: string
   estimatedAmount?: number | null
   approvedAmount?: number | null
+  medicalCenterId?: string | null
+  diagnosis?: string | null
+  vehiclePlate?: string | null
+  location?: string | null
+  policeReportNumber?: string | null
+  hasThirdParty?: boolean | null
+  thirdPartyName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   customer: Prisma.CustomerCreateNestedOneWithoutClaimsInput
   insurer?: Prisma.InsurerCreateNestedOneWithoutClaimsInput
+  documents?: Prisma.ClaimDocumentCreateNestedManyWithoutClaimInput
 }
 
 export type ClaimUncheckedCreateInput = {
   id?: string
   customerId: string
   insurerId?: string | null
+  dependentId?: string | null
   policyNumber: string
   claimType: string
   insuranceType: string
@@ -409,12 +518,21 @@ export type ClaimUncheckedCreateInput = {
   status?: string
   estimatedAmount?: number | null
   approvedAmount?: number | null
+  medicalCenterId?: string | null
+  diagnosis?: string | null
+  vehiclePlate?: string | null
+  location?: string | null
+  policeReportNumber?: string | null
+  hasThirdParty?: boolean | null
+  thirdPartyName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  documents?: Prisma.ClaimDocumentUncheckedCreateNestedManyWithoutClaimInput
 }
 
 export type ClaimUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  dependentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
   claimType?: Prisma.StringFieldUpdateOperationsInput | string
   insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -424,16 +542,25 @@ export type ClaimUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   estimatedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   approvedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  medicalCenterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  policeReportNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasThirdParty?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  thirdPartyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   customer?: Prisma.CustomerUpdateOneRequiredWithoutClaimsNestedInput
   insurer?: Prisma.InsurerUpdateOneWithoutClaimsNestedInput
+  documents?: Prisma.ClaimDocumentUpdateManyWithoutClaimNestedInput
 }
 
 export type ClaimUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
   insurerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dependentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
   claimType?: Prisma.StringFieldUpdateOperationsInput | string
   insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -443,14 +570,23 @@ export type ClaimUncheckedUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   estimatedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   approvedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  medicalCenterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  policeReportNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasThirdParty?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  thirdPartyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  documents?: Prisma.ClaimDocumentUncheckedUpdateManyWithoutClaimNestedInput
 }
 
 export type ClaimCreateManyInput = {
   id?: string
   customerId: string
   insurerId?: string | null
+  dependentId?: string | null
   policyNumber: string
   claimType: string
   insuranceType: string
@@ -460,12 +596,20 @@ export type ClaimCreateManyInput = {
   status?: string
   estimatedAmount?: number | null
   approvedAmount?: number | null
+  medicalCenterId?: string | null
+  diagnosis?: string | null
+  vehiclePlate?: string | null
+  location?: string | null
+  policeReportNumber?: string | null
+  hasThirdParty?: boolean | null
+  thirdPartyName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type ClaimUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  dependentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
   claimType?: Prisma.StringFieldUpdateOperationsInput | string
   insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -475,6 +619,13 @@ export type ClaimUpdateManyMutationInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   estimatedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   approvedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  medicalCenterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  policeReportNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasThirdParty?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  thirdPartyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -483,6 +634,7 @@ export type ClaimUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
   insurerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dependentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
   claimType?: Prisma.StringFieldUpdateOperationsInput | string
   insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -492,6 +644,13 @@ export type ClaimUncheckedUpdateManyInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   estimatedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   approvedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  medicalCenterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  policeReportNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasThirdParty?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  thirdPartyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -510,6 +669,7 @@ export type ClaimCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   customerId?: Prisma.SortOrder
   insurerId?: Prisma.SortOrder
+  dependentId?: Prisma.SortOrder
   policyNumber?: Prisma.SortOrder
   claimType?: Prisma.SortOrder
   insuranceType?: Prisma.SortOrder
@@ -519,6 +679,13 @@ export type ClaimCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   estimatedAmount?: Prisma.SortOrder
   approvedAmount?: Prisma.SortOrder
+  medicalCenterId?: Prisma.SortOrder
+  diagnosis?: Prisma.SortOrder
+  vehiclePlate?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  policeReportNumber?: Prisma.SortOrder
+  hasThirdParty?: Prisma.SortOrder
+  thirdPartyName?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -532,6 +699,7 @@ export type ClaimMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   customerId?: Prisma.SortOrder
   insurerId?: Prisma.SortOrder
+  dependentId?: Prisma.SortOrder
   policyNumber?: Prisma.SortOrder
   claimType?: Prisma.SortOrder
   insuranceType?: Prisma.SortOrder
@@ -541,6 +709,13 @@ export type ClaimMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   estimatedAmount?: Prisma.SortOrder
   approvedAmount?: Prisma.SortOrder
+  medicalCenterId?: Prisma.SortOrder
+  diagnosis?: Prisma.SortOrder
+  vehiclePlate?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  policeReportNumber?: Prisma.SortOrder
+  hasThirdParty?: Prisma.SortOrder
+  thirdPartyName?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -549,6 +724,7 @@ export type ClaimMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   customerId?: Prisma.SortOrder
   insurerId?: Prisma.SortOrder
+  dependentId?: Prisma.SortOrder
   policyNumber?: Prisma.SortOrder
   claimType?: Prisma.SortOrder
   insuranceType?: Prisma.SortOrder
@@ -558,6 +734,13 @@ export type ClaimMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   estimatedAmount?: Prisma.SortOrder
   approvedAmount?: Prisma.SortOrder
+  medicalCenterId?: Prisma.SortOrder
+  diagnosis?: Prisma.SortOrder
+  vehiclePlate?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  policeReportNumber?: Prisma.SortOrder
+  hasThirdParty?: Prisma.SortOrder
+  thirdPartyName?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -565,6 +748,11 @@ export type ClaimMinOrderByAggregateInput = {
 export type ClaimSumOrderByAggregateInput = {
   estimatedAmount?: Prisma.SortOrder
   approvedAmount?: Prisma.SortOrder
+}
+
+export type ClaimScalarRelationFilter = {
+  is?: Prisma.ClaimWhereInput
+  isNot?: Prisma.ClaimWhereInput
 }
 
 export type ClaimCreateNestedManyWithoutInsurerInput = {
@@ -651,8 +839,27 @@ export type ClaimUncheckedUpdateManyWithoutCustomerNestedInput = {
   deleteMany?: Prisma.ClaimScalarWhereInput | Prisma.ClaimScalarWhereInput[]
 }
 
+export type NullableBoolFieldUpdateOperationsInput = {
+  set?: boolean | null
+}
+
+export type ClaimCreateNestedOneWithoutDocumentsInput = {
+  create?: Prisma.XOR<Prisma.ClaimCreateWithoutDocumentsInput, Prisma.ClaimUncheckedCreateWithoutDocumentsInput>
+  connectOrCreate?: Prisma.ClaimCreateOrConnectWithoutDocumentsInput
+  connect?: Prisma.ClaimWhereUniqueInput
+}
+
+export type ClaimUpdateOneRequiredWithoutDocumentsNestedInput = {
+  create?: Prisma.XOR<Prisma.ClaimCreateWithoutDocumentsInput, Prisma.ClaimUncheckedCreateWithoutDocumentsInput>
+  connectOrCreate?: Prisma.ClaimCreateOrConnectWithoutDocumentsInput
+  upsert?: Prisma.ClaimUpsertWithoutDocumentsInput
+  connect?: Prisma.ClaimWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClaimUpdateToOneWithWhereWithoutDocumentsInput, Prisma.ClaimUpdateWithoutDocumentsInput>, Prisma.ClaimUncheckedUpdateWithoutDocumentsInput>
+}
+
 export type ClaimCreateWithoutInsurerInput = {
   id?: string
+  dependentId?: string | null
   policyNumber: string
   claimType: string
   insuranceType: string
@@ -662,14 +869,23 @@ export type ClaimCreateWithoutInsurerInput = {
   status?: string
   estimatedAmount?: number | null
   approvedAmount?: number | null
+  medicalCenterId?: string | null
+  diagnosis?: string | null
+  vehiclePlate?: string | null
+  location?: string | null
+  policeReportNumber?: string | null
+  hasThirdParty?: boolean | null
+  thirdPartyName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   customer: Prisma.CustomerCreateNestedOneWithoutClaimsInput
+  documents?: Prisma.ClaimDocumentCreateNestedManyWithoutClaimInput
 }
 
 export type ClaimUncheckedCreateWithoutInsurerInput = {
   id?: string
   customerId: string
+  dependentId?: string | null
   policyNumber: string
   claimType: string
   insuranceType: string
@@ -679,8 +895,16 @@ export type ClaimUncheckedCreateWithoutInsurerInput = {
   status?: string
   estimatedAmount?: number | null
   approvedAmount?: number | null
+  medicalCenterId?: string | null
+  diagnosis?: string | null
+  vehiclePlate?: string | null
+  location?: string | null
+  policeReportNumber?: string | null
+  hasThirdParty?: boolean | null
+  thirdPartyName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  documents?: Prisma.ClaimDocumentUncheckedCreateNestedManyWithoutClaimInput
 }
 
 export type ClaimCreateOrConnectWithoutInsurerInput = {
@@ -715,6 +939,7 @@ export type ClaimScalarWhereInput = {
   id?: Prisma.StringFilter<"Claim"> | string
   customerId?: Prisma.StringFilter<"Claim"> | string
   insurerId?: Prisma.StringNullableFilter<"Claim"> | string | null
+  dependentId?: Prisma.StringNullableFilter<"Claim"> | string | null
   policyNumber?: Prisma.StringFilter<"Claim"> | string
   claimType?: Prisma.StringFilter<"Claim"> | string
   insuranceType?: Prisma.StringFilter<"Claim"> | string
@@ -724,12 +949,20 @@ export type ClaimScalarWhereInput = {
   status?: Prisma.StringFilter<"Claim"> | string
   estimatedAmount?: Prisma.FloatNullableFilter<"Claim"> | number | null
   approvedAmount?: Prisma.FloatNullableFilter<"Claim"> | number | null
+  medicalCenterId?: Prisma.StringNullableFilter<"Claim"> | string | null
+  diagnosis?: Prisma.StringNullableFilter<"Claim"> | string | null
+  vehiclePlate?: Prisma.StringNullableFilter<"Claim"> | string | null
+  location?: Prisma.StringNullableFilter<"Claim"> | string | null
+  policeReportNumber?: Prisma.StringNullableFilter<"Claim"> | string | null
+  hasThirdParty?: Prisma.BoolNullableFilter<"Claim"> | boolean | null
+  thirdPartyName?: Prisma.StringNullableFilter<"Claim"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Claim"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Claim"> | Date | string
 }
 
 export type ClaimCreateWithoutCustomerInput = {
   id?: string
+  dependentId?: string | null
   policyNumber: string
   claimType: string
   insuranceType: string
@@ -739,14 +972,23 @@ export type ClaimCreateWithoutCustomerInput = {
   status?: string
   estimatedAmount?: number | null
   approvedAmount?: number | null
+  medicalCenterId?: string | null
+  diagnosis?: string | null
+  vehiclePlate?: string | null
+  location?: string | null
+  policeReportNumber?: string | null
+  hasThirdParty?: boolean | null
+  thirdPartyName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   insurer?: Prisma.InsurerCreateNestedOneWithoutClaimsInput
+  documents?: Prisma.ClaimDocumentCreateNestedManyWithoutClaimInput
 }
 
 export type ClaimUncheckedCreateWithoutCustomerInput = {
   id?: string
   insurerId?: string | null
+  dependentId?: string | null
   policyNumber: string
   claimType: string
   insuranceType: string
@@ -756,8 +998,16 @@ export type ClaimUncheckedCreateWithoutCustomerInput = {
   status?: string
   estimatedAmount?: number | null
   approvedAmount?: number | null
+  medicalCenterId?: string | null
+  diagnosis?: string | null
+  vehiclePlate?: string | null
+  location?: string | null
+  policeReportNumber?: string | null
+  hasThirdParty?: boolean | null
+  thirdPartyName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  documents?: Prisma.ClaimDocumentUncheckedCreateNestedManyWithoutClaimInput
 }
 
 export type ClaimCreateOrConnectWithoutCustomerInput = {
@@ -785,9 +1035,9 @@ export type ClaimUpdateManyWithWhereWithoutCustomerInput = {
   data: Prisma.XOR<Prisma.ClaimUpdateManyMutationInput, Prisma.ClaimUncheckedUpdateManyWithoutCustomerInput>
 }
 
-export type ClaimCreateManyInsurerInput = {
+export type ClaimCreateWithoutDocumentsInput = {
   id?: string
-  customerId: string
+  dependentId?: string | null
   policyNumber: string
   claimType: string
   insuranceType: string
@@ -797,12 +1047,137 @@ export type ClaimCreateManyInsurerInput = {
   status?: string
   estimatedAmount?: number | null
   approvedAmount?: number | null
+  medicalCenterId?: string | null
+  diagnosis?: string | null
+  vehiclePlate?: string | null
+  location?: string | null
+  policeReportNumber?: string | null
+  hasThirdParty?: boolean | null
+  thirdPartyName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  customer: Prisma.CustomerCreateNestedOneWithoutClaimsInput
+  insurer?: Prisma.InsurerCreateNestedOneWithoutClaimsInput
+}
+
+export type ClaimUncheckedCreateWithoutDocumentsInput = {
+  id?: string
+  customerId: string
+  insurerId?: string | null
+  dependentId?: string | null
+  policyNumber: string
+  claimType: string
+  insuranceType: string
+  incidentDate: Date | string
+  description: string
+  claimData: string
+  status?: string
+  estimatedAmount?: number | null
+  approvedAmount?: number | null
+  medicalCenterId?: string | null
+  diagnosis?: string | null
+  vehiclePlate?: string | null
+  location?: string | null
+  policeReportNumber?: string | null
+  hasThirdParty?: boolean | null
+  thirdPartyName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ClaimCreateOrConnectWithoutDocumentsInput = {
+  where: Prisma.ClaimWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClaimCreateWithoutDocumentsInput, Prisma.ClaimUncheckedCreateWithoutDocumentsInput>
+}
+
+export type ClaimUpsertWithoutDocumentsInput = {
+  update: Prisma.XOR<Prisma.ClaimUpdateWithoutDocumentsInput, Prisma.ClaimUncheckedUpdateWithoutDocumentsInput>
+  create: Prisma.XOR<Prisma.ClaimCreateWithoutDocumentsInput, Prisma.ClaimUncheckedCreateWithoutDocumentsInput>
+  where?: Prisma.ClaimWhereInput
+}
+
+export type ClaimUpdateToOneWithWhereWithoutDocumentsInput = {
+  where?: Prisma.ClaimWhereInput
+  data: Prisma.XOR<Prisma.ClaimUpdateWithoutDocumentsInput, Prisma.ClaimUncheckedUpdateWithoutDocumentsInput>
+}
+
+export type ClaimUpdateWithoutDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  dependentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  claimType?: Prisma.StringFieldUpdateOperationsInput | string
+  insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
+  incidentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  claimData?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  estimatedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  approvedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  medicalCenterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  policeReportNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasThirdParty?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  thirdPartyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  customer?: Prisma.CustomerUpdateOneRequiredWithoutClaimsNestedInput
+  insurer?: Prisma.InsurerUpdateOneWithoutClaimsNestedInput
+}
+
+export type ClaimUncheckedUpdateWithoutDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  insurerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dependentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  claimType?: Prisma.StringFieldUpdateOperationsInput | string
+  insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
+  incidentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  claimData?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  estimatedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  approvedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  medicalCenterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  policeReportNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasThirdParty?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  thirdPartyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ClaimCreateManyInsurerInput = {
+  id?: string
+  customerId: string
+  dependentId?: string | null
+  policyNumber: string
+  claimType: string
+  insuranceType: string
+  incidentDate: Date | string
+  description: string
+  claimData: string
+  status?: string
+  estimatedAmount?: number | null
+  approvedAmount?: number | null
+  medicalCenterId?: string | null
+  diagnosis?: string | null
+  vehiclePlate?: string | null
+  location?: string | null
+  policeReportNumber?: string | null
+  hasThirdParty?: boolean | null
+  thirdPartyName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type ClaimUpdateWithoutInsurerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  dependentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
   claimType?: Prisma.StringFieldUpdateOperationsInput | string
   insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -812,14 +1187,23 @@ export type ClaimUpdateWithoutInsurerInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   estimatedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   approvedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  medicalCenterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  policeReportNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasThirdParty?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  thirdPartyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   customer?: Prisma.CustomerUpdateOneRequiredWithoutClaimsNestedInput
+  documents?: Prisma.ClaimDocumentUpdateManyWithoutClaimNestedInput
 }
 
 export type ClaimUncheckedUpdateWithoutInsurerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  dependentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
   claimType?: Prisma.StringFieldUpdateOperationsInput | string
   insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -829,13 +1213,22 @@ export type ClaimUncheckedUpdateWithoutInsurerInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   estimatedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   approvedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  medicalCenterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  policeReportNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasThirdParty?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  thirdPartyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  documents?: Prisma.ClaimDocumentUncheckedUpdateManyWithoutClaimNestedInput
 }
 
 export type ClaimUncheckedUpdateManyWithoutInsurerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  dependentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
   claimType?: Prisma.StringFieldUpdateOperationsInput | string
   insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -845,6 +1238,13 @@ export type ClaimUncheckedUpdateManyWithoutInsurerInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   estimatedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   approvedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  medicalCenterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  policeReportNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasThirdParty?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  thirdPartyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -852,6 +1252,7 @@ export type ClaimUncheckedUpdateManyWithoutInsurerInput = {
 export type ClaimCreateManyCustomerInput = {
   id?: string
   insurerId?: string | null
+  dependentId?: string | null
   policyNumber: string
   claimType: string
   insuranceType: string
@@ -861,12 +1262,20 @@ export type ClaimCreateManyCustomerInput = {
   status?: string
   estimatedAmount?: number | null
   approvedAmount?: number | null
+  medicalCenterId?: string | null
+  diagnosis?: string | null
+  vehiclePlate?: string | null
+  location?: string | null
+  policeReportNumber?: string | null
+  hasThirdParty?: boolean | null
+  thirdPartyName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type ClaimUpdateWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  dependentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
   claimType?: Prisma.StringFieldUpdateOperationsInput | string
   insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -876,14 +1285,23 @@ export type ClaimUpdateWithoutCustomerInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   estimatedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   approvedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  medicalCenterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  policeReportNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasThirdParty?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  thirdPartyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   insurer?: Prisma.InsurerUpdateOneWithoutClaimsNestedInput
+  documents?: Prisma.ClaimDocumentUpdateManyWithoutClaimNestedInput
 }
 
 export type ClaimUncheckedUpdateWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   insurerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dependentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
   claimType?: Prisma.StringFieldUpdateOperationsInput | string
   insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -893,13 +1311,22 @@ export type ClaimUncheckedUpdateWithoutCustomerInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   estimatedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   approvedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  medicalCenterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  policeReportNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasThirdParty?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  thirdPartyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  documents?: Prisma.ClaimDocumentUncheckedUpdateManyWithoutClaimNestedInput
 }
 
 export type ClaimUncheckedUpdateManyWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   insurerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dependentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   policyNumber?: Prisma.StringFieldUpdateOperationsInput | string
   claimType?: Prisma.StringFieldUpdateOperationsInput | string
   insuranceType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -909,16 +1336,53 @@ export type ClaimUncheckedUpdateManyWithoutCustomerInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   estimatedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   approvedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  medicalCenterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  policeReportNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasThirdParty?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  thirdPartyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type ClaimCountOutputType
+ */
+
+export type ClaimCountOutputType = {
+  documents: number
+}
+
+export type ClaimCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  documents?: boolean | ClaimCountOutputTypeCountDocumentsArgs
+}
+
+/**
+ * ClaimCountOutputType without action
+ */
+export type ClaimCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClaimCountOutputType
+   */
+  select?: Prisma.ClaimCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ClaimCountOutputType without action
+ */
+export type ClaimCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ClaimDocumentWhereInput
+}
 
 
 export type ClaimSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   customerId?: boolean
   insurerId?: boolean
+  dependentId?: boolean
   policyNumber?: boolean
   claimType?: boolean
   insuranceType?: boolean
@@ -928,16 +1392,26 @@ export type ClaimSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   status?: boolean
   estimatedAmount?: boolean
   approvedAmount?: boolean
+  medicalCenterId?: boolean
+  diagnosis?: boolean
+  vehiclePlate?: boolean
+  location?: boolean
+  policeReportNumber?: boolean
+  hasThirdParty?: boolean
+  thirdPartyName?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   insurer?: boolean | Prisma.Claim$insurerArgs<ExtArgs>
+  documents?: boolean | Prisma.Claim$documentsArgs<ExtArgs>
+  _count?: boolean | Prisma.ClaimCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["claim"]>
 
 export type ClaimSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   customerId?: boolean
   insurerId?: boolean
+  dependentId?: boolean
   policyNumber?: boolean
   claimType?: boolean
   insuranceType?: boolean
@@ -947,6 +1421,13 @@ export type ClaimSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   status?: boolean
   estimatedAmount?: boolean
   approvedAmount?: boolean
+  medicalCenterId?: boolean
+  diagnosis?: boolean
+  vehiclePlate?: boolean
+  location?: boolean
+  policeReportNumber?: boolean
+  hasThirdParty?: boolean
+  thirdPartyName?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
@@ -957,6 +1438,7 @@ export type ClaimSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   id?: boolean
   customerId?: boolean
   insurerId?: boolean
+  dependentId?: boolean
   policyNumber?: boolean
   claimType?: boolean
   insuranceType?: boolean
@@ -966,6 +1448,13 @@ export type ClaimSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   status?: boolean
   estimatedAmount?: boolean
   approvedAmount?: boolean
+  medicalCenterId?: boolean
+  diagnosis?: boolean
+  vehiclePlate?: boolean
+  location?: boolean
+  policeReportNumber?: boolean
+  hasThirdParty?: boolean
+  thirdPartyName?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
@@ -976,6 +1465,7 @@ export type ClaimSelectScalar = {
   id?: boolean
   customerId?: boolean
   insurerId?: boolean
+  dependentId?: boolean
   policyNumber?: boolean
   claimType?: boolean
   insuranceType?: boolean
@@ -985,14 +1475,23 @@ export type ClaimSelectScalar = {
   status?: boolean
   estimatedAmount?: boolean
   approvedAmount?: boolean
+  medicalCenterId?: boolean
+  diagnosis?: boolean
+  vehiclePlate?: boolean
+  location?: boolean
+  policeReportNumber?: boolean
+  hasThirdParty?: boolean
+  thirdPartyName?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ClaimOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "customerId" | "insurerId" | "policyNumber" | "claimType" | "insuranceType" | "incidentDate" | "description" | "claimData" | "status" | "estimatedAmount" | "approvedAmount" | "createdAt" | "updatedAt", ExtArgs["result"]["claim"]>
+export type ClaimOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "customerId" | "insurerId" | "dependentId" | "policyNumber" | "claimType" | "insuranceType" | "incidentDate" | "description" | "claimData" | "status" | "estimatedAmount" | "approvedAmount" | "medicalCenterId" | "diagnosis" | "vehiclePlate" | "location" | "policeReportNumber" | "hasThirdParty" | "thirdPartyName" | "createdAt" | "updatedAt", ExtArgs["result"]["claim"]>
 export type ClaimInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   insurer?: boolean | Prisma.Claim$insurerArgs<ExtArgs>
+  documents?: boolean | Prisma.Claim$documentsArgs<ExtArgs>
+  _count?: boolean | Prisma.ClaimCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ClaimIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
@@ -1008,11 +1507,13 @@ export type $ClaimPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     customer: Prisma.$CustomerPayload<ExtArgs>
     insurer: Prisma.$InsurerPayload<ExtArgs> | null
+    documents: Prisma.$ClaimDocumentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     customerId: string
     insurerId: string | null
+    dependentId: string | null
     policyNumber: string
     claimType: string
     insuranceType: string
@@ -1022,6 +1523,13 @@ export type $ClaimPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     status: string
     estimatedAmount: number | null
     approvedAmount: number | null
+    medicalCenterId: string | null
+    diagnosis: string | null
+    vehiclePlate: string | null
+    location: string | null
+    policeReportNumber: string | null
+    hasThirdParty: boolean | null
+    thirdPartyName: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["claim"]>
@@ -1420,6 +1928,7 @@ export interface Prisma__ClaimClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   customer<T extends Prisma.CustomerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CustomerDefaultArgs<ExtArgs>>): Prisma.Prisma__CustomerClient<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   insurer<T extends Prisma.Claim$insurerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Claim$insurerArgs<ExtArgs>>): Prisma.Prisma__InsurerClient<runtime.Types.Result.GetResult<Prisma.$InsurerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  documents<T extends Prisma.Claim$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Claim$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClaimDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1452,6 +1961,7 @@ export interface ClaimFieldRefs {
   readonly id: Prisma.FieldRef<"Claim", 'String'>
   readonly customerId: Prisma.FieldRef<"Claim", 'String'>
   readonly insurerId: Prisma.FieldRef<"Claim", 'String'>
+  readonly dependentId: Prisma.FieldRef<"Claim", 'String'>
   readonly policyNumber: Prisma.FieldRef<"Claim", 'String'>
   readonly claimType: Prisma.FieldRef<"Claim", 'String'>
   readonly insuranceType: Prisma.FieldRef<"Claim", 'String'>
@@ -1461,6 +1971,13 @@ export interface ClaimFieldRefs {
   readonly status: Prisma.FieldRef<"Claim", 'String'>
   readonly estimatedAmount: Prisma.FieldRef<"Claim", 'Float'>
   readonly approvedAmount: Prisma.FieldRef<"Claim", 'Float'>
+  readonly medicalCenterId: Prisma.FieldRef<"Claim", 'String'>
+  readonly diagnosis: Prisma.FieldRef<"Claim", 'String'>
+  readonly vehiclePlate: Prisma.FieldRef<"Claim", 'String'>
+  readonly location: Prisma.FieldRef<"Claim", 'String'>
+  readonly policeReportNumber: Prisma.FieldRef<"Claim", 'String'>
+  readonly hasThirdParty: Prisma.FieldRef<"Claim", 'Boolean'>
+  readonly thirdPartyName: Prisma.FieldRef<"Claim", 'String'>
   readonly createdAt: Prisma.FieldRef<"Claim", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Claim", 'DateTime'>
 }
@@ -1873,6 +2390,30 @@ export type Claim$insurerArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   include?: Prisma.InsurerInclude<ExtArgs> | null
   where?: Prisma.InsurerWhereInput
+}
+
+/**
+ * Claim.documents
+ */
+export type Claim$documentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClaimDocument
+   */
+  select?: Prisma.ClaimDocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ClaimDocument
+   */
+  omit?: Prisma.ClaimDocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClaimDocumentInclude<ExtArgs> | null
+  where?: Prisma.ClaimDocumentWhereInput
+  orderBy?: Prisma.ClaimDocumentOrderByWithRelationInput | Prisma.ClaimDocumentOrderByWithRelationInput[]
+  cursor?: Prisma.ClaimDocumentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ClaimDocumentScalarFieldEnum | Prisma.ClaimDocumentScalarFieldEnum[]
 }
 
 /**

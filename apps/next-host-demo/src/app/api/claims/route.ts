@@ -3,64 +3,136 @@ import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 import { getClaimStartConfigByToken } from '@/lib/redisClaimStart';
 
-const claimSchema = z.object({
+// Base schema for personal info
+const personalInfoSchema = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
+  email: z.string().email(),
+  phone: z.string(),
+});
+
+// Base claim schema
+const baseClaimSchema = z.object({
   customerId: z.string().optional(),
   policyNumber: z.string(),
+  dependentId: z.string().optional(),
   claimType: z.string(),
   insuranceType: z.enum(['health', 'vehicle']),
   incidentDate: z.string(),
   description: z.string(),
-  personalInfo: z.object({
-    firstName: z.string(),
-    lastName: z.string(),
-    email: z.string().email(),
-    phone: z.string(),
-  }),
-  claimData: z.record(z.unknown()).optional(),
+  personalInfo: personalInfoSchema,
+  // Common file uploads (stored as URLs or file paths after upload)
+  insurerForm: z.string().optional(),
 });
+
+// Health-specific claim schema
+const healthClaimSchema = baseClaimSchema.extend({
+  insuranceType: z.literal('health'),
+  medicalCenterId: z.string().optional(),
+  diagnosis: z.string().optional(),
+  totalAmount: z.number().optional(),
+  // Health-specific file uploads
+  medicalPrescription: z.string().optional(),
+  medicalDiagnosis: z.string().optional(),
+  medicalExams: z.array(z.string()).optional(),
+  medicineInvoice: z.string().optional(),
+  medicalAppointmentInvoice: z.string().optional(),
+});
+
+// Vehicle-specific claim schema
+const vehicleClaimSchema = baseClaimSchema.extend({
+  insuranceType: z.literal('vehicle'),
+  vehiclePlate: z.string().optional(),
+  location: z.string().optional(),
+  policeReport: z.boolean().optional(),
+  policeReportNumber: z.string().optional(),
+  estimatedDamage: z.number().optional(),
+  // Third party information
+  thirdPartyPlate: z.string().optional(),
+  thirdPartyName: z.string().optional(),
+  // Vehicle-specific file uploads
+  insuredVehiclePhotos: z.array(z.string()).optional(),
+  thirdPartyPropertyPhotos: z.array(z.string()).optional(),
+  affectedPersonPhoto: z.string().optional(),
+  insuredLicensePhoto: z.string().optional(),
+  thirdPartyLicensePhoto: z.string().optional(),
+  thirdPartyRegistrationPhoto: z.string().optional(),
+  thirdPartyIdPhoto: z.string().optional(),
+});
+
+// Union of both schemas
+const claimSchema = z.discriminatedUnion('insuranceType', [
+  healthClaimSchema,
+  vehicleClaimSchema,
+]);
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const validatedData = claimSchema.parse(body);
+    const contentType = request.headers.get('content-type');
+    const webhookUrl = process.env.WEBHOOK_CLAIM_SUBMIT_URL;
+    const apiKey = process.env.ROUTARA_API_KEY;
+    
+    if (!webhookUrl || !apiKey) {
+      return NextResponse.json(
+        { error: 'Webhook configuration missing. Set WEBHOOK_CLAIM_SUBMIT_URL and ROUTARA_API_KEY.' },
+        { status: 500 }
+      );
+    }
 
-    // Find or create customer
-    let customer = await prisma.customer.findUnique({
-      where: { email: validatedData.personalInfo.email },
-    });
-
-    if (!customer) {
-      // Create new customer
-      customer = await prisma.customer.create({
-        data: {
-          firstName: validatedData.personalInfo.firstName,
-          lastName: validatedData.personalInfo.lastName,
-          email: validatedData.personalInfo.email,
-          phone: validatedData.personalInfo.phone,
-          birthDate: new Date(), // Should be from form data
-          identificationType: 'cedula', // Should be from form data
-          identificationNumber: 'temp-' + Date.now(), // Should be from form data
+    // Reenviar el request completo (FormData o JSON) al webhook externo
+    let webhookResponse: Response;
+    
+    if (contentType?.includes('multipart/form-data')) {
+      // Caso 1: FormData con archivos binarios - reenviar tal cual
+      const formData = await request.formData();
+      
+      webhookResponse = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'x-routara-key': apiKey,
+          'X-Source': 'formEngine',
         },
+        body: formData, // Reenviar FormData completo
+      });
+    } else {
+      // Caso 2: JSON - reenviar tal cual
+      const body = await request.json();
+      
+      webhookResponse = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-routara-key': apiKey,
+          'X-Source': 'formEngine',
+        },
+        body: JSON.stringify(body),
       });
     }
 
-    // Create claim
-    const claim = await prisma.claim.create({
-      data: {
-        customerId: customer.id,
-        policyNumber: validatedData.policyNumber,
-        claimType: validatedData.claimType,
-        insuranceType: validatedData.insuranceType,
-        incidentDate: new Date(validatedData.incidentDate),
-        description: validatedData.description,
-        claimData: JSON.stringify(validatedData.claimData || {}),
-      },
-    });
+    // Procesar respuesta del webhook
+    if (!webhookResponse.ok) {
+      const errorData = await webhookResponse.json().catch(() => ({}));
+      console.error('Webhook error:', errorData);
+      return NextResponse.json(
+        { 
+          error: 'Failed to submit claim to external service',
+          details: errorData 
+        },
+        { status: webhookResponse.status }
+      );
+    }
 
+    const webhookResult = await webhookResponse.json();
+
+    // El webhook debe devolver información del claim creado
+    // Formato esperado: { success: true, claimId: "xxx", message: "..." }
     return NextResponse.json({
       success: true,
-      message: 'Claim submitted successfully',
-      data: { id: claim.id },
+      message: webhookResult.message || 'Claim submitted successfully',
+      data: { 
+        id: webhookResult.claimId || webhookResult.id,
+        ...webhookResult.data 
+      },
     });
   } catch (error) {
     console.error('Error creating claim:', error);
@@ -86,6 +158,7 @@ export async function GET(request: Request) {
     const insuranceTypeParam = searchParams.get('insuranceType');
     const customerId = searchParams.get('customerId');
     const policyNumber = searchParams.get('policyNumber');
+    const claimId = searchParams.get('id');
 
     if (token) {
       try {
@@ -105,6 +178,50 @@ export async function GET(request: Request) {
       }
     }
 
+    // Get single claim by ID with all details
+    if (claimId) {
+      const claim = await prisma.claim.findUnique({
+        where: { id: claimId },
+        include: {
+          customer: {
+            select: {
+              firstName: true,
+              lastName: true,
+              email: true,
+              phone: true,
+            },
+          },
+          insurer: {
+            select: {
+              name: true,
+              code: true,
+            },
+          },
+          documents: {
+            select: {
+              id: true,
+              documentType: true,
+              fileName: true,
+              fileUrl: true,
+              fileSize: true,
+              mimeType: true,
+              uploadedAt: true,
+            },
+            orderBy: {
+              uploadedAt: 'asc',
+            },
+          },
+        },
+      });
+
+      if (!claim) {
+        return NextResponse.json({ error: 'Claim not found' }, { status: 404 });
+      }
+
+      return NextResponse.json({ success: true, data: claim });
+    }
+
+    // Get list of claims with filters
     const where: Record<string, unknown> = {};
     if (customerId) where.customerId = customerId;
     if (policyNumber) where.policyNumber = policyNumber;
@@ -117,6 +234,17 @@ export async function GET(request: Request) {
             firstName: true,
             lastName: true,
             email: true,
+          },
+        },
+        documents: {
+          select: {
+            id: true,
+            documentType: true,
+            fileName: true,
+            fileUrl: true,
+            fileSize: true,
+            mimeType: true,
+            uploadedAt: true,
           },
         },
       },

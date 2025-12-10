@@ -112,3 +112,8 @@ export type Quote = Prisma.QuoteModel
  * 
  */
 export type Claim = Prisma.ClaimModel
+/**
+ * Model ClaimDocument
+ * 
+ */
+export type ClaimDocument = Prisma.ClaimDocumentModel
